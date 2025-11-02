@@ -46,32 +46,23 @@ export default async function BlogIndex() {
               className="group block opacity-0 animate-fade-in-up"
               style={{ animationDelay: `${(index + 1) * 100}ms` }}
             >
-              <article className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 space-y-2">
-                    <h2 className="text-xl font-semibold text-zinc-950 dark:text-zinc-50 group-hover:text-zinc-600 dark:group-hover:text-zinc-400 transition-colors duration-200">
-                      {frontmatter.title ?? slug.split("/").at(-1)}
-                    </h2>
-                    {frontmatter.description && (
-                      <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2">
-                        {frontmatter.description}
-                      </p>
-                    )}
-                    {frontmatter.date && (
-                      <div className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-500">
-                        <Calendar className="w-4 h-4" />
-                        <time dateTime={frontmatter.date}>
-                          {new Date(frontmatter.date).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
-                        </time>
-                      </div>
-                    )}
-                  </div>
-                  <ArrowUpRight className="w-5 h-5 text-zinc-400 group-hover:text-zinc-950 dark:group-hover:text-zinc-50 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 flex-shrink-0" />
+              <article className="flex items-center gap-3 p-3 rounded-lg transition-colors group">
+                {frontmatter.date && (
+                  <time className="text-sm text-zinc-500 dark:text-zinc-500 whitespace-nowrap">
+                    {new Date(frontmatter.date).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </time>
+                )}
+                <div
+                  // href={`/blog/${slug}`}
+                  className="flex-1 text-zinc-950 dark:text-zinc-50 group-hover:underline hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors"
+                >
+                  {frontmatter.title ?? slug.split("/").at(-1)}
                 </div>
+                <ArrowUpRight className="w-4 h-4 text-zinc-400" />
               </article>
             </Link>
           ))}

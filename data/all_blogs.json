@@ -1,0 +1,47 @@
+[
+  {
+    "id": "a0322bb8-e273-4d8f-9641-4b799b5c78de",
+    "title": "Building Scalable Web Applications with MERN Stack",
+    "slug": "building-scalable-web-apps-mern",
+    "excerpt": "Learn how to architect and build production-ready web applications using MongoDB, Express, React, and Node.js.",
+    "content": "# Building Scalable Web Applications with MERN Stack\n\nThe MERN stack (MongoDB, Express, React, Node.js) has become one of the most popular choices for building modern web applications. In this post, I'll share my experience and best practices for creating scalable applications.\n\n## Why MERN?\n\n- **JavaScript Everywhere**: Use one language across the entire stack\n- **Rich Ecosystem**: Massive npm library with solutions for every problem\n- **Performance**: Node.js provides excellent performance for I/O operations\n- **Developer Experience**: Hot reloading, great debugging tools\n\n## Architecture Patterns\n\nWhen building MERN applications, I follow these key principles:\n\n1. **Separation of Concerns**: Keep business logic separate from routes\n2. **Middleware Pattern**: Use Express middleware for cross-cutting concerns\n3. **Component Architecture**: Build reusable React components\n4. **State Management**: Use Redux or Context API appropriately\n\n## Conclusion\n\nThe MERN stack provides a solid foundation for building modern web applications. Focus on clean architecture and best practices to ensure your application scales effectively.",
+    "author": "Ankit Mishra",
+    "featured_image": null,
+    "published": true,
+    "published_at": "2025-10-26T12:34:11.044803+00:00",
+    "reading_time": 8,
+    "tags": ["MERN", "Web Development", "JavaScript", "Architecture"],
+    "created_at": "2025-10-26T12:34:11.044803+00:00",
+    "updated_at": "2025-10-26T12:34:11.044803+00:00"
+  },
+  {
+    "id": "946b869a-93ba-4811-a1c2-d8d2b6290213",
+    "title": "My Journey to Winning Smart India Hackathon 2023",
+    "slug": "smart-india-hackathon-2023-journey",
+    "excerpt": "Reflecting on our journey to the top 6 in Smart India Hackathon 2023 with 350+ competing teams.",
+    "content": "# My Journey to Winning Smart India Hackathon 2023\n\nCompeting in the Smart India Hackathon 2023 was one of the most challenging and rewarding experiences of my college career. Our team made it to the top 6 out of 350+ teams nationwide.\n\n## The Problem Statement\n\nWe tackled the challenge of making legal assistance accessible to everyone, regardless of their language or technical knowledge. This led to the creation of Nyaydoot, an AI-powered legal assistant.\n\n## Our Solution\n\nNyaydoot combines:\n- Natural Language Processing for vernacular support\n- AI trained on 8 law textbooks and the Indian Constitution\n- User-friendly interface built with React and Tailwind\n- Chatbot integration using Botpress\n\n## Key Learnings\n\n1. **Team Collaboration**: Clear communication is crucial\n2. **Time Management**: 36 hours flies by faster than you think\n3. **Presentation Skills**: Technical excellence needs clear communication\n4. **Resilience**: Debugging at 3 AM builds character\n\n## Final Thoughts\n\nThe experience taught me that innovation happens when technology meets real-world problems. Being in the top 6 validated our hard work and inspired us to continue building solutions that matter.",
+    "author": "Ankit Mishra",
+    "featured_image": null,
+    "published": true,
+    "published_at": "2025-10-19T12:34:11.044803+00:00",
+    "reading_time": 6,
+    "tags": ["Hackathon", "AI", "Experience", "Projects"],
+    "created_at": "2025-10-26T12:34:11.044803+00:00",
+    "updated_at": "2025-10-26T12:34:11.044803+00:00"
+  },
+  {
+    "id": "1dd6aebb-1ea4-485e-a541-710bc42d09c5",
+    "title": "Understanding Machine Learning Fundamentals",
+    "slug": "machine-learning-fundamentals",
+    "excerpt": "A beginner-friendly guide to understanding core ML concepts and getting started with your first model.",
+    "content": "# Understanding Machine Learning Fundamentals\n\nMachine Learning can seem intimidating at first, but the core concepts are accessible to anyone willing to learn. Let me break down the fundamentals.\n\n## What is Machine Learning?\n\nMachine Learning is teaching computers to learn from data rather than explicitly programming every rule. It's like teaching a child to recognize patterns.\n\n## Types of ML\n\n### Supervised Learning\n- Training with labeled data\n- Examples: Classification, Regression\n\n### Unsupervised Learning\n- Finding patterns in unlabeled data\n- Examples: Clustering, Dimensionality Reduction\n\n### Reinforcement Learning\n- Learning through trial and error\n- Examples: Game AI, Robotics\n\n## Getting Started\n\nFor beginners, I recommend:\n1. Python with NumPy and Pandas\n2. Scikit-learn for classical ML\n3. Kaggle for practice datasets\n4. Start with simple linear regression\n\n## My First Project\n\nI built RecomZone, a recommendation engine using content-based filtering. Starting with movies and music helped me understand collaborative filtering and similarity metrics.\n\nThe key is to start small, understand the math, and gradually tackle complex problems.",
+    "author": "Ankit Mishra",
+    "featured_image": null,
+    "published": true,
+    "published_at": "2025-10-12T12:34:11.044803+00:00",
+    "reading_time": 10,
+    "tags": ["Machine Learning", "AI", "Python", "Tutorial"],
+    "created_at": "2025-10-26T12:34:11.044803+00:00",
+    "updated_at": "2025-10-26T12:34:11.044803+00:00"
+  }
+]

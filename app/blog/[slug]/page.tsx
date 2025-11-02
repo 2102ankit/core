@@ -98,7 +98,7 @@ export default async function BlogPostPage({ params }: Promise<Params>) {
           </Link>
 
           <div className="flex items-center gap-4">
-            <a
+            <Link
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                 frontmatter.title ?? "Check this out!"
               )}`}
@@ -107,7 +107,7 @@ export default async function BlogPostPage({ params }: Promise<Params>) {
               className="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-200"
             >
               Share on X
-            </a>
+            </Link>
           </div>
         </footer>
       </article>

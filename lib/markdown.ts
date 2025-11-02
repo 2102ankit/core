@@ -28,14 +28,35 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   const processed = await remark().use(html).process(content);
   let htmlContent = processed.toString();
 
-  // Convert markdown image syntax to Next.js Image-friendly format
-  // This handles ![alt](path) syntax in markdown
+  // Convert markdown image syntax to proper image paths
+  // Handles: ![alt](image.jpg) or ![alt](folder/image.jpg)
   htmlContent = htmlContent.replace(
     /<img\s+src="([^"]+)"\s+alt="([^"]*)"\s*\/?>/g,
     (match, src, alt) => {
-      // If image path is relative, prefix with /images/blog/
-      const imagePath = src.startsWith('http') ? src : `/images/blog/${src}`;
+      // If already starts with http or /, leave as is
+      if (src.startsWith('http') || src.startsWith('/')) {
+        return `<img src="${src}" alt="${alt}" loading="lazy" class="loaded" />`;
+      }
+      
+      // Otherwise, prefix with /images/blog/
+      const imagePath = `/images/blog/${src}`;
       return `<img src="${imagePath}" alt="${alt}" loading="lazy" class="loaded" />`;
+    }
+  );
+
+  // Handle inline HTML img tags and add the blog path prefix
+  // This handles: <img src="demo/1.jpg" ... />
+  htmlContent = htmlContent.replace(
+    /<img\s+([^>]*?)src="([^"]+)"([^>]*?)>/g,
+    (match, before, src, after) => {
+      // If already starts with http or /, leave as is
+      if (src.startsWith('http') || src.startsWith('/')) {
+        return match;
+      }
+      
+      // Otherwise, prefix with /images/blog/
+      const imagePath = `/images/blog/${src}`;
+      return `<img ${before}src="${imagePath}"${after}>`;
     }
   );
 

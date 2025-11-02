@@ -1,7 +1,8 @@
+import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation";
 import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,12 +15,32 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains",
+});
+
 export const metadata: Metadata = {
-  title: "Ankit Mishra",
-  description: "A minimal blog with modern design",
+  title: "Ankit Mishra - Software Engineer",
+  description:
+    "Full-Stack Developer (MERN, Python, Spring Boot) with a passion for DevOps and ML. Building innovative, high-impact software from concept to delivery.",
+  keywords: [
+    "Software Engineer",
+    "Full Stack Developer",
+    "MERN",
+    "React",
+    "Node.js",
+    "Python",
+    "Spring Boot",
+  ],
+  authors: [{ name: "Ankit Mishra" }],
   openGraph: {
-    title: "Ankit Mishra",  
-    description: "A minimal blog with modern design",
+    title: "Ankit Mishra",
+    siteName: "Ankit Mishra's Personal Website",
+    description:
+      "Full-Stack Developer specializing in MERN, Python, and Spring Boot",
     type: "website",
   },
 };
@@ -31,7 +52,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
+      <body
+        className={`${inter.variable} ${jetbrainsMono.variable} spotlight-glow`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -40,13 +63,7 @@ export default function RootLayout({
         >
           <Navigation />
           <main className="min-h-screen">{children}</main>
-          <footer className="border-t border-zinc-200 dark:border-zinc-800 py-8">
-            <div className="max-w-3xl mx-auto px-6">
-              <p className="text-sm text-zinc-500 dark:text-zinc-400 text-center">
-                © {new Date().getFullYear()} Ankit Mishra. All rights reserved.
-              </p>
-            </div>
-          </footer>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

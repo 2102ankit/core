@@ -1,0 +1,113 @@
+[
+    {
+        "id": "d00d5b94-09ee-4573-a990-58774f403d8e",
+        "title": "Nyaydoot",
+        "description": "AI legal assistant with vernacular support, trained on 8 law textbooks and the Indian Constitution",
+        "long_description": "AI legal assistant with vernacular support, trained on 8 law textbooks and the Indian Constitution",
+        "thumbnail": "Nyaydoot",
+        "tags": [
+            "React",
+            "Tailwind",
+            "Node.js",
+            "MongoDB",
+            "Botpress"
+        ],
+        "github_url": "https://github.com/2102ankit/SIH-2023",
+        "demo_url": null,
+        "featured": true,
+        "order_index": 1,
+        "created_at": "2025-10-26T12:33:47.006909+00:00",
+        "updated_at": "2025-10-26T12:33:47.006909+00:00"
+    },
+    {
+        "id": "ef906fd2-7105-45b4-96b3-3ebcdb67b463",
+        "title": "RecomZone",
+        "description": "Personalized recommendation engine using content-based filtering on movie and music datasets",
+        "long_description": "Personalized recommendation engine using content-based filtering on movie and music datasets",
+        "thumbnail": "RecomZone",
+        "tags": [
+            "Pandas",
+            "NumPy",
+            "Scikit-learn",
+            "MERN"
+        ],
+        "github_url": "https://github.com/2102ankit/recomzone",
+        "demo_url": null,
+        "featured": true,
+        "order_index": 2,
+        "created_at": "2025-10-26T12:33:47.006909+00:00",
+        "updated_at": "2025-10-26T12:33:47.006909+00:00"
+    },
+    {
+        "id": "b8d4893c-a4db-461c-a33f-0d0178cf54e2",
+        "title": "Swift Reader",
+        "description": "Summarizes news articles into bite-sized content (60-100 words) with fast processing.",
+        "long_description": "Summarizes news articles into bite-sized content (60-100 words) with fast processing.",
+        "thumbnail": "Swift Reader",
+        "tags": [
+            "MERN",
+            "Distilbart",
+            "Bing News API",
+            "BeautifulSoup"
+        ],
+        "github_url": "https://github.com/2102ankit/Swift-Reader",
+        "demo_url": null,
+        "featured": true,
+        "order_index": 3,
+        "created_at": "2025-10-26T12:33:47.006909+00:00",
+        "updated_at": "2025-10-26T12:33:47.006909+00:00"
+    },
+    {
+        "id": "5c34f96c-73d0-4810-874c-aa88130837af",
+        "title": "DevStar Toolkit",
+        "description": "Free online developer toolkit for maximizing efficiency and productivity.",
+        "long_description": "Free online developer toolkit for maximizing efficiency and productivity.",
+        "thumbnail": "DevStar",
+        "tags": [
+            "Svelte",
+            "Full-Stack",
+            "DevOps"
+        ],
+        "github_url": "https://github.com/2102ankit/devstar",
+        "demo_url": null,
+        "featured": false,
+        "order_index": 4,
+        "created_at": "2025-10-26T12:33:47.006909+00:00",
+        "updated_at": "2025-10-26T12:33:47.006909+00:00"
+    },
+    {
+        "id": "9b368448-a9c0-4179-ba90-7cb89a891830",
+        "title": "Airbnb Clone",
+        "description": "Full-stack Airbnb clone with real-time booking and user authentication.",
+        "long_description": "Full-stack Airbnb clone with real-time booking and user authentication.",
+        "thumbnail": "Airbnb",
+        "tags": [
+            "MERN",
+            "React",
+            "Node.js"
+        ],
+        "github_url": "https://github.com/2102ankit/airbnb-clone",
+        "demo_url": null,
+        "featured": false,
+        "order_index": 5,
+        "created_at": "2025-10-26T12:33:47.006909+00:00",
+        "updated_at": "2025-10-26T12:33:47.006909+00:00"
+    },
+    {
+        "id": "f7b159d0-259c-4c26-8be2-5fa14c47f042",
+        "title": "Major Project",
+        "description": "Academic project exploring advanced computing concepts in Python.",
+        "long_description": "Academic project exploring advanced computing concepts in Python.",
+        "thumbnail": "Major Project",
+        "tags": [
+            "Python",
+            "Distributed Systems"
+        ],
+        "github_url": "https://github.com/2102ankit/major",
+        "demo_url": null,
+        "featured": false,
+        "order_index": 6,
+        "created_at": "2025-10-26T12:33:47.006909+00:00",
+        "updated_at": "2025-10-26T12:33:47.006909+00:00"
+    }
+]

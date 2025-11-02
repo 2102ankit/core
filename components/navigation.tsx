@@ -1,9 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ThemeToggle } from "./theme-toggle";
 import { useEffect, useState } from "react";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Navigation() {
   const pathname = usePathname();
@@ -20,7 +21,11 @@ export function Navigation() {
 
   const links = [
     { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/portfolio", label: "Portfolio" },
+    { href: "/projects", label: "Projects" },
     { href: "/blog", label: "Blog" },
+    { href: "/contact", label: "Contact" },
   ];
 
   return (
@@ -31,16 +36,22 @@ export function Navigation() {
           : "bg-transparent"
       }`}
     >
-      <nav className="max-w-3xl mx-auto px-6 py-4">
+      <nav className="max-w-3xl mx-auto py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link
-              href="/"
-              className="text-lg font-semibold text-zinc-950 dark:text-zinc-50 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors duration-200"
-            >
-              {/* Ankit Mishra */}
-            </Link>
             <div className="hidden sm:flex items-center gap-6">
+              <Link key={"/"} href={"/"}>
+                <Image
+                  src="https://avatars.githubusercontent.com/u/105378102?v=4"
+                  alt="Ankit Mishra"
+                  className={
+                    "rounded-full outline-1 dark:outline-amber-300 outline-amber-500"
+                  }
+                  priority
+                  width={40}
+                  height={40}
+                />
+              </Link>
               {links.map((link) => (
                 <Link
                   key={link.href}

@@ -2,14 +2,14 @@
 title: "Hello World: My First Blog Post"
 description: "Welcome to my blog! This is where I'll share my thoughts on development, design, and everything in between."
 date: "2025-11-02"
-image: "/images/blog/hello-world.jpg"
+# image: "/images/blog/test.jpeg"
 ---
 
 # Welcome to My Blog
 
 Hello there! 👋 This is my first blog post, and I'm excited to share my journey with you.
 
-![A beautiful workspace setup](workspace.jpg)
+![A beautiful workspace setup](test.jpeg)   
 
 ## What This Blog Is About
 
@@ -29,7 +29,7 @@ Writing helps me clarify my thoughts and solidify my understanding. By sharing p
 3. Create a record of my growth as a developer
 4. Connect with like-minded people
 
-![Coding setup with multiple monitors](coding-setup.jpg)
+![Coding setup with multiple monitors](demo/2.jpeg)
 
 ## What's Next
 
@@ -46,4 +46,4 @@ Thanks for reading! 🚀
 
 ---
 
-*This is just the beginning. Let's build something amazing together.*
+_This is just the beginning. Let's build something amazing together._
