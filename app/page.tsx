@@ -1,18 +1,72 @@
+"use client";
+
+import { ArrowRight, ArrowUpRight, Github } from "lucide-react";
 import Link from "next/link";
-import { ArrowRight, Github } from "lucide-react";
 
 export default function Home() {
+  const sentences = [
+  {
+    text: (
+      <>
+        I build{" "}
+        <span className={`text-blue-400 dark:text-blue-400 font-semibold`}>
+          fast, beautiful, and functional
+        </span>{" "}
+        apps. This is my digital workshop - where{" "}
+        <span className={`text-yellow-400 dark:text-yellow-400 font-semibold`}>
+          ideas turn into code
+        </span>
+        , prototypes come alive, and learning never stops.
+      </>
+    ),
+  },
+  {
+    text: (
+      <>
+        From prototypes to production - I{" "}
+        <span className={`text-purple-400 dark:text-purple-400 font-semibold`}>
+          design
+        </span>
+        ,
+        <span className={`text-pink-400 dark:text-pink-400 font-semibold`}>
+          {" "}develop
+        </span>
+        , and
+        <span className={`text-green-400 dark:text-green-400 font-semibold`}>
+          {" "}deploy
+        </span>
+        . This is where I document the journey.
+      </>
+    ),
+  },
+  {
+    text: (
+      <>
+        I build{" "}
+        <span className={`text-purple-400 dark:text-purple-400 font-semibold`}>
+          performant
+        </span>
+        ,
+        <span className={`text-green-400 dark:text-green-400 font-semibold`}>
+          {" "}scalable
+        </span>{" "}
+        web apps with modern tools. Explore my projects and writing.
+      </>
+    ),
+  },
+];
+
   return (
     <div className="min-h-[calc(100vh-73px)] flex items-center justify-center px-6">
       <div className="max-w-3xl mx-auto">
         <div className="space-y-8 animate-fade-in-up">
           <div className="space-y-4">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-zinc-950 dark:text-zinc-50 tracking-tight">
-              Hello, World!
+              Hey, I&apos;m Ankit
             </h1>
-            <p className="text-xl sm:text-2xl text-zinc-600 dark:text-zinc-400 leading-tight max-w-3xl text-justify">
-              I'm a developer who loves building things. Welcome to my corner of
-              the internet where I share my thoughts, projects, and learnings.
+
+            <p className="text-xl sm:text-2xl text-zinc-600 dark:text-zinc-400 leading-tight max-w-3xl text-justify transition-opacity duration-500">
+              {sentences[new Date().getMinutes() % 3]?.text}
             </p>
           </div>
 
@@ -32,14 +86,16 @@ export default function Home() {
             >
               <Github />
               GitHub
+              <ArrowUpRight size={20} />
             </Link>
           </div>
 
+          {/* ---- Stats ---- */}
           <div className="pt-8 animate-fade-in-up delay-150">
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
               <div className="group">
-                <div className="text-3xl font-bold text-zinc-950 dark:text-zinc-50 group-hover:scale-105 transition-transform duration-300 ">
-                  5+
+                <div className="text-3xl font-bold text-zinc-950 dark:text-zinc-50 group-hover:scale-105 transition-transform duration-300">
+                  1+
                 </div>
                 <div className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
                   Years Experience
@@ -47,10 +103,10 @@ export default function Home() {
               </div>
               <div className="group">
                 <div className="text-3xl font-bold text-zinc-950 dark:text-zinc-50 group-hover:scale-105 transition-transform duration-300">
-                  50+
+                  30+
                 </div>
                 <div className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-                  Projects Built
+                  Projects & Prototypes Built
                 </div>
               </div>
               <div className="group">

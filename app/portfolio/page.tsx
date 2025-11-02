@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { ArrowRight, Github, ExternalLink } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TechBadge } from "@/components/ui/tech-badge";
 import {
   Card,
   CardContent,
@@ -15,8 +10,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { TechBadge } from "@/components/ui/tech-badge";
 import { getFeaturedProjects, type Project } from "@/lib/data";
+import { motion } from "framer-motion";
+import { ArrowRight, ArrowUpRight, ExternalLink, Github } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const skills = [
   {
@@ -137,15 +137,13 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.6 }}
-            className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto mb-8 leading-relaxed"
+            className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto mb-8 leading-relaxed text-center wrap-break-word"
           >
             Full-Stack Developer <TechBadge variant="mern">MERN</TechBadge>,{" "}
             <TechBadge variant="python">Python</TechBadge>,{" "}
-            <TechBadge variant="spring">Spring Boot</TechBadge>
-            with a passion for <TechBadge variant="devops">
-              DevOps
-            </TechBadge>{" "}
-            and <TechBadge variant="ml">ML</TechBadge>. I obsess over details to
+            <TechBadge variant="spring">Spring Boot</TechBadge> with a passion
+            for <TechBadge variant="devops">DevOps</TechBadge> and{" "}
+            <TechBadge variant="ml">ML</TechBadge>. I obsess over details to
             craft innovative, high-impact software from concept to delivery.
           </motion.p>
 
@@ -266,8 +264,49 @@ export default function Home() {
               {projects.map((project) => (
                 <motion.div key={project.id} variants={itemVariants}>
                   <Card className="h-full flex flex-col hover:border-foreground/20 transition-all pt-0">
-                    <div className="h-48 bg-muted/50 flex items-center justify-center text-xl font-medium border-b">
-                      {project.thumbnail}
+                    <div className="relative h-48 bg-muted/50 overflow-hidden border-b rounded-t-xl">
+                      {(() => {
+                        const raw = project.thumbnail ?? "";
+                        const isValidAbsoluteUrl = (s: string) => {
+                          try {
+                            // `new URL` will throw on malformed strings
+                            const url = new URL(s);
+                            // Accept only http/https (Next/Image requires a protocol)
+                            return /^https?:$/i.test(url.protocol);
+                          } catch {
+                            return false;
+                          }
+                        };
+
+                        if (isValidAbsoluteUrl(raw)) {
+                          return (
+                            <Image
+                              src={raw}
+                              alt={`${project.title} thumbnail`}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              placeholder="blur"
+                              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+                              onError={(e) => {
+                                // If the image 404s, hide it and show the fallback text
+                                const img = e.currentTarget;
+                                img.style.display = "none";
+                                img.nextElementSibling?.classList.remove(
+                                  "hidden"
+                                );
+                              }}
+                            />
+                          );
+                        }
+
+                        // ---- 3. Invalid / missing → original text fallback ----
+                        return (
+                          <div className="flex h-full items-center justify-center text-xl font-medium text-muted-foreground">
+                            {raw || "No preview"}
+                          </div>
+                        );
+                      })()}
                     </div>
                     <CardHeader>
                       <CardTitle>{project.title}</CardTitle>
@@ -296,6 +335,7 @@ export default function Home() {
                             rel="noopener noreferrer"
                           >
                             <Github size={16} /> GitHub
+                            <ArrowUpRight />
                           </a>
                         </Button>
                       )}

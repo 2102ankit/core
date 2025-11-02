@@ -1,8 +1,8 @@
-import { getPostBySlug, getAllBlogPaths } from "@/lib/markdown";
-import { notFound } from "next/navigation";
-import Link from "next/link";
+import { getAllBlogPaths, getPostBySlug } from "@/lib/markdown";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 type Params = { params: { slug: string } };
 

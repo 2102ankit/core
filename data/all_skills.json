@@ -1,0 +1,86 @@
+[
+  {
+    "name": "C++",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg"
+  },
+  {
+    "name": "Java",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg"
+  },
+  {
+    "name": "JavaScript",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg"
+  },
+  {
+    "name": "TypeScript",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg"
+  },
+  {
+    "name": "Python",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg"
+  },
+  {
+    "name": "React",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg"
+  },
+  {
+    "name": "Redux",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg"
+  },
+  {
+    "name": "Tailwind",
+    "icon": "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg"
+  },
+  {
+    "name": "Node.js",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg"
+  },
+  {
+    "name": "Express",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg"
+  },
+  {
+    "name": "Spring Boot",
+    "icon": "https://www.vectorlogo.zone/logos/springio/springio-icon.svg"
+  },
+  {
+    "name": "MongoDB",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg"
+  },
+  {
+    "name": "Redis",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg"
+  },
+  {
+    "name": "MySQL",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg"
+  },
+  {
+    "name": "PostgreSQL",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg"
+  },
+  {
+    "name": "SQL Server",
+    "icon": "https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg"
+  },
+  {
+    "name": "Docker",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg"
+  },
+  {
+    "name": "Git",
+    "icon": "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg"
+  },
+  {
+    "name": "Linux",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg"
+  },
+  {
+    "name": "Postman",
+    "icon": "https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg"
+  },
+  {
+    "name": "Pandas",
+    "icon": "https://raw.githubusercontent.com/devicons/devicon/2ae2a900d2f041da66e950e4d48052658d850630/icons/pandas/pandas-original.svg"
+  }
+]

@@ -1,97 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Image from "next/image";
-import { GraduationCap, Briefcase, Trophy, Award } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-
-const skills = [
-  {
-    name: "C++",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg",
-  },
-  {
-    name: "Java",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg",
-  },
-  {
-    name: "JavaScript",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg",
-  },
-  {
-    name: "TypeScript",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
-  },
-  {
-    name: "Python",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg",
-  },
-  {
-    name: "React",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
-  },
-  {
-    name: "Redux",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg",
-  },
-  {
-    name: "Tailwind",
-    icon: "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg",
-  },
-  {
-    name: "Node.js",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg",
-  },
-  {
-    name: "Express",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg",
-  },
-  {
-    name: "Spring Boot",
-    icon: "https://www.vectorlogo.zone/logos/springio/springio-icon.svg",
-  },
-  {
-    name: "MongoDB",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg",
-  },
-  {
-    name: "Redis",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg",
-  },
-  {
-    name: "MySQL",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg",
-  },
-  {
-    name: "PostgreSQL",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg",
-  },
-  {
-    name: "SQL Server",
-    icon: "https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg",
-  },
-  {
-    name: "Docker",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg",
-  },
-  {
-    name: "Git",
-    icon: "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg",
-  },
-  {
-    name: "Linux",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg",
-  },
-  {
-    name: "Postman",
-    icon: "https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg",
-  },
-  {
-    name: "Pandas",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/2ae2a900d2f041da66e950e4d48052658d850630/icons/pandas/pandas-original.svg",
-  },
-];
+import {
+  getSkillsAndExperience,
+  type Experience,
+  type Skill,
+} from "@/lib/data";
+import { motion } from "framer-motion";
+import { Award, Briefcase, GraduationCap, Trophy } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const timeline = [
   {
@@ -114,48 +32,45 @@ const timeline = [
   },
 ];
 
-const experience = [
-  {
-    title: "Software Engineer",
-    company: "ISS-Stoxx",
-    date: "2024 - Present",
-    description: [
-      "Full-stack development using MERN, Python, and Spring Boot.",
-      "Focus on DevOps practices and ML exploration.",
-      "Contributed to scalable systems and innovative solutions.",
-    ],
-  },
-  {
-    title: "Web Development Intern (Remote)",
-    company: "Alhansat Solutions",
-    date: "Sep 2023 - Nov 2023",
-    description: [
-      "Created a dynamic business card generator module and integrated it with Developerstar",
-      "Collaborated with Team Lead to understand user requirements and added customization",
-    ],
-  },
-];
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.03,
+      delayChildren: 0.1,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, x: -20 },
+  hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1,
-    x: 0,
-    transition: { duration: 0.5 },
+    scale: 1,
   },
 };
 
 export default function AboutPage() {
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const [experience, setExperience] = useState<Experience[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadSkills() {
+      try {
+        const [_skills, _exp] = await getSkillsAndExperience();
+        setExperience(_exp);
+        setSkills(_skills);
+      } catch (error) {
+        console.error("Error loading projects:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadSkills();
+  }, []);
+
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
@@ -255,7 +170,7 @@ export default function AboutPage() {
           transition={{ duration: 0.6 }}
           className="mb-20"
         >
-          <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
+          <h2 className="text-3xl font-bold mb-8 flex items-baseline gap-3">
             <Briefcase className="text-primary" />
             Experience
           </h2>
@@ -272,7 +187,7 @@ export default function AboutPage() {
                   <div className="mb-4">
                     <h3 className="text-xl font-semibold">{exp.title}</h3>
                     <p className="text-primary font-medium">{exp.company}</p>
-                    <p className="text-sm text-muted-foreground italic">
+                    <p className="text-sm text-muted-foreground">
                       {exp.date}
                     </p>
                   </div>
@@ -301,7 +216,7 @@ export default function AboutPage() {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-50px" }}
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4"
           >
             {skills.map((skill) => (
@@ -309,6 +224,7 @@ export default function AboutPage() {
                 key={skill.name}
                 variants={itemVariants}
                 whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
                 className="flex items-center gap-3 p-4 rounded-lg border border-border bg-card hover:border-foreground/20 transition-all"
               >
                 <Image
@@ -316,6 +232,8 @@ export default function AboutPage() {
                   alt={skill.name}
                   width={24}
                   height={24}
+                  className="w-6 h-6"
+                  unoptimized
                 />
                 <div className="font-medium text-sm">{skill.name}</div>
               </motion.div>

@@ -12,7 +12,13 @@ import {
 } from "@/components/ui/card";
 import { getProjects, type Project } from "@/lib/data";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, ExternalLink, Github } from "lucide-react";
+import {
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Github,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function ProjectsPage() {
@@ -78,23 +84,23 @@ export default function ProjectsPage() {
     return visible;
   };
 
-  if (loading) {
-    return (
-      <div className="py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="animate-pulse space-y-8">
-            <div className="h-12 bg-muted rounded w-1/3 mx-auto" />
-            <div className="h-96 bg-muted rounded" />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-64 bg-muted rounded" />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="py-12 px-4 sm:px-6 lg:px-8">
+  //       <div className="max-w-6xl mx-auto">
+  //         <div className="animate-pulse space-y-8">
+  //           <div className="h-12 bg-muted rounded w-1/3 mx-auto" />
+  //           <div className="h-96 bg-muted rounded" />
+  //           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  //             {[1, 2, 3].map((i) => (
+  //               <div key={i} className="h-64 bg-muted rounded" />
+  //             ))}
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
@@ -163,7 +169,7 @@ export default function ProjectsPage() {
                             isCenter ? "border-foreground/20" : ""
                           }`}
                         >
-                          <div className="h-48 bg-muted/50 flex items-center justify-center text-xl font-medium border-b">
+                          <div className="h-48 bg-muted/50 flex items-center justify-center text-xl font-medium border-b rounded-t-xl">
                             {project.thumbnail}
                           </div>
                           <CardHeader>
@@ -195,6 +201,7 @@ export default function ProjectsPage() {
                                   rel="noopener noreferrer"
                                 >
                                   <Github size={16} /> GitHub
+                                  <ArrowUpRight size={16} />
                                 </a>
                               </Button>
                             )}
@@ -282,7 +289,7 @@ export default function ProjectsPage() {
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
                   <Card className="h-full flex flex-col hover:border-foreground/20 transition-all pt-0">
-                    <div className="h-48 bg-muted/50 flex items-center justify-center text-xl font-medium border-b">
+                    <div className="h-48 bg-muted/50 flex items-center justify-center text-xl font-medium border-b rounded-t-xl">
                       {project.thumbnail}
                     </div>
                     <CardHeader>
@@ -312,6 +319,7 @@ export default function ProjectsPage() {
                             rel="noopener noreferrer"
                           >
                             <Github size={16} /> GitHub
+                            <ArrowUpRight />
                           </a>
                         </Button>
                       )}

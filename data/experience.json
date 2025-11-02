@@ -1,0 +1,21 @@
+[
+  {
+    "title": "Software Engineer",
+    "company": "ISS-Stoxx",
+    "date": "2024 - Present",
+    "description": [
+      "Full-stack development using MERN, Python, and Spring Boot.",
+      "Focus on DevOps practices and ML exploration.",
+      "Contributed to scalable systems and innovative solutions."
+    ]
+  },
+  {
+    "title": "Web Development Intern (Remote)",
+    "company": "Alhansat Solutions",
+    "date": "Sep 2023 - Nov 2023",
+    "description": [
+      "Created a dynamic business card generator module and integrated it with Developerstar",
+      "Collaborated with Team Lead to understand user requirements and added customization"
+    ]
+  }
+]

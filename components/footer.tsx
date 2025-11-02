@@ -1,15 +1,15 @@
 "use client";
 
-import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
+  ArrowUp,
+  Code,
   Github,
+  LaptopMinimal,
   Linkedin,
   Twitter,
-  Code,
-  LaptopMinimal,
-  ArrowUp,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const socialLinks = [
   { href: "https://x.com/2102ankit", icon: Twitter, label: "Twitter" },
@@ -31,16 +31,24 @@ const socialLinks = [
   },
 ];
 
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/projects", label: "Projects" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact" },
+];
+
 export function Footer() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-
   return (
     <footer className="border-t border-border bg-background/50 backdrop-blur-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-4">
           <div>
             <h3 className="font-semibold text-lg mb-4">Ankit Mishra</h3>
             <p className="text-sm text-muted-foreground">
@@ -51,47 +59,18 @@ export function Footer() {
 
           <div>
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/about"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/projects"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
+            <ul className="space-y-1">
+              {links.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -99,7 +78,7 @@ export function Footer() {
             <h3 className="font-semibold text-lg mb-4">Connect</h3>
             <div className="flex flex-wrap gap-3">
               {socialLinks.map((social) => (
-                <a
+                <Link
                   key={social.label}
                   href={social.href}
                   target="_blank"
@@ -108,7 +87,7 @@ export function Footer() {
                   aria-label={social.label}
                 >
                   <social.icon size={20} />
-                </a>
+                </Link>
               ))}
             </div>
           </div>

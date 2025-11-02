@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { getAllBlogPaths } from "@/lib/markdown";
-import matter from "gray-matter";
 import fs from "fs";
+import matter from "gray-matter";
+import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 import path from "path";
-import { ArrowUpRight, Calendar } from "lucide-react";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
 

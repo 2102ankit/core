@@ -2,18 +2,8 @@ import { Footer } from "@/components/footer";
 import { Navigation } from "@/components/navigation";
 import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 

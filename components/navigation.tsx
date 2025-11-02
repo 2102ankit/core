@@ -3,21 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ThemeToggle } from "./theme-toggle";
 
 export function Navigation() {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    // Only scroll to top if no hash (i.e., not an anchor link)
+    if (!window.location.hash) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [pathname]);
 
   const links = [
     { href: "/", label: "Home" },
@@ -30,11 +27,8 @@ export function Navigation() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800"
-          : "bg-transparent"
-      }`}
+      className={`sticky top-0 z-50 transition-all duration-300 bg-white/80 dark:bg-zinc-900/70 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-700
+      `}
     >
       <nav className="max-w-3xl mx-auto py-4">
         <div className="flex items-center justify-between">
@@ -45,7 +39,7 @@ export function Navigation() {
                   src="https://avatars.githubusercontent.com/u/105378102?v=4"
                   alt="Ankit Mishra"
                   className={
-                    "rounded-full outline-1 dark:outline-amber-300 outline-amber-500"
+                    "rounded-full outline-1 dark:outline-zinc-300 outline-zinc-500"
                   }
                   priority
                   width={40}

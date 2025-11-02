@@ -1,3 +1,84 @@
+/* -------------------------------------------------
+   1.  Global border colour (light & dark)
+   ------------------------------------------------- */
+@theme {
+  --color-border: oklch(0.922 0 0); /* light */
+  --color-border-dark: oklch(1 0 0 / 10%); /* dark – 10% opacity white */
+}
+
+/* -------------------------------------------------
+   2.  Card / Skill-tile border
+   ------------------------------------------------- */
+@layer components {
+  .card,
+  .skill-tile {
+    @apply border;
+    border-color: var(--color-border);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  /* Light mode – subtle inner shadow + soft border */
+  .card,
+  .skill-tile {
+    box-shadow: 0 1px 2px oklch(0 0 0 / 0.03), 0 0 0 1px var(--color-border);
+  }
+
+  /* Dark mode – faint glow + semi-transparent border */
+  .dark .card,
+  .dark .skill-tile {
+    border-color: var(--color-border-dark);
+    box-shadow: 0 1px 2px oklch(0 0 0 / 0.08),
+      0 0 0 1px var(--color-border-dark), 0 0 8px oklch(1 0 0 / 0.05); /* tiny white glow */
+  }
+
+  /* Hover – a little lift for both themes */
+  .card:hover,
+  .skill-tile:hover {
+    box-shadow: 0 4px 6px oklch(0 0 0 / 0.07), 0 0 0 1px var(--color-border);
+  }
+  .dark .card:hover,
+  .dark .skill-tile:hover {
+    box-shadow: 0 4px 6px oklch(0 0 0 / 0.12),
+      0 0 0 1px var(--color-border-dark), 0 0 12px oklch(1 0 0 / 0.08);
+  }
+}
+
+/* -------------------------------------------------
+   3.  Timeline vertical line
+   ------------------------------------------------- */
+.relative.border-l-2 {
+  border-left-color: var(--color-border);
+}
+.dark .relative.border-l-2 {
+  border-left-color: var(--color-border-dark);
+}
+
+/* -------------------------------------------------
+   4.  Timeline dot (the little circle)
+   ------------------------------------------------- */
+.absolute.-left-\[50px\] {
+  border-color: var(--color-border);
+  background: var(--card);
+}
+.dark .absolute.-left-\[50px\] {
+  border-color: var(--color-border-dark);
+  background: var(--card);
+}
+
+/* -------------------------------------------------
+   5.  Utility – optional “soft-border” class
+   ------------------------------------------------- */
+.border-soft {
+  @apply border;
+  border-color: var(--color-border);
+}
+.dark .border-soft {
+  border-color: var(--color-border-dark);
+}
+
+/* -------------------------------------------------
+   6.  Keep the rest of your file unchanged
+   ------------------------------------------------- */
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -125,6 +206,7 @@
     @apply border-border outline-ring/50;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge */
+    scroll-behavior: smooth;
   }
 
   *::-webkit-scrollbar {

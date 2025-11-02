@@ -3,5 +3,9 @@
   margin: 2rem auto;
   padding: 0 1rem;
 }
-.content :global(h2) { margin-top: 2rem; }
-.content :global(p)  { line-height: 1.6; }
+.content :global(h2) {
+  margin-top: 2rem;
+}
+.content :global(p) {
+  line-height: 1.6;
+}

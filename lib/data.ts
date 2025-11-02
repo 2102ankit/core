@@ -1,6 +1,19 @@
 // Import JSON data
 import allProjects from "@/data/all_projects.json";
-import allBlogs from "@/data/all_blogs.json";
+import allSkills from "@/data/all_skills.json";
+import allExperiences from "@/data/experience.json";
+
+export type Skill = {
+  name: string;
+  icon: string;
+};
+
+export type Experience = {
+  title: string;
+  company: string;
+  date: string;
+  description: string[];
+};
 
 // Define types (unchanged)
 export type Project = {
@@ -44,6 +57,37 @@ export type ContactSubmission = {
   created_at: string;
 };
 
+// Get all skills
+export async function getSkills() {
+  try {
+    const skills = (allSkills || []) as Skill[];
+    return skills;
+  } catch (error) {
+    throw new Error("Failed to load projects from JSON");
+  }
+}
+
+// Get all experiences
+export async function getExperience() {
+  try {
+    const experience = (allExperiences || []) as Experience[];
+    return experience;
+  } catch (error) {
+    throw new Error("Failed to load projects from JSON");
+  }
+}
+
+export async function getSkillsAndExperience() {
+  try {
+    const experience = await getExperience();
+    const skills = await getSkills();
+
+    return [skills, experience];
+  } catch (error) {
+    throw new Error("Failed to load projects from JSON");
+  }
+}
+
 // Get all projects
 export async function getProjects() {
   try {
@@ -66,37 +110,6 @@ export async function getFeaturedProjects() {
       .sort((a, b) => a.order_index - b.order_index);
   } catch (error) {
     throw new Error("Failed to load featured projects from JSON");
-  }
-}
-
-// Get all blog posts
-export async function getBlogPosts() {
-  try {
-    const blogPosts = allBlogs || ([] as BlogPost[]);
-    // Filter published posts and sort by published_at (descending)
-    return blogPosts
-      .filter((post) => post.published)
-      .sort((a, b) => {
-        if (!a.published_at || !b.published_at) return 0;
-        return (
-          new Date(b.published_at).getTime() -
-          new Date(a.published_at).getTime()
-        );
-      });
-  } catch (error) {
-    throw new Error("Failed to load blog posts from JSON");
-  }
-}
-
-// Get a single blog post by slug
-export async function getBlogPostBySlug(slug: string) {
-  try {
-    const blogPosts = allBlogs || ([] as BlogPost[]);
-    // Find the post with matching slug and ensure it's published
-    const post = blogPosts.find((post) => post.slug === slug && post.published);
-    return post || null;
-  } catch (error) {
-    throw new Error("Failed to load blog post from JSON");
   }
 }
 

@@ -1,20 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Github,
-  Linkedin,
-  Twitter,
-  Code,
-  LaptopMinimal,
-} from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -22,9 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -33,8 +16,26 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { submitContactForm } from "@/lib/data";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import {
+  Code,
+  Github,
+  LaptopMinimal,
+  Linkedin,
+  Mail,
+  MapPin,
+  Phone,
+  Twitter,
+} from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -279,7 +280,7 @@ export default function ContactPage() {
               <CardContent>
                 <div className="flex flex-wrap gap-3">
                   {socialLinks.map((social) => (
-                    <a
+                    <Link
                       key={social.label}
                       href={social.href}
                       target="_blank"
@@ -292,7 +293,7 @@ export default function ContactPage() {
                         size={24}
                         className="group-hover:scale-110 transition-transform"
                       />
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </CardContent>
