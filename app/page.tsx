@@ -66,16 +66,16 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-[calc(100vh-73px)] flex items-center justify-center px-6">
+    <div className="min-h-[calc(100vh-73px)] flex items-center justify-center px-6 pt-4">
       <div className="max-w-3xl mx-auto">
         <div className="space-y-8 animate-fade-in-up">
           <div className="space-y-4">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-zinc-950 dark:text-zinc-50 tracking-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-zinc-950 dark:text-zinc-50 tracking-tight ">
               Hey, I&apos;m Ankit
             </h1>
 
             <p className="text-xl sm:text-2xl text-zinc-600 dark:text-zinc-400 leading-tight max-w-3xl text-justify transition-opacity duration-500">
-              {sentences[new Date().getMinutes() % 3]?.text}
+              {sentences[0]?.text}
             </p>
           </div>
 

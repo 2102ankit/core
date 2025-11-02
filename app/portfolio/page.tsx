@@ -137,13 +137,15 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.6 }}
-            className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto mb-8 leading-relaxed text-center wrap-break-word"
+            className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto mb-8 leading-relaxed text-justify sm:text-center px-4"
           >
             Full-Stack Developer <TechBadge variant="mern">MERN</TechBadge>,{" "}
             <TechBadge variant="python">Python</TechBadge>,{" "}
-            <TechBadge variant="spring">Spring Boot</TechBadge> with a passion
-            for <TechBadge variant="devops">DevOps</TechBadge> and{" "}
-            <TechBadge variant="ml">ML</TechBadge>. I obsess over details to
+            <TechBadge variant="spring" className="whitespace-nowrap">
+              Spring Boot
+            </TechBadge>{" "}
+            with a passion for <TechBadge variant="devops">DevOps</TechBadge>{" "}
+            and <TechBadge variant="ml">ML</TechBadge>. I obsess over details to
             craft innovative, high-impact software from concept to delivery.
           </motion.p>
 
@@ -187,7 +189,7 @@ export default function Home() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 px-4 sm:pd-0 md:pd-2"
           >
             {skills.map((skill) => (
               <motion.div
@@ -259,7 +261,7 @@ export default function Home() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 px-4 sm:px-0"
             >
               {projects.map((project) => (
                 <motion.div key={project.id} variants={itemVariants}>

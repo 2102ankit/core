@@ -85,26 +85,8 @@ export default function ProjectsPage() {
     return visible;
   };
 
-  // if (loading) {
-  //   return (
-  //     <div className="py-12 px-4 sm:px-6 lg:px-8">
-  //       <div className="max-w-6xl mx-auto">
-  //         <div className="animate-pulse space-y-8">
-  //           <div className="h-12 bg-muted rounded w-1/3 mx-auto" />
-  //           <div className="h-96 bg-muted rounded" />
-  //           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  //             {[1, 2, 3].map((i) => (
-  //               <div key={i} className="h-64 bg-muted rounded" />
-  //             ))}
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <div className="py-12 px-2 sm:px-6 lg:px-8 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -132,7 +114,7 @@ export default function ProjectsPage() {
             <div className="relative h-[500px] flex items-center justify-center perspective-1000">
               <button
                 onClick={prevProject}
-                className="absolute left-4 z-20 p-3 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:border-foreground/20 transition-all"
+                className="absolute left-0 sm:left-4 z-20 p-3 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:border-foreground/20 transition-all"
                 aria-label="Previous project"
               >
                 <ChevronLeft size={24} />
@@ -153,16 +135,16 @@ export default function ProjectsPage() {
                           opacity:
                             Math.abs(position) > 1 ? 0.5 : isCenter ? 1 : 0.7,
                           scale: isCenter ? 1 : 0.85,
-                          x: position * 260,
-                          // x: [-1, 0, 1].includes(position)
-                          //   ? position * 320
-                          //   : position * 260,
+                          // x: position * 260,
+                          x: [-1, 0, 1].includes(position)
+                            ? position * 320
+                            : position * 260,
                           rotateY: position * 15,
                           zIndex,
                         }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         transition={{ duration: 0.5 }}
-                        className="absolute w-80"
+                        className="absolute w-70 sm:w-80"
                         style={{ transformStyle: "preserve-3d" }}
                       >
                         <Card
@@ -227,7 +209,7 @@ export default function ProjectsPage() {
 
               <button
                 onClick={nextProject}
-                className="absolute right-4 z-20 p-3 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:border-foreground/20 transition-all"
+                className="absolute right-0 sm:right-4 z-20 p-3 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:border-foreground/20 transition-all"
                 aria-label="Next project"
               >
                 <ChevronRight size={24} />

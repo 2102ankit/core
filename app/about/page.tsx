@@ -167,14 +167,14 @@ export default function AboutPage() {
           className="text-center mb-16"
         >
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">About Me</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-justify">
             Passionate software engineer with expertise in full-stack
             development, dedicated to building innovative solutions that make a
             difference.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20 pl-4">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -198,7 +198,7 @@ export default function AboutPage() {
                 Obsessed with DevOps and Machine Learning, I&apos;m always
                 pushing what&apos;s possible.
               </p>
-              <p>Music🎧. Humor 😂. Code. 💻</p>
+              <p>Music 🎧. Humor 😂. Code. 💻</p>
             </div>
           </motion.div>
 
@@ -278,7 +278,7 @@ export default function AboutPage() {
                             width={48}
                             height={48}
                             // fill
-                            className="rounded-md border border-border color-transparent  h  w-48 min-h-24 px-2"
+                            className="rounded-md border border-border color-transparent  w-20 md:w-32 sm:w-48 min-h-24 px-2"
                           />
                         )}
                       </div>
