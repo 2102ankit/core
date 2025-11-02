@@ -1,14 +1,8 @@
-/* -------------------------------------------------
-   1.  Global border colour (light & dark)
-   ------------------------------------------------- */
 @theme {
   --color-border: oklch(0.922 0 0); /* light */
   --color-border-dark: oklch(1 0 0 / 10%); /* dark – 10% opacity white */
 }
 
-/* -------------------------------------------------
-   2.  Card / Skill-tile border
-   ------------------------------------------------- */
 @layer components {
   .card,
   .skill-tile {
@@ -17,21 +11,18 @@
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  /* Light mode – subtle inner shadow + soft border */
   .card,
   .skill-tile {
     box-shadow: 0 1px 2px oklch(0 0 0 / 0.03), 0 0 0 1px var(--color-border);
   }
 
-  /* Dark mode – faint glow + semi-transparent border */
   .dark .card,
   .dark .skill-tile {
     border-color: var(--color-border-dark);
     box-shadow: 0 1px 2px oklch(0 0 0 / 0.08),
-      0 0 0 1px var(--color-border-dark), 0 0 8px oklch(1 0 0 / 0.05); /* tiny white glow */
+      0 0 0 1px var(--color-border-dark), 0 0 8px oklch(1 0 0 / 0.05);
   }
 
-  /* Hover – a little lift for both themes */
   .card:hover,
   .skill-tile:hover {
     box-shadow: 0 4px 6px oklch(0 0 0 / 0.07), 0 0 0 1px var(--color-border);
@@ -43,9 +34,6 @@
   }
 }
 
-/* -------------------------------------------------
-   3.  Timeline vertical line
-   ------------------------------------------------- */
 .relative.border-l-2 {
   border-left-color: var(--color-border);
 }
@@ -53,9 +41,6 @@
   border-left-color: var(--color-border-dark);
 }
 
-/* -------------------------------------------------
-   4.  Timeline dot (the little circle)
-   ------------------------------------------------- */
 .absolute.-left-\[50px\] {
   border-color: var(--color-border);
   background: var(--card);
@@ -65,9 +50,6 @@
   background: var(--card);
 }
 
-/* -------------------------------------------------
-   5.  Utility – optional “soft-border” class
-   ------------------------------------------------- */
 .border-soft {
   @apply border;
   border-color: var(--color-border);
@@ -76,9 +58,6 @@
   border-color: var(--color-border-dark);
 }
 
-/* -------------------------------------------------
-   6.  Keep the rest of your file unchanged
-   ------------------------------------------------- */
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -308,10 +287,6 @@
     @apply transition-opacity duration-300;
   }
 
-  /* img[loading="lazy"] {
-    @apply opacity-0;
-  } */
-
   img.loaded {
     @apply opacity-100;
   }
@@ -320,6 +295,42 @@
   .page-transition {
     opacity: 1;
     transition: opacity 0.2s ease-in-out;
+  }
+
+  .bg-gradient-dark {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 80%, #2d1b69 100%);
+  }
+
+  .spotlight-glow {
+    position: relative;
+  }
+
+  .spotlight-glow::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      70% 70% at 55% 30%,
+      hsla(210, 100%, 95%, 0.12) 0%,
+      hsla(210, 100%, 75%, 0.04) 50%,
+      hsla(210, 100%, 55%, 0) 90%
+    );
+    opacity: 0.5;
+    z-index: -1;
+    pointer-events: none;
+    animation: spotlightMove 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes spotlightMove {
+    0% {
+      transform: translateX(0) translateY(0) rotate(-45deg);
+    }
+    100% {
+      transform: translateX(100px) translateY(-350px) rotate(-45deg);
+    }
   }
 }
 

@@ -1,19 +1,20 @@
+import { mdxComponents } from "@/components/mdx-components";
 import fs from "fs";
 import matter from "gray-matter";
+import { compileMDX } from "next-mdx-remote/rsc";
 import path from "path";
-import { remark } from "remark";
-import html from "remark-html";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
 
 export interface BlogPost {
   slug: string[];
   frontmatter: Record<string, any>;
-  html: string;
+  content: React.ReactNode; // compiled MDX
+  readingTime: number;
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
-  const fullPath = path.join(CONTENT_ROOT, slug + ".md");
+  const fullPath = path.join(CONTENT_ROOT, `${slug}.md`); // Use .md or .mdx
 
   if (!fs.existsSync(fullPath)) {
     console.warn("Post not found:", fullPath);
@@ -23,46 +24,25 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data: frontmatter, content } = matter(fileContents);
 
-  // Process markdown to HTML
-  const processed = await remark().use(html).process(content);
-  let htmlContent = processed.toString();
+  // Compile MDX (no frontmatter parsing here—handled by gray-matter)
+  // ---------- compile ----------
+  const { content: compiled } = await compileMDX({
+    source: content,
+    components: mdxComponents,
+  });
 
-  // Convert markdown image syntax to proper image paths
-  // Handles: ![alt](image.jpg) or ![alt](folder/image.jpg)
-  htmlContent = htmlContent.replace(
-    /<img\s+src="([^"]+)"\s+alt="([^"]*)"\s*\/?>/g,
-    (match, src, alt) => {
-      // If already starts with http or /, leave as is
-      if (src.startsWith("http") || src.startsWith("/")) {
-        return `<img src="${src}" alt="${alt}" loading="lazy" class="loaded" />`;
-      }
+  // Estimate reading time from raw content (more accurate)
+  const wordCount = content.split(/\s+/).length;
+  const readingTime = Math.ceil(wordCount / 200);
 
-      // Otherwise, prefix with /images/blog/
-      const imagePath = `/images/blog/${src}`;
-      return `<img src="${imagePath}" alt="${alt}" loading="lazy" class="loaded" />`;
-    }
-  );
-
-  // Handle inline HTML img tags and add the blog path prefix
-  // This handles: <img src="demo/1.jpg" ... />
-  htmlContent = htmlContent.replace(
-    /<img\s+([^>]*?)src="([^"]+)"([^>]*?)>/g,
-    (match, before, src, after) => {
-      // If already starts with http or /, leave as is
-      if (src.startsWith("http") || src.startsWith("/")) {
-        return match;
-      }
-
-      // Otherwise, prefix with /images/blog/
-      const imagePath = `/images/blog/${src}`;
-      return `<img ${before}src="${imagePath}"${after}>`;
-    }
-  );
+  // Attach reading time to frontmatter if needed
+  frontmatter.readingTime = readingTime;
 
   return {
     slug: [slug],
     frontmatter,
-    html: htmlContent,
+    content: compiled,
+    readingTime,
   };
 }
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, ArrowUpRight, Github } from "lucide-react";
+import { ArrowRight, ArrowUpRight, FileDown, Github } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -86,6 +86,13 @@ export default function Home() {
             >
               Read the blog
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+            <Link
+              href="/downloads/resume.pdf"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-zinc-200 dark:border-zinc-800 text-zinc-950 dark:text-zinc-50 font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+              <FileDown />
+              View Resume
             </Link>
             <Link
               href="https://github.com/2102ankit"

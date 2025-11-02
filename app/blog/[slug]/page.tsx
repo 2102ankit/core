@@ -1,8 +1,12 @@
-import { getAllBlogPaths, getPostBySlug } from "@/lib/markdown";
+import { getPostBySlug } from "@/lib/markdown";
+import { existsSync } from "fs";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import path from "path";
+
+const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
 
 export default async function BlogPostPage({
   params,
@@ -10,14 +14,19 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const mdPath = path.join(CONTENT_ROOT, `${slug}.md`);
+  const mdxPath = path.join(CONTENT_ROOT, `${slug}.mdx`);
+  const fileExists = existsSync(mdPath) || existsSync(mdxPath);
+
+  if (!fileExists) {
+    // Let Next.js serve the static asset (image, pdf, etc.)
+    notFound(); // ← this triggers 404, which Next.js will fall back to static file
+  }
+
   const post = await getPostBySlug(slug);
   if (!post) notFound();
 
-  const { frontmatter, html } = post;
-
-  // Estimate reading time (assuming 200 words per minute)
-  const wordCount = html.split(/\s+/).length;
-  const readingTime = Math.ceil(wordCount / 200);
+  const { frontmatter, content, readingTime } = post;
 
   return (
     <div className="min-h-[calc(100vh-73px)] py-16 px-6 page-transition">
@@ -81,10 +90,10 @@ export default async function BlogPostPage({
         <hr className="border-zinc-200 dark:border-zinc-800 mb-12 opacity-0 animate-fade-in-up delay-100" />
 
         {/* Article content */}
-        <div
-          className="prose max-w-none opacity-0 animate-fade-in-up delay-150"
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
+        {/* Render compiled MDX content */}
+        <section className="prose max-w-none opacity-0 animate-fade-in-up delay-150 tracking-wide dark:prose-invert">
+          {content}
+        </section>
 
         {/* Divider */}
         <hr className="border-zinc-200 dark:border-zinc-800 mt-12 mb-8 opacity-0 animate-fade-in-up delay-200" />
@@ -118,7 +127,17 @@ export default async function BlogPostPage({
 }
 
 /* Generate static params for every .md file (build-time) */
+// export async function generateStaticParams() {
+//   const slugs = getAllBlogPaths();
+//   return slugs.map((slug) => ({ slug }));
+// }
+
 export async function generateStaticParams() {
-  const slugs = getAllBlogPaths();
-  return slugs.map((slug) => ({ slug }));
+  // Pre-build only real markdown files
+  const files = await import("fs").then((fs) =>
+    fs.promises.readdir(CONTENT_ROOT)
+  );
+  return files
+    .filter((f) => f.endsWith(".md") || f.endsWith(".mdx"))
+    .map((f) => ({ slug: f.replace(/\.(md|mdx)$/, "") }));
 }
