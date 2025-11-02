@@ -1,19 +1,6 @@
 // Import JSON data
 import allProjects from "@/data/all_projects.json";
-import allSkills from "@/data/all_skills.json";
 import allExperiences from "@/data/experience.json";
-
-export type Skill = {
-  name: string;
-  icon: string;
-};
-
-export type Experience = {
-  title: string;
-  company: string;
-  date: string;
-  description: string[];
-};
 
 // Define types (unchanged)
 export type Project = {
@@ -56,37 +43,6 @@ export type ContactSubmission = {
   status: string;
   created_at: string;
 };
-
-// Get all skills
-export async function getSkills() {
-  try {
-    const skills = (allSkills || []) as Skill[];
-    return skills;
-  } catch (error) {
-    throw new Error("Failed to load projects from JSON");
-  }
-}
-
-// Get all experiences
-export async function getExperience() {
-  try {
-    const experience = (allExperiences || []) as Experience[];
-    return experience;
-  } catch (error) {
-    throw new Error("Failed to load projects from JSON");
-  }
-}
-
-export async function getSkillsAndExperience() {
-  try {
-    const experience = await getExperience();
-    const skills = await getSkills();
-
-    return [skills, experience];
-  } catch (error) {
-    throw new Error("Failed to load projects from JSON");
-  }
-}
 
 // Get all projects
 export async function getProjects() {

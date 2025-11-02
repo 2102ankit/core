@@ -1,15 +1,9 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import {
-  getSkillsAndExperience,
-  type Experience,
-  type Skill,
-} from "@/lib/data";
 import { motion } from "framer-motion";
 import { Award, Briefcase, GraduationCap, Trophy } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 const timeline = [
   {
@@ -17,7 +11,7 @@ const timeline = [
     title: "Education",
     date: "2021 - 2025",
     items: [
-      "Bachelor of Technology in Computer Engineering, Sardar Patel Institute of Technology, Mumbai",
+      "B. Tech in Computer Engineering, Sardar Patel Institute of Technology, Mumbai",
       "Minor in Management, S. P. Jain Institute of Management and Research, Mumbai",
     ],
   },
@@ -29,6 +23,117 @@ const timeline = [
       "Top 6 out of 350+ teams in Smart India Hackathon 2023 Finals",
       "Top 25 Teams out of 300+ in S.P.I.T. Hackathon 2024",
     ],
+  },
+];
+
+const experience = [
+  {
+    title: "Software Engineer",
+    company: "ISS-Stoxx",
+    date: "2024 - Present",
+    description: [
+      "Full-stack development using MERN, Python, and Spring Boot.",
+      "Focus on best code practices and DevOps exploration.",
+      "Contributed to scalable systems and innovative solutions.",
+    ],
+    tags: ["MERN", "AWS"],
+    logo: "https://www.issgovernance.com/file/images/iss_logo_header-1.png",
+  },
+  {
+    title: "Web Development Intern (Remote)",
+    company: "Alhansat Solutions",
+    date: "Sep 2023 - Nov 2023",
+    description: [
+      "Created a dynamic business card generator module and integrated it with Developerstar",
+      "Collaborated with Team Lead to understand user requirements and added customization",
+    ],
+  },
+];
+
+const skills = [
+  {
+    name: "C++",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg",
+  },
+  {
+    name: "Java",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg",
+  },
+  {
+    name: "JavaScript",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg",
+  },
+  {
+    name: "TypeScript",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
+  },
+  {
+    name: "Python",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg",
+  },
+  {
+    name: "React",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
+  },
+  {
+    name: "Redux",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg",
+  },
+  {
+    name: "Tailwind",
+    icon: "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg",
+  },
+  {
+    name: "Node.js",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg",
+  },
+  {
+    name: "Express",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg",
+  },
+  {
+    name: "Spring Boot",
+    icon: "https://www.vectorlogo.zone/logos/springio/springio-icon.svg",
+  },
+  {
+    name: "MongoDB",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg",
+  },
+  {
+    name: "Redis",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg",
+  },
+  {
+    name: "MySQL",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg",
+  },
+  {
+    name: "PostgreSQL",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg",
+  },
+  {
+    name: "SQL Server",
+    icon: "https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg",
+  },
+  {
+    name: "Docker",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg",
+  },
+  {
+    name: "Git",
+    icon: "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg",
+  },
+  {
+    name: "Linux",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg",
+  },
+  {
+    name: "Postman",
+    icon: "https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg",
+  },
+  {
+    name: "Pandas",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/2ae2a900d2f041da66e950e4d48052658d850630/icons/pandas/pandas-original.svg",
   },
 ];
 
@@ -52,25 +157,6 @@ const itemVariants = {
 };
 
 export default function AboutPage() {
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [experience, setExperience] = useState<Experience[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function loadSkills() {
-      try {
-        const [_skills, _exp] = await getSkillsAndExperience();
-        setExperience(_exp);
-        setSkills(_skills);
-      } catch (error) {
-        console.error("Error loading projects:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadSkills();
-  }, []);
-
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
@@ -101,23 +187,18 @@ export default function AboutPage() {
             </h2>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                I&apos;m a Software Engineer at ISS-Stoxx with a strong
-                foundation in full-stack development. My journey in tech has
-                been driven by curiosity and a passion for solving complex
-                problems with elegant solutions.
+                I&apos;m a Software Engineer at ISS-Stoxx, crafting slick
+                full-stack solutions with React, Python, and Spring Boot.
               </p>
               <p>
-                I specialize in the MERN stack, Python, and Spring Boot, with a
-                keen interest in DevOps practices and Machine Learning. I
-                believe in writing clean, maintainable code and building systems
-                that scale.
+                I live for clean, scalable code and turning complex problems
+                into elegant wins.
               </p>
               <p>
-                Beyond technical skills, I&apos;ve held leadership positions
-                including Finance Secretary at Students&apos; Council and
-                Training and Placement Coordinator, managing budgets and
-                organizing events that impacted thousands of students.
+                Obsessed with DevOps and Machine Learning, I&apos;m always
+                pushing what&apos;s possible.
               </p>
+              <p>Music🎧. Humor 😂. Code. 💻</p>
             </div>
           </motion.div>
 
@@ -183,22 +264,62 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="p-6 hover:border-foreground/20 transition-all">
-                  <div className="mb-4">
-                    <h3 className="text-xl font-semibold">{exp.title}</h3>
-                    <p className="text-primary font-medium">{exp.company}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {exp.date}
-                    </p>
+                <Card className="group p-6 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 rounded-md">
+                  {/* accent bar */}
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-primary to-primary/60" />
+
+                  <div className="flex flex-col gap-4 justify-baseline">
+                    <div className="flex gap-4 items-end">
+                      <div className="">
+                        {exp.logo && (
+                          <Image
+                            src={exp.logo}
+                            alt={exp.company}
+                            width={48}
+                            height={48}
+                            // fill
+                            className="rounded-md border border-border color-transparent  h  w-48 min-h-24 px-2"
+                          />
+                        )}
+                      </div>
+
+                      <div className="flex-1">
+                        <h3 className="text-xl font-semibold">{exp.title}</h3>
+                        <p className="text-primary font-medium">
+                          {exp.company}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {exp.date}
+                        </p>
+
+                        {exp.tags?.length && (
+                          <div className="flex flex-wrap gap-1.5 mt-2">
+                            {exp.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="px-2 py-0.5 text-xs rounded-full bg-primary/10 text-primary"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <ul className="mt-3 space-y-1.5 text-muted-foreground">
+                      {exp.description.map((item, i) => (
+                        <li
+                          key={i}
+                          className="flex gap-2 items-start transition-colors hover:text-foreground"
+                        >
+                          <span className="text-primary mt-0.5 transition-transform group-hover:scale-125">
+                            ▹
+                          </span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="space-y-2 text-muted-foreground">
-                    {exp.description.map((item, i) => (
-                      <li key={i} className="flex gap-2">
-                        <span className="text-primary">•</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </Card>
               </motion.div>
             ))}

@@ -51,7 +51,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-4">
           <div>
             <h3 className="font-semibold text-lg mb-4">Ankit Mishra</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground max-w-80">
               Full-Stack Developer passionate about creating innovative
               solutions with modern technologies.
             </p>
@@ -65,7 +65,7 @@ export function Footer() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-sm text-muted-foreground hover:text-foreground hover:underline transition-colors"
                   >
                     {link.label}
                   </Link>
