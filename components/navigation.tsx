@@ -38,7 +38,7 @@ export function Navigation() {
               href="/"
               className="text-lg font-semibold text-zinc-950 dark:text-zinc-50 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors duration-200"
             >
-              Your Name
+              {/* Ankit Mishra */}
             </Link>
             <div className="hidden sm:flex items-center gap-6">
               {links.map((link) => (

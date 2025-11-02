@@ -16,7 +16,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-in-up delay-200">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-in-up delay-100">
             <Link
               href="/blog"
               className="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-zinc-950 dark:bg-zinc-50 text-zinc-50 dark:text-zinc-950 font-medium hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all duration-300 hover:scale-105 active:scale-95"
@@ -25,7 +25,7 @@ export default function Home() {
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
             <a
-              href="https://github.com/yourusername"
+              href="https://github.com/2102ankit"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-zinc-200 dark:border-zinc-800 text-zinc-950 dark:text-zinc-50 font-medium hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all duration-300 hover:scale-105 active:scale-95"
@@ -34,7 +34,7 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="pt-8 animate-fade-in-up delay-300">
+          <div className="pt-8 animate-fade-in-up delay-150">
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
               <div className="group">
                 <div className="text-3xl font-bold text-zinc-950 dark:text-zinc-50 group-hover:scale-110 transition-transform duration-300">

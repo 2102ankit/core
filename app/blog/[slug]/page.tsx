@@ -2,6 +2,7 @@ import { getPostBySlug, getAllBlogPaths } from "@/lib/markdown";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
+import Image from "next/image";
 
 type Params = { params: { slug: string } };
 
@@ -17,19 +18,19 @@ export default async function BlogPostPage({ params }: Promise<Params>) {
   const readingTime = Math.ceil(wordCount / 200);
 
   return (
-    <div className="min-h-[calc(100vh-73px)] py-16 px-6">
+    <div className="min-h-[calc(100vh-73px)] py-16 px-6 page-transition">
       <article className="max-w-3xl mx-auto">
         {/* Back button */}
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-200 mb-8 group animate-fade-in"
+          className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-200 mb-8 group opacity-0 animate-fade-in"
         >
           <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
           Back to blog
         </Link>
 
         {/* Article header */}
-        <header className="mb-12 animate-fade-in-up">
+        <header className="mb-12 opacity-0 animate-fade-in-up delay-50">
           <h1 className="text-4xl sm:text-5xl font-bold text-zinc-950 dark:text-zinc-50 mb-6 leading-tight">
             {frontmatter.title ?? "Untitled"}
           </h1>
@@ -58,22 +59,36 @@ export default async function BlogPostPage({ params }: Promise<Params>) {
               {frontmatter.description}
             </p>
           )}
+
+          {/* Featured image */}
+          {frontmatter.image && (
+            <div className="mt-8 rounded-xl overflow-hidden">
+              <Image
+                src={frontmatter.image}
+                alt={frontmatter.title ?? "Blog post image"}
+                width={1200}
+                height={630}
+                className="w-full h-auto object-cover"
+                priority
+              />
+            </div>
+          )}
         </header>
 
         {/* Divider */}
-        <hr className="border-zinc-200 dark:border-zinc-800 mb-12" />
+        <hr className="border-zinc-200 dark:border-zinc-800 mb-12 opacity-0 animate-fade-in-up delay-100" />
 
         {/* Article content */}
         <div
-          className="prose max-w-none animate-fade-in-up delay-200"
+          className="prose max-w-none opacity-0 animate-fade-in-up delay-150"
           dangerouslySetInnerHTML={{ __html: html }}
         />
 
         {/* Divider */}
-        <hr className="border-zinc-200 dark:border-zinc-800 mt-12 mb-8" />
+        <hr className="border-zinc-200 dark:border-zinc-800 mt-12 mb-8 opacity-0 animate-fade-in-up delay-200" />
 
         {/* Footer */}
-        <footer className="flex items-center justify-between animate-fade-in-up delay-300">
+        <footer className="flex items-center justify-between opacity-0 animate-fade-in-up delay-200">
           <Link
             href="/blog"
             className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-200 group"
@@ -86,8 +101,6 @@ export default async function BlogPostPage({ params }: Promise<Params>) {
             <a
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                 frontmatter.title ?? "Check this out!"
-              )}&url=${encodeURIComponent(
-                typeof window !== "undefined" ? window.location.href : ""
               )}`}
               target="_blank"
               rel="noopener noreferrer"

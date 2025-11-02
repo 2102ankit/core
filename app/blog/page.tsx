@@ -27,9 +27,9 @@ export default async function BlogIndex() {
   });
 
   return (
-    <div className="min-h-[calc(100vh-73px)] py-16 px-6">
+    <div className="min-h-[calc(100vh-73px)] py-16 px-6 page-transition">
       <div className="max-w-3xl mx-auto">
-        <div className="mb-12 animate-fade-in-up">
+        <div className="mb-12 opacity-0 animate-fade-in-up">
           <h1 className="text-4xl sm:text-5xl font-bold text-zinc-950 dark:text-zinc-50 mb-4">
             Blog
           </h1>
@@ -43,8 +43,8 @@ export default async function BlogIndex() {
             <Link
               key={slug}
               href={`/blog/${slug}`}
-              className="group block animate-fade-in-up"
-              style={{ animationDelay: `${index * 50}ms` }}
+              className="group block opacity-0 animate-fade-in-up"
+              style={{ animationDelay: `${(index + 1) * 100}ms` }}
             >
               <article className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
                 <div className="flex items-start justify-between gap-4">
@@ -78,7 +78,7 @@ export default async function BlogIndex() {
         </div>
 
         {posts.length === 0 && (
-          <div className="text-center py-16 animate-fade-in-up">
+          <div className="text-center py-16 opacity-0 animate-fade-in-up">
             <p className="text-zinc-500 dark:text-zinc-400">
               No blog posts yet. Check back soon!
             </p>

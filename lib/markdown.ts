@@ -8,12 +8,10 @@ import html from "remark-html";
 const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
 
 export interface BlogPost {
-  slug: string[]; // ["guides", "routing"] for nested paths
+  slug: string[];
   frontmatter: Record<string, any>;
   html: string;
 }
-
-// lib/markdown.ts
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   const fullPath = path.join(CONTENT_ROOT, slug + ".md");
@@ -26,19 +24,27 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data: frontmatter, content } = matter(fileContents);
 
+  // Process markdown to HTML
   const processed = await remark().use(html).process(content);
-  const htmlContent = processed.toString();
+  let htmlContent = processed.toString();
+
+  // Convert markdown image syntax to Next.js Image-friendly format
+  // This handles ![alt](path) syntax in markdown
+  htmlContent = htmlContent.replace(
+    /<img\s+src="([^"]+)"\s+alt="([^"]*)"\s*\/?>/g,
+    (match, src, alt) => {
+      // If image path is relative, prefix with /images/blog/
+      const imagePath = src.startsWith('http') ? src : `/images/blog/${src}`;
+      return `<img src="${imagePath}" alt="${alt}" loading="lazy" class="loaded" />`;
+    }
+  );
 
   return {
-    slug: [slug], // or just slug: slug if you don't need array
+    slug: [slug],
     frontmatter,
     html: htmlContent,
   };
 }
-
-// lib/markdown.ts (only this function needs fixing)
-
-// lib/markdown.ts
 
 export function getAllBlogPaths(): string[] {
   const paths: string[] = [];
@@ -54,7 +60,7 @@ export function getAllBlogPaths(): string[] {
         walk(resolved, relative);
       } else if (entry.name.endsWith(".md")) {
         const fileNameWithoutExt = entry.name.replace(/\.md$/, "");
-        const slug = [...base, fileNameWithoutExt].join("/"); // "test" or "guides/routing"
+        const slug = [...base, fileNameWithoutExt].join("/");
         paths.push(slug);
       }
     }
