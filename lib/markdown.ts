@@ -1,7 +1,6 @@
-// lib/markdown.ts
 import fs from "fs";
-import path from "path";
 import matter from "gray-matter";
+import path from "path";
 import { remark } from "remark";
 import html from "remark-html";
 
@@ -34,10 +33,10 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     /<img\s+src="([^"]+)"\s+alt="([^"]*)"\s*\/?>/g,
     (match, src, alt) => {
       // If already starts with http or /, leave as is
-      if (src.startsWith('http') || src.startsWith('/')) {
+      if (src.startsWith("http") || src.startsWith("/")) {
         return `<img src="${src}" alt="${alt}" loading="lazy" class="loaded" />`;
       }
-      
+
       // Otherwise, prefix with /images/blog/
       const imagePath = `/images/blog/${src}`;
       return `<img src="${imagePath}" alt="${alt}" loading="lazy" class="loaded" />`;
@@ -50,10 +49,10 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     /<img\s+([^>]*?)src="([^"]+)"([^>]*?)>/g,
     (match, before, src, after) => {
       // If already starts with http or /, leave as is
-      if (src.startsWith('http') || src.startsWith('/')) {
+      if (src.startsWith("http") || src.startsWith("/")) {
         return match;
       }
-      
+
       // Otherwise, prefix with /images/blog/
       const imagePath = `/images/blog/${src}`;
       return `<img ${before}src="${imagePath}"${after}>`;

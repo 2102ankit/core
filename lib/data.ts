@@ -1,8 +1,5 @@
-// Import JSON data
 import allProjects from "@/data/all_projects.json";
-import allExperiences from "@/data/experience.json";
 
-// Define types (unchanged)
 export type Project = {
   id: string;
   title: string;

@@ -19,6 +19,7 @@ import {
   ExternalLink,
   Github,
 } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function ProjectsPage() {
@@ -195,14 +196,14 @@ export default function ProjectsPage() {
                                 size="sm"
                                 className="gap-2"
                               >
-                                <a
+                                <Link
                                   href={project.github_url}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                 >
                                   <Github size={16} /> GitHub
                                   <ArrowUpRight size={16} />
-                                </a>
+                                </Link>
                               </Button>
                             )}
                             {project.demo_url && (

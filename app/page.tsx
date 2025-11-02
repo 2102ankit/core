@@ -5,56 +5,65 @@ import Link from "next/link";
 
 export default function Home() {
   const sentences = [
-  {
-    text: (
-      <>
-        I build{" "}
-        <span className={`text-blue-400 dark:text-blue-400 font-semibold`}>
-          fast, beautiful, and functional
-        </span>{" "}
-        apps. This is my digital workshop - where{" "}
-        <span className={`text-yellow-400 dark:text-yellow-400 font-semibold`}>
-          ideas turn into code
-        </span>
-        , prototypes come alive, and learning never stops.
-      </>
-    ),
-  },
-  {
-    text: (
-      <>
-        From prototypes to production - I{" "}
-        <span className={`text-purple-400 dark:text-purple-400 font-semibold`}>
-          design
-        </span>
-        ,
-        <span className={`text-pink-400 dark:text-pink-400 font-semibold`}>
-          {" "}develop
-        </span>
-        , and
-        <span className={`text-green-400 dark:text-green-400 font-semibold`}>
-          {" "}deploy
-        </span>
-        . This is where I document the journey.
-      </>
-    ),
-  },
-  {
-    text: (
-      <>
-        I build{" "}
-        <span className={`text-purple-400 dark:text-purple-400 font-semibold`}>
-          performant
-        </span>
-        ,
-        <span className={`text-green-400 dark:text-green-400 font-semibold`}>
-          {" "}scalable
-        </span>{" "}
-        web apps with modern tools. Explore my projects and writing.
-      </>
-    ),
-  },
-];
+    {
+      text: (
+        <>
+          I build{" "}
+          <span className={`text-blue-400 dark:text-blue-400 font-semibold`}>
+            fast, beautiful, and functional
+          </span>{" "}
+          apps. This is my digital workshop - where{" "}
+          <span
+            className={`text-yellow-400 dark:text-yellow-400 font-semibold`}
+          >
+            ideas turn into code
+          </span>
+          , prototypes come alive, and learning never stops.
+        </>
+      ),
+    },
+    {
+      text: (
+        <>
+          From prototypes to production - I{" "}
+          <span
+            className={`text-purple-400 dark:text-purple-400 font-semibold`}
+          >
+            design
+          </span>
+          ,
+          <span className={`text-pink-400 dark:text-pink-400 font-semibold`}>
+            {" "}
+            develop
+          </span>
+          , and
+          <span className={`text-green-400 dark:text-green-400 font-semibold`}>
+            {" "}
+            deploy
+          </span>
+          . This is where I document the journey.
+        </>
+      ),
+    },
+    {
+      text: (
+        <>
+          I build{" "}
+          <span
+            className={`text-purple-400 dark:text-purple-400 font-semibold`}
+          >
+            performant
+          </span>
+          ,
+          <span className={`text-green-400 dark:text-green-400 font-semibold`}>
+            {" "}
+            scalable
+          </span>{" "}
+          web apps with modern tools. Explore my projects and writing.
+        </>
+      ),
+    },
+  ];
 
   return (
     <div className="min-h-[calc(100vh-73px)] flex items-center justify-center px-6">
