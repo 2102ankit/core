@@ -78,6 +78,40 @@ export default function Home() {
               {sentences[0]?.text}
             </p>
           </div>
+          <div className="space-y-4">
+            <blockquote
+              className="relative pl-6 border-l-4 border-blue-500 dark:border-blue-400 
+                           bg-linear-to-r from-zinc-50 to-zinc-100 
+                           dark:from-zinc-800/60 dark:to-zinc-800/50 
+                           rounded-r-lg py-4 pr-6 
+                           text-lg sm:text-xl text-zinc-700 dark:text-zinc-300 
+                           leading-relaxed max-w-3xl 
+                           transition-all duration-500 hover:shadow-md"
+            >
+              <p className="relative z-10">
+                {"Currently building "}
+                <Link
+                  href="https://github.com/2102ankit/react-datatable"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-medium text-blue-600 dark:text-blue-400 
+                   underline underline-offset-4 decoration-blue-400/30 dark:decoration-blue-500/30 
+                   hover:decoration-blue-400 dark:hover:decoration-blue-400 
+                   hover:text-blue-700 dark:hover:text-blue-300 
+                   transition-all duration-300 group"
+                >
+                  Datagrid
+                  <ArrowUpRight
+                    size={18}
+                    className="opacity-70 group-hover:opacity-100 
+                     group-hover:translate-x-0.5 group-hover:-translate-y-0.5 
+                     transition-all duration-300"
+                  />
+                </Link>
+                {" in React, Motion & Tanstack Table"}
+              </p>
+            </blockquote>
+          </div>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-in-up delay-100">
             <Link
@@ -94,7 +128,7 @@ export default function Home() {
               Read the blog
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
-            
+
             <Link
               href="https://github.com/2102ankit"
               target="_blank"
