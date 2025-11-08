@@ -74,14 +74,14 @@ const socialLinks = [
     label: "LinkedIn",
   },
   { href: "https://github.com/2102ankit", icon: Github, label: "GitHub" },
-  {
-    href: "https://codeforces.com/profile/2102ankit",
-    icon: Code,
-    label: "Codeforces",
-  },
+  // {
+  //   href: "https://codeforces.com/profile/2102ankit",
+  //   icon: Code,
+  //   label: "Codeforces",
+  // },
   {
     href: "https://www.leetcode.com/2102ankit",
-    icon: LaptopMinimal,
+    icon: Code,
     label: "LeetCode",
   },
 ];
@@ -133,8 +133,8 @@ export default function ContactPage() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          <motion.div
+        <div className="grid grid-cols-1 gap-8 mb-12 max-w-2xl mx-auto">
+          {/* <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -231,14 +231,17 @@ export default function ContactPage() {
                 </Form>
               </CardContent>
             </Card>
-          </motion.div>
+          </motion.div> */}
 
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-6"
+            className="space-y-4"
           >
+            <motion.div
+            className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full"
+            >
             <Card>
               <CardHeader>
                 <CardTitle>Contact Information</CardTitle>
@@ -277,15 +280,15 @@ export default function ContactPage() {
                 <CardTitle>Connect with Me</CardTitle>
                 <CardDescription>Find me on these platforms</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-3">
+              <CardContent className="h-full">
+                <div className="grid grid-cols-2 gap-3 h-full">
                   {socialLinks.map((social) => (
                     <Link
                       key={social.label}
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-3 rounded-lg border border-border hover:border-foreground hover:bg-accent transition-all group"
+                      className="flex items-center justify-center p-3 rounded-lg border border-border hover:border-foreground hover:bg-accent transition-all group h-24 sm:h-full"
                       aria-label={social.label}
                       title={social.label}
                     >
@@ -298,6 +301,7 @@ export default function ContactPage() {
                 </div>
               </CardContent>
             </Card>
+            </motion.div>
 
             <Card className="bg-muted/30">
               <CardHeader>
@@ -305,7 +309,7 @@ export default function ContactPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  I typically respond within 24-48 hours during weekdays. For
+                  I typically respond within <u>24-48 hours</u> during weekdays. For
                   urgent matters, feel free to reach out directly via phone or
                   LinkedIn.
                 </p>
