@@ -47,7 +47,9 @@ export async function getProjects() {
     // Ensure the JSON data matches the Project type
     const projects = allProjects || ([] as Project[]);
     // Sort by order_index (ascending)
-    return projects.sort((a, b) => a.order_index - b.order_index);
+    return projects
+      .filter((project) => project.show)
+      .sort((a, b) => a.order_index - b.order_index);
   } catch (error) {
     throw new Error("Failed to load projects from JSON");
   }

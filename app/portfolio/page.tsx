@@ -1,5 +1,6 @@
 "use client";
 
+import ProjectThumbnail from "@/components/project-thumbnail";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -267,48 +268,10 @@ export default function Home() {
                 <motion.div key={project.id} variants={itemVariants}>
                   <Card className="h-full flex flex-col hover:border-foreground/20 transition-all pt-0">
                     <div className="relative h-48 bg-muted/50 overflow-hidden border-b rounded-t-xl">
-                      {(() => {
-                        const raw = project.thumbnail ?? "";
-                        const isValidAbsoluteUrl = (s: string) => {
-                          try {
-                            // `new URL` will throw on malformed strings
-                            const url = new URL(s);
-                            // Accept only http/https (Next/Image requires a protocol)
-                            return /^https?:$/i.test(url.protocol);
-                          } catch {
-                            return false;
-                          }
-                        };
-
-                        if (isValidAbsoluteUrl(raw)) {
-                          return (
-                            <Image
-                              src={raw}
-                              alt={`${project.title} thumbnail`}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                              placeholder="blur"
-                              blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
-                              onError={(e) => {
-                                // If the image 404s, hide it and show the fallback text
-                                const img = e.currentTarget;
-                                img.style.display = "none";
-                                img.nextElementSibling?.classList.remove(
-                                  "hidden"
-                                );
-                              }}
-                            />
-                          );
-                        }
-
-                        // ---- 3. Invalid / missing → original text fallback ----
-                        return (
-                          <div className="flex h-full items-center justify-center text-xl font-medium text-muted-foreground">
-                            {raw || "No preview"}
-                          </div>
-                        );
-                      })()}
+                      <ProjectThumbnail
+                        src={project.thumbnail}
+                        alt={project.title}
+                      />
                     </div>
                     <CardHeader>
                       <CardTitle>{project.title}</CardTitle>

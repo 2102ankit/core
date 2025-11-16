@@ -1,5 +1,6 @@
 "use client";
 
+import ProjectThumbnail from "@/components/project-thumbnail";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,13 +21,15 @@ import {
   Github,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     async function loadProjects() {
@@ -43,12 +46,16 @@ export default function ProjectsPage() {
   }, []);
 
   useEffect(() => {
-    if (projects.length === 0) return;
-    const timer = setInterval(() => {
+    if (projects.length === 0 || isPaused) return;
+
+    intervalRef.current = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % projects.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [projects.length]);
+    }, 3000);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [projects.length, currentIndex, isPaused]);
 
   const allTags = Array.from(
     new Set(projects.flatMap((project) => project.tags))
@@ -146,14 +153,19 @@ export default function ProjectsPage() {
                         transition={{ duration: 0.5 }}
                         className="absolute w-70 sm:w-80"
                         style={{ transformStyle: "preserve-3d" }}
+                        onMouseEnter={() => setIsPaused(true)}
+                        onMouseLeave={() => setIsPaused(false)}
                       >
                         <Card
                           className={`h-full pt-0 ${
                             isCenter ? "border-foreground/20" : ""
                           }`}
                         >
-                          <div className="h-48 bg-muted/50 flex items-center justify-center text-xl font-medium border-b rounded-t-xl">
-                            {project.thumbnail}
+                          <div className="relative h-48 bg-muted/50 flex items-center justify-center text-xl font-medium border-b rounded-t-xl overflow-hidden">
+                            <ProjectThumbnail
+                              src={project.thumbnail}
+                              alt={project.title || "Project thumbnail"}
+                            />
                           </div>
                           <CardHeader>
                             <CardTitle>{project.title}</CardTitle>
@@ -272,8 +284,11 @@ export default function ProjectsPage() {
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
                   <Card className="h-full flex flex-col hover:border-foreground/20 transition-all pt-0">
-                    <div className="h-48 bg-muted/50 flex items-center justify-center text-xl font-medium border-b rounded-t-xl">
-                      {project.thumbnail}
+                    <div className="relative h-48 bg-muted/50 flex items-center justify-center text-xl font-medium border-b rounded-t-xl overflow-hidden">
+                      <ProjectThumbnail
+                        src={project.thumbnail}
+                        alt={project.title || "Project thumbnail"}
+                      />
                     </div>
                     <CardHeader>
                       <CardTitle>{project.title}</CardTitle>
