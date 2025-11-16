@@ -271,6 +271,7 @@ export default function Home() {
                       <ProjectThumbnail
                         src={project.thumbnail}
                         alt={project.title}
+                        variant="cover"
                       />
                     </div>
                     <CardHeader>

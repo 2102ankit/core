@@ -165,6 +165,7 @@ export default function ProjectsPage() {
                             <ProjectThumbnail
                               src={project.thumbnail}
                               alt={project.title || "Project thumbnail"}
+                              variant="cover"
                             />
                           </div>
                           <CardHeader>
@@ -288,6 +289,7 @@ export default function ProjectsPage() {
                       <ProjectThumbnail
                         src={project.thumbnail}
                         alt={project.title || "Project thumbnail"}
+                        variant="cover"
                       />
                     </div>
                     <CardHeader>

@@ -1,5 +1,6 @@
 "use client";
 
+import ProjectThumbnail from "@/components/project-thumbnail";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { Award, Briefcase, GraduationCap, Trophy } from "lucide-react";
@@ -30,19 +31,21 @@ const experience = [
   {
     title: "Software Engineer",
     company: "ISS-Stoxx",
-    date: "2024 - Present",
+    date: "Jan 2025 - Present | Mumbai",
     description: [
-      "Full-stack development using MERN, Python, and Spring Boot.",
-      "Focus on best code practices and DevOps exploration.",
+      "UI development using React, Spring Boot and SQL Server",
+      "Data Pipeline development in Python",
+      "Focus on best code practices and DevOps exploration with Docker",
       "Contributed to scalable systems and innovative solutions.",
     ],
-    tags: ["MERN", "AWS"],
-    logo: "https://www.issgovernance.com/file/images/iss_logo_header-1.png",
+    tags: ["React", "SQL Server", "Python", "Docker"],
+    logo: "/images/experience/iss-mi.png",
   },
   {
     title: "Web Development Intern (Remote)",
     company: "Alhansat Solutions",
-    date: "Sep 2023 - Nov 2023",
+    date: "Sep 2023 - Nov 2023 | Remote",
+    tags: ["SvelteKit", "PDF Js", "Tailwind"],
     description: [
       "Created a dynamic business card generator module and integrated it with Developerstar",
       "Collaborated with Team Lead to understand user requirements and added customization",
@@ -167,7 +170,7 @@ export default function AboutPage() {
           className="text-center mb-16"
         >
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">About Me</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-justify">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-center">
             Passionate software engineer with expertise in full-stack
             development, dedicated to building innovative solutions that make a
             difference.
@@ -266,22 +269,18 @@ export default function AboutPage() {
               >
                 <Card className="group p-6 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 rounded-md">
                   {/* accent bar */}
-                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-primary to-primary/60" />
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-linear-to-b from-primary to-primary/60" />
 
                   <div className="flex flex-col gap-4 justify-baseline">
                     <div className="flex gap-4 items-end">
-                      <div className="">
-                        {exp.logo && (
-                          <Image
-                            src={exp.logo}
-                            alt={exp.company}
-                            width={48}
-                            height={48}
-                            // fill
-                            className="rounded-md border border-border color-transparent  w-20 md:w-32 sm:w-48 min-h-24 px-2"
-                          />
-                        )}
-                      </div>
+                      {exp.logo && (
+                        <div
+                          className="relative rounded-md border border-border color-transparent
+                       min-h-24 h-full w-24 md:w-36 sm:w-52"
+                        >
+                          <ProjectThumbnail src={exp.logo} alt={exp.company} />
+                        </div>
+                      )}
 
                       <div className="flex-1">
                         <h3 className="text-xl font-semibold">{exp.title}</h3>
