@@ -99,7 +99,7 @@ export default async function BlogIndex() {
             >
               <article className="flex items-center gap-3 p-3 rounded-lg transition-colors group">
                 {frontmatter.date && (
-                  <time className="text-sm text-zinc-500 dark:text-zinc-500 whitespace-nowrap">
+                  <time className="text-sm text-zinc-500 dark:text-zinc-500 whitespace-nowrap w-20">
                     {new Date(frontmatter.date).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
