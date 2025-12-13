@@ -40,7 +40,7 @@ I plan to write about various topics including:
 - Performance optimization techniques
 - My favorite tools and workflows
 
-Stay tuned for more content. You can follow me on [Twitter](https://twitter.com) or [GitHub](https://github.com) to get notified when I publish new posts.
+Stay tuned for more content. You can follow me on [Twitter](https://x.com/2102ankit) or [GitHub](https://github.com/2102ankit) to get notified when I publish new posts.
 
 Thanks for reading! 🚀
 

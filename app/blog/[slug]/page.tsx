@@ -110,7 +110,7 @@ export default async function BlogPostPage({
 
           <div className="flex items-center gap-4">
             <Link
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+              href={`https://x.com/intent/tweet?text=${encodeURIComponent(
                 frontmatter.title ?? "Check this out!"
               )}`}
               target="_blank"
