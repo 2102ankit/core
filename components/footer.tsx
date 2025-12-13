@@ -20,14 +20,9 @@ const socialLinks = [
   },
   { href: "https://github.com/2102ankit", icon: Github, label: "GitHub" },
   {
-    href: "https://codeforces.com/profile/2102ankit",
+    href: "https://www.leetcode.com/2102ankit",
     icon: Code,
     label: "Codeforces",
-  },
-  {
-    href: "https://www.leetcode.com/2102ankit",
-    icon: LaptopMinimal,
-    label: "LeetCode",
   },
 ];
 
