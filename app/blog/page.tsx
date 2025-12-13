@@ -10,15 +10,66 @@ const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
 export default async function BlogIndex() {
   const paths = getAllBlogPaths();
 
-  const posts = await Promise.all(
+  const allPosts = await Promise.all(
     paths.map(async (slug) => {
-      const fullPath = path.join(CONTENT_ROOT, slug) + ".md";
-      const raw = fs.readFileSync(fullPath, "utf8");
-      const { data } = matter(raw);
-      return { slug, frontmatter: data };
+      // Try .md first, then .mdx
+      const possiblePaths = [
+        path.join(CONTENT_ROOT, `${slug}.md`),
+        path.join(CONTENT_ROOT, `${slug}.mdx`),
+      ];
+
+      let raw: string | null = null;
+      let usedPath: string | null = null;
+
+      for (const filePath of possiblePaths) {
+        try {
+          if (fs.existsSync(filePath)) {
+            raw = fs.readFileSync(filePath, "utf8");
+            usedPath = filePath;
+            break; // Stop at the first existing file
+          }
+        } catch (error) {
+          // Silently continue if file doesn't exist or can't be read
+          continue;
+        }
+      }
+
+      // If no file was found or readable
+      if (!raw) {
+        console.warn(`Blog post not found for slug: ${slug}`);
+        return null; // or return a default/placeholder object
+      }
+
+      try {
+        const { data: frontmatter } = matter(raw);
+
+        return {
+          slug,
+          frontmatter: {
+            // Provide defaults in case frontmatter is missing fields
+            title: frontmatter.title ?? "Untitled",
+            date: frontmatter.date ?? null,
+            description: frontmatter.description ?? null,
+            image: frontmatter.image ?? null,
+            ...frontmatter,
+          },
+        };
+      } catch (error) {
+        console.error(
+          `Failed to parse frontmatter for slug: ${slug} (${usedPath})`,
+          error
+        );
+        // return {
+        //   slug,
+        //   frontmatter: { title: "Untitled" }, // Fallback
+        // };
+      }
     })
   );
 
+  const posts = allPosts.filter(
+    (post): post is NonNullable<typeof post> => post !== null
+  );
   // Sort by date (newest first)
   posts.sort((a, b) => {
     const dA = a.frontmatter.date ?? "1970-01-01";

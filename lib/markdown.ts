@@ -3,6 +3,7 @@ import fs from "fs";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
 import path from "path";
+import * as DemoComponents from "@/components/demos/demo-exports";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
 
@@ -14,42 +15,73 @@ export interface BlogPost {
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
-  const fullPath = path.join(CONTENT_ROOT, `${slug}.md`); // Use .md or .mdx
+  // Try both .md and .mdx extensions
+  const possiblePaths = [
+    path.join(CONTENT_ROOT, `${slug}.md`),
+    path.join(CONTENT_ROOT, `${slug}.mdx`),
+  ];
 
-  if (!fs.existsSync(fullPath)) {
-    console.warn("Post not found:", fullPath);
+  let filePath: string | null = null;
+  let fileContents: string = "";
+
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      filePath = p;
+      try {
+        fileContents = fs.readFileSync(p, "utf8");
+        break;
+      } catch (err) {
+        console.error(`Error reading file ${p}:`, err);
+        // Continue to next extension
+      }
+    }
+  }
+
+  if (!filePath || !fileContents) {
+    console.warn(`Blog post not found for slug: ${slug}`);
     return null;
   }
 
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  const { data: frontmatter, content } = matter(fileContents);
+  try {
+    const { data: frontmatter, content: rawContent } = matter(fileContents);
 
-  // Compile MDX (no frontmatter parsing here—handled by gray-matter)
-  // ---------- compile ----------
-  const { content: compiled } = await compileMDX({
-    source: content,
-    components: mdxComponents,
-  });
+    // Compile the MDX/Markdown content
+    const { content: compiled } = await compileMDX({
+      source: rawContent,
+      components: {
+        ...mdxComponents,
+        ...DemoComponents,
+      },
+      options: {
+        parseFrontmatter: false, // We already parsed it with gray-matter
+      },
+    });
 
-  // Estimate reading time from raw content (more accurate)
-  const wordCount = content.split(/\s+/).length;
-  const readingTime = Math.ceil(wordCount / 200);
+    // Calculate reading time based on raw content (words per minute ≈ 200)
+    const wordCount = rawContent.trim().split(/\s+/).length;
+    const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
-  // Attach reading time to frontmatter if needed
-  frontmatter.readingTime = readingTime;
-
-  return {
-    slug: [slug],
-    frontmatter,
-    content: compiled,
-    readingTime,
-  };
+    return {
+      slug: [slug],
+      frontmatter: {
+        ...frontmatter,
+        readingTime,
+      },
+      content: compiled,
+      readingTime,
+    };
+  } catch (err) {
+    console.error(`Failed to compile MDX for slug: ${slug} (${filePath})`, err);
+    return null;
+  }
 }
 
 export function getAllBlogPaths(): string[] {
   const paths: string[] = [];
 
   function walk(dir: string, base: string[] = []) {
+    if (!fs.existsSync(dir)) return;
+
     const entries = fs.readdirSync(dir, { withFileTypes: true });
 
     for (const entry of entries) {
@@ -58,9 +90,10 @@ export function getAllBlogPaths(): string[] {
 
       if (entry.isDirectory()) {
         walk(resolved, relative);
-      } else if (entry.name.endsWith(".md")) {
-        const fileNameWithoutExt = entry.name.replace(/\.md$/, "");
-        const slug = [...base, fileNameWithoutExt].join("/");
+      } else if (entry.name.endsWith(".md") || entry.name.endsWith(".mdx")) {
+        const fileNameWithoutExt = entry.name.replace(/\.(md|mdx)$/, "");
+        const slugSegments = [...base, fileNameWithoutExt];
+        const slug = slugSegments.join("/");
         paths.push(slug);
       }
     }
