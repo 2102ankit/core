@@ -6,13 +6,13 @@ const LeatherButton = () => {
   return (
     <div
       className="
-    flex items-center justify-center p-8"
+    flex items-center justify-center"
       style={{
         fontFamily: "sans-serif",
       }}
     >
       <motion.button
-        className="relative px-12 py-6 rounded-full overflow-hidden focus:outline-none"
+        className="relative px-12 py-6 rounded-full overflow-hidden focus:outline-none dark:[&]:bg-linear-to-br dark:[&]:from-amber-800 dark:[&]:via-amber-900 dark:[&]:to-amber-950 [&:not(.dark)]:bg-linear-to-br [&:not(.dark)]:from-amber-600 [&:not(.dark)]:via-amber-700 [&:not(.dark)]:to-amber-800 [&:not(.dark)]:shadow-lg [&:not(.dark)]:shadow-amber-900/50 [&:not(.dark)]:while-tap:shadow-md [&:not(.dark)]:while-tap:shadow-amber-800/40"
         style={{
           background:
             "linear-gradient(135deg, #6d5447 0%, #5d4037 30%, #4a342a 70%, #3e2723 100%)",
@@ -34,19 +34,9 @@ const LeatherButton = () => {
         }}
         transition={{ duration: 0.15, ease: "easeOut" }}
       >
-        {/* Realistic premium dark shiny leather grain texture - deeper with subtle red warmth and gloss */}
         <div
           className="absolute inset-0 opacity-75 pointer-events-none mix-blend-overlay rounded-full"
           style={{
-            backgroundImage: `
-      linear-gradient(180deg, #5a4636 0%, #584335 30%, #4d392b 60%, #443225 100%),
-      radial-gradient(circle at 20% 30%, transparent 0%, rgba(0, 0, 0, 0.35) 100%),
-      radial-gradient(circle at 80% 70%, transparent 0%, rgba(0, 0, 0, 0.32) 100%),
-      radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.18) 0%, transparent 40%),
-      radial-gradient(ellipse at 70% 60%, rgba(255, 255, 255, 0.15) 0%, transparent 45%),
-      radial-gradient(ellipse at 50% 40%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.40'/%3E%3C/svg%3E")
-    `,
             backgroundSize:
               "100% 100%, 100% 100%, 100% 100%, 120% 120%, 110% 110%, 100% 100%, 200px 200px",
             backgroundPosition:
@@ -73,7 +63,7 @@ const LeatherButton = () => {
         />
 
         <div
-          className="absolute rounded-full pointer-events-none"
+          className="absolute inset-0 rounded-full pointer-events-none border-2 border-dashed border-amber-900/60 dark:border-amber-800/40"
           style={{
             top: "4px",
             left: "4px",
@@ -85,7 +75,7 @@ const LeatherButton = () => {
         />
 
         <span
-          className="relative z-10 block text-3xl tracking-normal font-normal"
+          className="relative z-10 block text-3xl tracking-normal [&:not(.dark)]:bg-linear-to-b [&:not(.dark)]:from-amber-200 [&:not(.dark)]:to-amber-400"
           style={{
             backgroundImage:
               "linear-gradient(180deg, #f5e6d3 0%, #e8d4b0 30%, #d4af87 60%, #c19a6b 100%)",

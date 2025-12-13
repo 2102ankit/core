@@ -1,16 +1,204 @@
 ---
-title: "Leather button"
-description: "A realistic premium leather button made with pure CSS and Framer Motion"
-date: "2025-11-02"
-# image: "/images/blog/test.jpeg"
+title: "Create a Realistic Leather Button with Tailwind"
+description: "A step-by-step guide to designing a premium leather-textured button using Tailwind CSS, Framer Motion, and advanced CSS techniques."
+date: "2025-12-13"
+# image: "/images/blog/leather-button.jpeg"
 ---
 
-# My New Blog Post
+# Creating a Realistic Leather Button
 
-This is some content about an incredibly realistic leather button built with Tailwind, Framer Motion, and layered CSS gradients + noise.
+Hey everyone! 👋 In this post, I'll walk you through how to design a stunning, realistic leather button using React, Tailwind CSS, and Framer Motion. This button mimics the texture, depth, and feel of premium leather with layered gradients, noise filters, shadows, and subtle animations. It's perfect for adding a luxurious touch to your web apps.
 
-  <div className="w-full max-w-120 max-h-60">
+We'll break it down step by step, from setting up the component to applying the final polish. By the end, you'll have a reusable button component that's both visually appealing and interactive.
+
+  <div className="max-w-max m-auto py-4">
 
     <LeatherButton />
 
   </div>
+
+## Prerequisites
+
+Before we dive in, make sure you have:
+
+- A React project set up
+- Tailwind CSS v4
+- Motion (earlier Framer Motion) installed (`npm install motion`)
+
+## Step 1: Set Up the Basic Button Structure
+
+Start by creating a new React component, say `LeatherButton.jsx`. We'll use Framer Motion's `motion.button` for animations.
+
+```jsx
+"use client"
+
+import { motion } from "framer-motion";
+
+const LeatherButton = () => {
+  return (
+    <div className="flex items-center justify-center" style={{ fontFamily: "sans-serif" }}>
+      <motion.button
+        className="relative px-12 py-6 rounded-full overflow-hidden focus:outline-none"
+        whileTap={{ scale: 0.98 }}
+        transition={{ duration: 0.15, ease: "easeOut" }}
+      >
+        <span className="relative z-10 block text-3xl font-bold tracking-normal">
+          Leather Button
+        </span>
+      </motion.button>
+    </div>
+  );
+};
+
+export default LeatherButton;
+```
+
+This gives us a basic rounded button with some padding, text, and a subtle scale-down animation on tap.
+
+## Step2: Add the Leather Background Gradient
+
+To mimic leather's rich, uneven color, we'll use a linear gradient in earthy brown tones. Apply this directly to the button's style prop.Update the motion.button
+
+
+```jsx
+<motion.button
+  className="relative px-12 py-6 rounded-full overflow-hidden focus:outline-none"
+  style={{
+    background: "linear-gradient(135deg, #6d5447 0%, #5d4037 30%, #4a342a 70%, #3e2723 100%)",
+  }}
+  // ... other props
+>
+```
+
+This creates a smooth transition from lighter to darker browns, giving a natural leather gradient.
+
+## Step3: Layer Shadows for Depth and Texture
+
+Leather has depth—highlights, shadows, and a subtle sheen. Use boxShadow to add inset and outer shadows.Enhance the style prop
+
+
+```jsx
+style={{
+  background: "linear-gradient(135deg, #6d5447 0%, #5d4037 30%, #4a342a 70%, #3e2723 100%)",
+  boxShadow: `
+    inset 0 1px 2px rgba(255, 255, 255, 0.15),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.5),
+    0 6px 12px rgba(0, 0, 0, 0.6),
+    0 1px 3px rgba(0, 0, 0, 0.4)
+  `,
+}}
+```
+
+Inset shadows create a pressed-in look.
+Outer shadows add elevation.
+
+Also, update the whileTap to adjust shadows on press
+
+```jsx
+whileTap={{
+  scale: 0.98,
+  boxShadow: `
+    inset 0 1px 2px rgba(255, 255, 255, 0.15),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.5),
+    0 3px 6px rgba(0, 0, 0, 0.6),
+    0 1px 2px rgba(0, 0, 0, 0.4)
+  `,
+}}
+```
+
+This makes the button feel more responsive.
+
+## Step4: Add Noise and Overlay for Realistic Texture
+
+Leather isn't smooth; it has grain. We'll use an SVG noise filter as a background image.Add a div inside the button
+
+```jsx
+<div
+  className="absolute inset-0 opacity-25 pointer-events-none rounded-full"
+  style={{
+    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+    backgroundSize: "150px 150px",
+  }}
+/>
+```
+
+This overlays a subtle noise pattern. Add another div for a gradient overlay
+
+```jsx
+<div
+  className="absolute inset-0 opacity-20 pointer-events-none rounded-full"
+  style={{
+    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%, rgba(0, 0, 0, 0.3) 100%)",
+  }}
+/>
+```
+
+And one more for a mix-blend-mode overlay (adjust as needed for more layers).
+
+## Step5: Style the Text with a Leather-Like Gradient
+
+Make the text look embossed on leather by applying a gradient to the text itself.Update the span
+
+```jsx
+<span
+  className="relative z-10 block text-3xl tracking-normal"
+  style={{
+    backgroundImage: "linear-gradient(180deg, #f5e6d3 0%, #e8d4b0 30%, #d4af87 60%, #c19a6b 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+    fontWeight: "700",
+  }}
+>
+  Leather Button
+</span>
+```
+
+This gives the text a golden, aged leather tone.
+
+## Step6: Add Dashed Border and Final Overlays
+
+For stitching effect, add a dashed inner border
+
+```jsx
+<div
+  className="absolute inset-0 rounded-full pointer-events-none border-2 border-dashed border-amber-900/60"
+  style={{
+    top: "4px",
+    left: "4px",
+    right: "4px",
+    bottom: "4px",
+    border: "1.5px dashed rgba(139, 107, 83, 1)",
+    borderRadius: "9999px",
+  }}
+/>
+```
+
+Finally, add a sheen overlay
+
+```jsx
+<div
+  className="absolute inset-0 rounded-full pointer-events-none"
+  style={{
+    boxShadow: "inset 0 2px 4px rgba(255, 255, 255, 0.15), inset 0 -2px 4px rgba(0, 0, 0, 0.4)",
+    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, transparent 40%)",
+  }}
+/>
+```
+
+## Step7: Integrate Dark Mode (Optional)
+
+The provided code includes dark mode classes using Tailwind's dark variant. Add those to support theme switching.Final ComponentPut it all together, and you have your leather button! Here's how to embed it in your page:html
+
+```jsx
+<div className="max-w-max m-auto">
+  <LeatherButton />
+</div>
+```
+
+Experiment with colors and textures to match your brand.
+
+## Wrapping Up
+
+This button combines CSS artistry with motion for a premium feel. It's a great example of how far you can push web design without images. Try it out and let me know what you think!You can find the full code on my GitHub. Follow me on Twitter for more tips.Thanks for reading! 
+
