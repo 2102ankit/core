@@ -2,10 +2,16 @@ import { mdxComponents } from "@/components/mdx-components";
 import fs from "fs";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
+import rehypePrettyCode from "rehype-pretty-code";
 import path from "path";
 import * as DemoComponents from "@/components/demos/demo-exports";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
+
+const rehypePrettyCodeOptions = {
+  theme: "aurora-x",
+  // theme: "nord",
+};
 
 export interface BlogPost {
   slug: string[];
@@ -54,6 +60,9 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       },
       options: {
         parseFrontmatter: false, // We already parsed it with gray-matter
+        mdxOptions: {
+          rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]],
+        },
       },
     });
 

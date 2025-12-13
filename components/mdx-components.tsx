@@ -11,9 +11,8 @@ const proseClasses = {
   ul: "mb-4 ml-6 list-disc",
   ol: "mb-4 ml-6 list-decimal",
   li: "mb-2",
-  codeInline:
-    "bg-zinc-200 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-sm font-mono",
-  pre: "bg-zinc-100 dark:bg-zinc-900 p-4 rounded-lg overflow-x-auto mb-4",
+  codeInline: "px-1.5 py-0.5 rounded text-sm font-mono",
+  pre: "bg-zinc-800 p-4 rounded-lg overflow-x-auto mb-4",
   blockquote:
     "border-l-4 border-zinc-300 dark:border-zinc-700 pl-4 italic my-4",
   hr: "border-zinc-200 dark:border-zinc-800 my-8",
