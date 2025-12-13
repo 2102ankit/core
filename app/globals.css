@@ -388,6 +388,10 @@
     @apply px-1.5 py-0.5 rounded text-sm font-mono border-none;
   }
 
+  .prose code:not(:has(span)) {
+    @apply px-1.5 py-0.5 rounded text-sm font-mono border-none bg-zinc-200 dark:bg-zinc-800;
+  }
+
   .prose code>[data-line] {
     @apply px-1.5 py-0.5 rounded text-sm font-mono border-none;
   }
