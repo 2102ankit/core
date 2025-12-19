@@ -1,7 +1,9 @@
 // This file re-exports all demo components for easy importing in MDX/blog posts
 
-import LeatherButton from "./leather-button";
+import LeatherButtonFinal from "./leather-button-final";
+import LeatherButtonStage from "./leather-button-stages";
 
 export {
-  LeatherButton,
+  LeatherButtonFinal,
+  LeatherButtonStage
 };
