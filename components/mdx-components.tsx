@@ -12,7 +12,7 @@ const proseClasses = {
   ol: "mb-4 ml-6 list-decimal",
   li: "mb-2",
   codeInline: "px-1.5 py-0.5 rounded text-sm font-mono",
-  pre: "bg-zinc-800 p-4 rounded-lg overflow-x-auto mb-4",
+  pre: "bg-zinc-800 p-4 rounded-lg mb-4 leading-snug",
   blockquote:
     "border-l-4 border-zinc-300 dark:border-zinc-700 pl-4 italic my-4",
   hr: "border-zinc-200 dark:border-zinc-800 my-8",
