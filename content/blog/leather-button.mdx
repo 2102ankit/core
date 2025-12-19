@@ -6,15 +6,14 @@ date: "2025-12-13"
 
 # Making a Leather Button
 
-I saw this really cool leather button design on Twitter the other day and thought it'd be fun to try recreating it. 
-There's something satisfying about skeuomorphic design—making digital things look like real objects. 
+I saw this really cool leather button design on Twitter the other day and thought it'd be fun to try recreating it.
+There's something satisfying about skeuomorphic design—making digital things look like real objects.
 
 So here's how I built it with React, Tailwind, and Motion.
 
 <div className="max-w-max m-auto py-8">
   <LeatherButtonFinal />
 </div>
-
 
 ## What you'll need
 
@@ -39,6 +38,9 @@ const LeatherButton = () => {
         className="relative px-12 py-6 rounded-full overflow-hidden focus:outline-none"
         whileTap={{ scale: 0.98 }}
         transition={{ duration: 0.15, ease: "easeOut" }}
+        style={{
+          fontFamily: "sans-serif",
+        }}
       >
         <span className="relative z-10 block text-3xl font-bold tracking-normal">
           Leather Button
@@ -66,17 +68,16 @@ Real leather isn't one flat color. It has lighter and darker areas. So instead o
 <motion.button
   className="relative px-12 py-6 rounded-full overflow-hidden focus:outline-none"
   style={{
+    fontFamily: "sans-serif",
     background: "linear-gradient(135deg, #6d5447 0%, #5d4037 30%, #4a342a 70%, #3e2723 100%)",
   }}
   // ... rest of props
 >
 ```
 
-
 <div className="max-w-max m-auto mt-4 mb-6 py-2 px-4 flex flex-col gap-8 shadow-sm outline-1 outline-zinc-300 dark:outline-zinc-700">
   <LeatherButtonStage stage={2} />
 </div>
-
 
 Better already.
 
@@ -98,11 +99,9 @@ style={{
 
 The first inset shadow adds a tiny highlight at the top. The second darkens the bottom to make it look rounded. The last two lift it off the background.
 
-
 <div className="max-w-max m-auto mt-4 mb-6 py-2 px-4 flex flex-col gap-8 shadow-sm outline-1 outline-zinc-300 dark:outline-zinc-700">
   <LeatherButtonStage stage={3} />
 </div>
-
 
 When you press it, the shadow should get smaller (like it's moving closer to the surface):
 
@@ -125,9 +124,11 @@ It still looked too smooth more like plastic than leather. Real leather has grai
 I used an SVG noise filter instead of loading an image. Add this inside your button:
 
 ```jsx
-{/* Noise Texture */}
+{
+  /* Noise Texture */
+}
 <div
-  className="absolute inset-0 opacity-25 pointer-events-none rounded-full"
+  className="absolute inset-0 opacity-30 pointer-events-none rounded-full"
   style={{
     backgroundImage: `url(
                 "data:image/svg+xml,%3Csvg viewBox='0 0 200 200'
@@ -142,22 +143,23 @@ I used an SVG noise filter instead of loading an image. Add this inside your but
                 filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
     backgroundSize: "150px 150px",
   }}
-/>
+/>;
 
-{/* Sheen */}
+{
+  /* Sheen */
+}
 <div
   className="absolute inset-0 opacity-20 pointer-events-none rounded-full"
   style={{
-    background: "linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%, rgba(0, 0, 0, 0.3) 100%)",
+    background:
+      "linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%, rgba(0, 0, 0, 0.3) 100%)",
   }}
-/>
+/>;
 ```
-
 
 <div className="max-w-max m-auto mt-4 mb-6 py-2 px-4 flex flex-col gap-8 shadow-sm outline-1 outline-zinc-300 dark:outline-zinc-700">
   <LeatherButtonStage stage={4} />
 </div>
-
 
 The noise breaks up the solid color and the sheen overlay adds a subtle highlight.
 
@@ -169,7 +171,8 @@ Plain white text looked okay but I wanted it to look like gold foil stamped into
 <span
   className="relative z-10 block text-3xl tracking-normal"
   style={{
-    backgroundImage: "linear-gradient(180deg, #f5e6d3 0%, #e8d4b0 30%, #d4af87 60%, #c19a6b 100%)",
+    backgroundImage:
+      "linear-gradient(180deg, #f5e6d3 0%, #e8d4b0 30%, #d4af87 60%, #c19a6b 100%)",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
     backgroundClip: "text",
@@ -180,11 +183,9 @@ Plain white text looked okay but I wanted it to look like gold foil stamped into
 </span>
 ```
 
-
 <div className="max-w-max m-auto mt-4 mb-6 py-2 px-4 flex flex-col gap-8 shadow-sm outline-1 outline-zinc-300 dark:outline-zinc-700">
   <LeatherButtonStage stage={5} />
 </div>
-
 
 ## Stitching detail
 
@@ -192,24 +193,21 @@ Last touch will be adding a stitching line to make it look sewn. Just a dashed b
 
 ```jsx
 <div
-  className="absolute inset-0 rounded-full pointer-events-none"
+  className="absolute rounded-full pointer-events-none"
   style={{
     top: "4px",
     left: "4px",
     right: "4px",
     bottom: "4px",
-    border: "1.5px dashed rgba(139, 107, 83, 0.8)",
+    border: "1.5px dashed rgba(139, 107, 83, 1)",
     borderRadius: "9999px",
-    boxShadow: "inset 0 1px 1px rgba(0,0,0,0.2)"
   }}
 />
 ```
 
-
 <div className="max-w-max m-auto mt-4 mb-6 py-2 px-4 flex flex-col gap-8 shadow-sm outline-1 outline-zinc-300 dark:outline-zinc-700">
   <LeatherButtonStage stage={6} />
 </div>
-
 
 ## Full code
 
@@ -225,7 +223,9 @@ const LeatherButton = () => {
       <motion.button
         className="relative px-12 py-6 rounded-full overflow-hidden focus:outline-none"
         style={{
-          background: "linear-gradient(135deg, #6d5447 0%, #5d4037 30%, #4a342a 70%, #3e2723 100%)",
+          fontFamily: "sans-serif",
+          background:
+            "linear-gradient(135deg, #6d5447 0%, #5d4037 30%, #4a342a 70%, #3e2723 100%)",
           boxShadow: `
             inset 0 1px 2px rgba(255, 255, 255, 0.15),
             inset 0 -3px 6px rgba(0, 0, 0, 0.5),
@@ -246,7 +246,7 @@ const LeatherButton = () => {
       >
         {/* Noise Texture */}
         <div
-          className="absolute inset-0 opacity-25 pointer-events-none rounded-full"
+          className="absolute inset-0 opacity-30 pointer-events-none rounded-full"
           style={{
             backgroundImage: `url(
                 "data:image/svg+xml,%3Csvg viewBox='0 0 200 200'
@@ -267,21 +267,21 @@ const LeatherButton = () => {
         <div
           className="absolute inset-0 opacity-20 pointer-events-none rounded-full"
           style={{
-            background: "linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%, rgba(0, 0, 0, 0.3) 100%)",
+            background:
+              "linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%, rgba(0, 0, 0, 0.3) 100%)",
           }}
         />
 
         {/* Stitching */}
         <div
-          className="absolute inset-0 rounded-full pointer-events-none"
+          className="absolute rounded-full pointer-events-none"
           style={{
             top: "4px",
             left: "4px",
             right: "4px",
             bottom: "4px",
-            border: "1.5px dashed rgba(139, 107, 83, 0.8)",
+            border: "1.5px dashed rgba(139, 107, 83, 1)",
             borderRadius: "9999px",
-            boxShadow: "inset 0 1px 1px rgba(0,0,0,0.2)"
           }}
         />
 
@@ -289,7 +289,8 @@ const LeatherButton = () => {
         <span
           className="relative z-10 block text-3xl tracking-normal"
           style={{
-            backgroundImage: "linear-gradient(180deg, #f5e6d3 0%, #e8d4b0 30%, #d4af87 60%, #c19a6b 100%)",
+            backgroundImage:
+              "linear-gradient(180deg, #f5e6d3 0%, #e8d4b0 30%, #d4af87 60%, #c19a6b 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
@@ -306,7 +307,7 @@ const LeatherButton = () => {
 export default LeatherButton;
 ```
 
-That's it. The trick is layering i.e. gradients for color variation, shadows for depth, noise for texture, and small details like stitching. 
+That's it. The trick is layering i.e. gradients for color variation, shadows for depth, noise for texture, and small details like stitching.
 
 Stay tuned for more content. You can follow me on [Twitter](https://x.com/2102ankit) or [GitHub](https://github.com/2102ankit) to get notified when I publish new posts.
 

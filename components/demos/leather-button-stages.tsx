@@ -54,7 +54,8 @@ const LeatherButtonStage = ({ stage = 6 }) => {
       style={{
         background,
         boxShadow,
-        'border': stage == 1 ? "solid 1px grey" : "",
+        border: stage == 1 ? "solid 1px grey" : "",
+        fontFamily: "sans-serif",
       }}
       whileTap={whileTap}
       transition={{ duration: 0.15, ease: "easeOut" }}
@@ -63,22 +64,13 @@ const LeatherButtonStage = ({ stage = 6 }) => {
       {stage >= 4 && (
         <>
           <div
-            className="absolute inset-0 opacity-25 pointer-events-none rounded-full"
+            className="absolute inset-0 opacity-15 pointer-events-none rounded-full"
             style={{
-              backgroundImage: `url(
-                "data:image/svg+xml,%3Csvg viewBox='0 0 200 200'
-                xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter
-                id='noiseFilter'%3E%3CfeTurbulence
-                type='fractalNoise'
-                baseFrequency='1.5'
-                numOctaves='3'
-                stitchTiles='stitch'/%3E%3C/filter%3E%3Crect
-                width='100%25'
-                height='100%25'
-                filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
               backgroundSize: "150px 150px",
             }}
           />
+
           {/* Sheen */}
           <div
             className="absolute inset-0 opacity-20 pointer-events-none rounded-full"
@@ -92,15 +84,14 @@ const LeatherButtonStage = ({ stage = 6 }) => {
       {/* Stitching */}
       {stage >= 6 && (
         <div
-          className="absolute inset-0 rounded-full pointer-events-none"
+          className="absolute rounded-full pointer-events-none"
           style={{
             top: "4px",
             left: "4px",
             right: "4px",
             bottom: "4px",
-            border: "1.5px dashed rgba(139, 107, 83, 0.8)",
+            border: "1.5px dashed rgba(139, 107, 83, 1)",
             borderRadius: "9999px",
-            boxShadow: "inset 0 1px 1px rgba(0,0,0,0.2)",
           }}
         />
       )}
