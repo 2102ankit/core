@@ -247,7 +247,7 @@ export default function BubbleSortVisualizer() {
       </div>
 
       <div className="space-y-6">
-        <div className="w-full rounded-xl bg-muted/40 p-6 sm:p-8 border relative overflow-hidden">
+        <div className="w-full rounded-xl bg-muted/40 p-6 sm:p-8 py-2! border relative overflow-hidden">
           <span
             className="absolute left-2 sm:left-4 text-xs text-muted-foreground bg-muted/40 px-2 rounded z-20"
             style={{
@@ -271,7 +271,7 @@ export default function BubbleSortVisualizer() {
 
           <div
             ref={scrollContainerRef}
-            className={`relative h-64 w-full flex items-center px-10 ${
+            className={`relative h-64 w-full flex items-center pl-12 pr-8 ${
               currentArray.length <= MAX_LEN
                 ? "justify-center"
                 : "justify-start"
@@ -279,7 +279,13 @@ export default function BubbleSortVisualizer() {
               currentArray.length > MAX_LEN
                 ? "overflow-x-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-muted-foreground/30 px-2 sm:px-4"
                 : ""
-            } py-2`}
+            } py-2
+             snap-x snap-mandatory 
+            -webkit-overflow-scrolling: touch;
+              `}
+            style={{
+              scrollBehavior: "auto", // ← crucial! disable smooth scroll of container
+            }}
           >
             {currentArray.map((element, index) => {
               const heightPct = getHeightPercentage(element.value);
@@ -295,7 +301,9 @@ export default function BubbleSortVisualizer() {
                   key={element.key} // Unique and stable key: value-random-string
                   layout
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  ref={(el) => {barRefs.current[index] = el;}}
+                  ref={(el) => {
+                    barRefs.current[index] = el;
+                  }}
                   className="flex flex-col items-center shrink-0"
                   style={{
                     width: barWidth,
