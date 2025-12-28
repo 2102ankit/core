@@ -2,8 +2,6 @@
 
 import LeatherButtonFinal from "./leather-button-final";
 import LeatherButtonStage from "./leather-button-stages";
+import BubbleSortInteractive from "./bubble-sort-interactive";
 
-export {
-  LeatherButtonFinal,
-  LeatherButtonStage
-};
+export { LeatherButtonFinal, LeatherButtonStage, BubbleSortInteractive };
