@@ -1,21 +1,33 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { Play, Pause, SkipBack, SkipForward, Dice6 } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { motion } from "framer-motion";
+import { Dice6, Pause, Play, SkipBack, SkipForward } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+interface Element {
+  key: string;
+  value: number;
+}
 
 interface SortStep {
-  array: number[];
+  array: Element[];
   comparing?: [number, number];
   swapping?: [number, number];
 }
 
 const MAX_LEN = 10;
+
+// Simple UUID-like generator for stable unique keys
+const generateUniqueKey = (value: number, index: number): string => {
+  return `${value}-${
+    crypto.randomUUID?.() ?? Math.random().toString(36).substring(2)
+  }`;
+};
 
 export default function BubbleSortVisualizer() {
   const [input, setInput] = useState("50, -20, 80, -10, 90, 30, -70, 40, 60");
@@ -27,35 +39,51 @@ export default function BubbleSortVisualizer() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const barRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const generateSteps = (arr: number[]) => {
+  const generateSteps = (inputArr: number[]) => {
     const allSteps: SortStep[] = [];
-    const temp = arr.map((value, idx) => ({ key: `${value}-${idx}`, value }));
-    allSteps.push({ array: temp.map((item) => item.value) });
+
+    // Create elements with unique keys: value + random suffix
+    const elements: Element[] = inputArr.map((value, idx) => ({
+      key: generateUniqueKey(value, idx),
+      value,
+    }));
+
+    // Initial state
+    allSteps.push({ array: elements.map((el) => ({ ...el })) });
+
+    const temp = elements.map((el) => ({ ...el })); // Deep copy for mutation
 
     for (let i = 0; i < temp.length - 1; i++) {
       for (let j = 0; j < temp.length - i - 1; j++) {
+        // Comparing step
         allSteps.push({
-          array: temp.map((item) => item.value),
+          array: temp.map((el) => ({ ...el })),
           comparing: [j, j + 1],
         });
 
         if (temp[j].value > temp[j + 1].value) {
+          // Swap
           [temp[j], temp[j + 1]] = [temp[j + 1], temp[j]];
+
+          // Swapping step
           allSteps.push({
-            array: temp.map((item) => item.value),
+            array: temp.map((el) => ({ ...el })),
             swapping: [j, j + 1],
           });
         }
       }
     }
-    allSteps.push({ array: temp.map((item) => item.value) });
+
+    // Final sorted state
+    allSteps.push({ array: temp.map((el) => ({ ...el })) });
+
     return allSteps;
   };
 
   const handleSort = () => {
     const nums = input
       .split(",")
-      .map((s) => parseInt(s.trim(), MAX_LEN))
+      .map((s) => parseInt(s.trim(), 10))
       .filter((n) => !isNaN(n));
 
     if (nums.length === 0) return;
@@ -73,36 +101,31 @@ export default function BubbleSortVisualizer() {
     ];
     const randomArray: number[] = [];
 
-    // Generate exactly 10 values
     for (let i = 0; i < MAX_LEN; i++) {
       const randomIndex = Math.floor(Math.random() * values.length);
       randomArray.push(values[randomIndex]);
     }
 
-    // Shuffle to avoid any bias
+    // Shuffle
     for (let i = randomArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [randomArray[i], randomArray[j]] = [randomArray[j], randomArray[i]];
     }
+
     setInput(randomArray.join(", "));
-    handleSort();
+    // Sort immediately after generating
+    const sortSteps = generateSteps(randomArray);
+    setSteps(sortSteps);
+    setCurrentStep(0);
+    setIsPlaying(false);
   };
 
-  const [elementKeys] = useState<Map<number, string>>(new Map());
-
-  useEffect(() => {
-    if (steps.length > 0 && steps[0]) {
-      elementKeys.clear();
-      steps[0].array.forEach((value, idx) => {
-        elementKeys.set(idx, `elem-${value}-${idx}-${Date.now()}`);
-      });
-    }
-  }, [steps]);
-
+  // Initial sort on mount
   useEffect(() => {
     handleSort();
   }, []);
 
+  // Playback control
   useEffect(() => {
     if (isPlaying && currentStep < steps.length - 1) {
       intervalRef.current = setInterval(() => {
@@ -117,19 +140,20 @@ export default function BubbleSortVisualizer() {
     };
   }, [isPlaying, currentStep, steps.length, speed]);
 
+  // Stop playing when reaching end
   useEffect(() => {
     if (currentStep >= steps.length - 1) {
       setIsPlaying(false);
     }
   }, [currentStep, steps.length]);
 
-  // Auto-scroll to center active bars
+  // Auto-scroll to active bars
   useEffect(() => {
     if (!scrollContainerRef.current || steps.length === 0) return;
 
     const comparing = steps[currentStep]?.comparing;
     const swapping = steps[currentStep]?.swapping;
-    const activeIndices = comparing ?? swapping; // Use nullish coalescing
+    const activeIndices = comparing ?? swapping;
 
     if (!activeIndices || activeIndices.length < 2) return;
 
@@ -162,12 +186,14 @@ export default function BubbleSortVisualizer() {
     setIsPlaying(!isPlaying);
   };
 
-  const currentArray = steps[currentStep]?.array || [];
-  const comparing = steps[currentStep]?.comparing;
-  const swapping = steps[currentStep]?.swapping;
+  const currentStepData = steps[currentStep] || { array: [] };
+  const currentArray = currentStepData.array;
+  const comparing = currentStepData.comparing;
+  const swapping = currentStepData.swapping;
   const isFinalStep = currentStep === steps.length - 1;
 
-  const values = currentArray.length > 0 ? currentArray : [0];
+  const values =
+    currentArray.length > 0 ? currentArray.map((el) => el.value) : [0];
   const maxPositive = Math.max(...values.filter((v) => v >= 0), 0);
   const maxNegative = Math.abs(Math.min(...values.filter((v) => v < 0), 0));
   const hasPositive = maxPositive > 0;
@@ -246,33 +272,37 @@ export default function BubbleSortVisualizer() {
           <div
             ref={scrollContainerRef}
             className={`relative h-64 w-full flex items-center px-10 ${
-              currentArray.length <= MAX_LEN ? "justify-center" : "justify-start"
+              currentArray.length <= MAX_LEN
+                ? "justify-center"
+                : "justify-start"
             } gap-2 ${
               currentArray.length > MAX_LEN
                 ? "overflow-x-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-muted-foreground/30 px-2 sm:px-4"
                 : ""
             } py-2`}
           >
-            {currentArray.map((value, index) => {
-              const heightPct = getHeightPercentage(value);
-              const isNegative = value < 0;
+            {currentArray.map((element, index) => {
+              const heightPct = getHeightPercentage(element.value);
+              const isNegative = element.value < 0;
 
-              // Dynamic width logic
               const barWidth =
                 currentArray.length <= MAX_LEN
                   ? `${100 / currentArray.length}%`
                   : `max(40px, ${100 / currentArray.length}%)`;
+
               return (
                 <motion.div
-                  key={elementKeys.get(index) ?? `fallback-${index}`}
+                  key={element.key} // Unique and stable key: value-random-string
                   layout
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   ref={(el) => {barRefs.current[index] = el;}}
                   className="flex flex-col items-center shrink-0"
                   style={{
                     width: barWidth,
-                    minWidth: currentArray.length > MAX_LEN ? "40px" : undefined,
-                    maxWidth: currentArray.length <= MAX_LEN ? "120px" : undefined, // Optional: prevent too-wide bars
+                    minWidth:
+                      currentArray.length > MAX_LEN ? "40px" : undefined,
+                    maxWidth:
+                      currentArray.length <= MAX_LEN ? "120px" : undefined,
                   }}
                 >
                   <div className="relative w-full" style={{ height: "200px" }}>
@@ -285,18 +315,14 @@ export default function BubbleSortVisualizer() {
                         left: 0,
                         right: 0,
                         ...(isNegative
-                          ? {
-                              top: `${positiveRatio * 200}px`,
-                            }
-                          : {
-                              bottom: `${negativeRatio * 200}px`,
-                            }),
+                          ? { top: `${positiveRatio * 200}px` }
+                          : { bottom: `${negativeRatio * 200}px` }),
                       }}
                     />
                   </div>
 
                   <span className="mt-2 text-sm font-semibold whitespace-nowrap">
-                    {value}
+                    {element.value}
                   </span>
                 </motion.div>
               );
