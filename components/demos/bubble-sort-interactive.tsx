@@ -15,6 +15,8 @@ interface SortStep {
   swapping?: [number, number];
 }
 
+const MAX_LEN = 10;
+
 export default function BubbleSortVisualizer() {
   const [input, setInput] = useState("50, -20, 80, -10, 90, 30, -70, 40, 60");
   const [steps, setSteps] = useState<SortStep[]>([]);
@@ -53,7 +55,7 @@ export default function BubbleSortVisualizer() {
   const handleSort = () => {
     const nums = input
       .split(",")
-      .map((s) => parseInt(s.trim(), 10))
+      .map((s) => parseInt(s.trim(), MAX_LEN))
       .filter((n) => !isNaN(n));
 
     if (nums.length === 0) return;
@@ -72,7 +74,7 @@ export default function BubbleSortVisualizer() {
     const randomArray: number[] = [];
 
     // Generate exactly 10 values
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < MAX_LEN; i++) {
       const randomIndex = Math.floor(Math.random() * values.length);
       randomArray.push(values[randomIndex]);
     }
@@ -244,9 +246,9 @@ export default function BubbleSortVisualizer() {
           <div
             ref={scrollContainerRef}
             className={`relative h-64 w-full flex items-center px-10 ${
-              currentArray.length < 10 ? "justify-center" : "justify-start"
+              currentArray.length <= MAX_LEN ? "justify-center" : "justify-start"
             } gap-2 ${
-              currentArray.length >= 10
+              currentArray.length > MAX_LEN
                 ? "overflow-x-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-muted-foreground/30 px-2 sm:px-4"
                 : ""
             } py-2`}
@@ -257,7 +259,7 @@ export default function BubbleSortVisualizer() {
 
               // Dynamic width logic
               const barWidth =
-                currentArray.length < 10
+                currentArray.length <= MAX_LEN
                   ? `${100 / currentArray.length}%`
                   : `max(40px, ${100 / currentArray.length}%)`;
               return (
@@ -269,8 +271,8 @@ export default function BubbleSortVisualizer() {
                   className="flex flex-col items-center shrink-0"
                   style={{
                     width: barWidth,
-                    minWidth: currentArray.length >= 10 ? "40px" : undefined,
-                    maxWidth: currentArray.length < 10 ? "120px" : undefined, // Optional: prevent too-wide bars
+                    minWidth: currentArray.length > MAX_LEN ? "40px" : undefined,
+                    maxWidth: currentArray.length <= MAX_LEN ? "120px" : undefined, // Optional: prevent too-wide bars
                   }}
                 >
                   <div className="relative w-full" style={{ height: "200px" }}>
