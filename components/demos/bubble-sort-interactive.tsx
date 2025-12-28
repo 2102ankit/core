@@ -22,6 +22,8 @@ export default function BubbleSortVisualizer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const barRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const generateSteps = (arr: number[]) => {
     const allSteps: SortStep[] = [];
@@ -80,11 +82,8 @@ export default function BubbleSortVisualizer() {
       const j = Math.floor(Math.random() * (i + 1));
       [randomArray[i], randomArray[j]] = [randomArray[j], randomArray[i]];
     }
-
-    const newInput = randomArray.join(", ");
-    setInput(newInput);
-    // Optionally auto-sort after generating
-    handleSort(); // Uncomment if you want it to sort immediately
+    setInput(randomArray.join(", "));
+    handleSort();
   };
 
   const [elementKeys] = useState<Map<number, string>>(new Map());
@@ -121,6 +120,27 @@ export default function BubbleSortVisualizer() {
       setIsPlaying(false);
     }
   }, [currentStep, steps.length]);
+
+  // Auto-scroll to center active bars
+  useEffect(() => {
+    if (!scrollContainerRef.current || steps.length === 0) return;
+
+    const comparing = steps[currentStep]?.comparing;
+    const swapping = steps[currentStep]?.swapping;
+    const activeIndices = comparing || swapping || [];
+
+    if (activeIndices.length > 0) {
+      const midIndex = Math.floor((activeIndices[0] + activeIndices[1]) / 2);
+      const barElement = barRefs.current[midIndex];
+      if (barElement && scrollContainerRef.current) {
+        barElement.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+      }
+    }
+  }, [currentStep, steps]);
 
   const goPrevious = () => {
     setIsPlaying(false);
@@ -174,45 +194,33 @@ export default function BubbleSortVisualizer() {
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto p-6 space-y-6 bg-background text-foreground">
+    <Card className="w-full max-w-5xl mx-auto p-4 sm:p-6 space-y-6 bg-background text-foreground">
       <div className="space-y-2">
-        <Label htmlFor="input">
-          Enter numbers (comma separated, negatives allowed)
-        </Label>
-        <div className="flex gap-4">
+        <Label htmlFor="input">Enter numbers (comma separated)</Label>
+        <div className="flex flex-col sm:flex-row gap-3">
           <Input
             id="input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="e.g. 50, -20, 80, -10, 90"
+            placeholder="e.g. 50, -20, 80"
             className="flex-1"
           />
-          <Button onClick={handleSort} className="whitespace-nowrap">
-            Sort Array
-          </Button>
-          <Button
-            onClick={generateRandomArray}
-            variant="outline"
-            className="whitespace-nowrap"
-          >
-            <Dice6 className="h-5 w-5 mr-2" />
-            Random
-          </Button>
+          <div className="flex gap-3">
+            <Button onClick={handleSort} className="flex-1 sm:flex-initial">
+              Sort Array
+            </Button>
+            <Button onClick={generateRandomArray} variant="outline">
+              <Dice6 className="h-5 w-5 sm:mr-2" />
+              <span className="hidden sm:inline">Random</span>
+            </Button>
+          </div>
         </div>
       </div>
 
       <div className="space-y-6">
-        <div className="w-full rounded-xl bg-muted/40 p-8 border relative overflow-hidden">
-          <div
-            className="absolute inset-x-0 h-px bg-gray-500 z-10 hidden"
-            style={{
-              top: `${positiveRatio * 200 + 33}px`,
-              left: "2rem",
-              right: "2rem",
-            }}
-          />
+        <div className="w-full rounded-xl bg-muted/40 p-6 sm:p-8 border relative overflow-hidden">
           <span
-            className="absolute left-4 text-xs text-muted-foreground bg-muted/40 px-2 rounded z-20"
+            className="absolute left-2 sm:left-4 text-xs text-muted-foreground bg-muted/40 px-2 rounded z-20"
             style={{
               top: `${positiveRatio * 200 + 32}px`,
               transform: "translateY(-50%)",
@@ -222,43 +230,47 @@ export default function BubbleSortVisualizer() {
           </span>
 
           {hasPositive && (
-            <span className="absolute left-4 top-4 text-xs text-muted-foreground">
+            <span className="absolute left-2 sm:left-4 top-4 text-xs text-muted-foreground">
               +{maxPositive}
             </span>
           )}
           {hasNegative && (
-            <span className="absolute left-4 bottom-4 text-xs text-muted-foreground">
+            <span className="absolute left-2 sm:left-4 bottom-4 text-xs text-muted-foreground">
               -{maxNegative}
             </span>
           )}
 
-          <div className="relative h-60 w-full flex items-center justify-center gap-2 overflow-x-auto px-4">
+          <div
+            ref={scrollContainerRef}
+            className={`relative h-64 w-full flex items-center px-10 ${
+              currentArray.length < 10 ? "justify-center" : "justify-start"
+            } gap-2 ${
+              currentArray.length >= 10
+                ? "overflow-x-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-muted-foreground/30 px-2 sm:px-4"
+                : ""
+            } py-2`}
+          >
             {currentArray.map((value, index) => {
               const heightPct = getHeightPercentage(value);
               const isNegative = value < 0;
-              const barWidth = 540 / currentArray.length;
 
-              const stableKey =
-                elementKeys.get(
-                  steps[0]?.array.findIndex(
-                    (v, i) =>
-                      currentArray.indexOf(value) === index &&
-                      steps[0].array.filter(
-                        (val, idx) => idx <= i && val === value
-                      ).length ===
-                        currentArray.filter(
-                          (val, idx) => idx <= index && val === value
-                        ).length
-                  ) ?? index
-                ) ?? `fallback-${index}`;
-
+              // Dynamic width logic
+              const barWidth =
+                currentArray.length < 10
+                  ? `${100 / currentArray.length}%`
+                  : `max(40px, ${100 / currentArray.length}%)`;
               return (
                 <motion.div
-                  key={stableKey}
+                  key={elementKeys.get(index) ?? `fallback-${index}`}
                   layout
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  ref={(el) => (barRefs.current[index] = el)}
                   className="flex flex-col items-center shrink-0"
-                  style={{ width: `${barWidth}px` }}
+                  style={{
+                    width: barWidth,
+                    minWidth: currentArray.length >= 10 ? "40px" : undefined,
+                    maxWidth: currentArray.length < 10 ? "120px" : undefined, // Optional: prevent too-wide bars
+                  }}
                 >
                   <div className="relative w-full" style={{ height: "200px" }}>
                     <div
@@ -280,7 +292,7 @@ export default function BubbleSortVisualizer() {
                     />
                   </div>
 
-                  <span className="mt-2 text-sm font-bold text-foreground whitespace-nowrap">
+                  <span className="mt-2 text-sm font-semibold whitespace-nowrap">
                     {value}
                   </span>
                 </motion.div>
@@ -291,11 +303,11 @@ export default function BubbleSortVisualizer() {
 
         {steps.length > 0 && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <span className="text-sm font-medium">
                 Step {currentStep + 1} of {steps.length}
               </span>
-              <div className="flex gap-6 text-sm">
+              <div className="flex flex-wrap gap-4 text-sm justify-center sm:justify-end">
                 <span className="flex items-center gap-2">
                   <div className="w-5 h-5 rounded bg-blue-600 dark:bg-blue-400" />
                   Unsorted
@@ -326,8 +338,8 @@ export default function BubbleSortVisualizer() {
               className="w-full"
             />
 
-            <div className="flex justify-between">
-              <div className="flex items-center justify-center gap-8">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
+              <div className="flex items-center justify-center gap-4 sm:gap-8 order-2 sm:order-1">
                 <Button
                   size="icon"
                   variant="outline"
@@ -360,21 +372,16 @@ export default function BubbleSortVisualizer() {
                   <SkipForward className="h-5 w-5" />
                 </Button>
               </div>
-              <div className="relative right-0 bottom-0">
-                <Button
-                  size="lg"
-                  onClick={() => {
-                    setSpeed((prev) => {
-                      if (prev === 1) return 2;
-                      if (prev === 2) return 3;
-                      if (prev === 3) return 4;
-                      return 1;
-                    });
-                  }}
-                >
-                  {`${speed}x`}
-                </Button>
-              </div>
+
+              <Button
+                size="lg"
+                onClick={() => {
+                  setSpeed((prev) => (prev === 4 ? 1 : prev + 1));
+                }}
+                className="order-1 sm:order-2"
+              >
+                {speed}x Speed
+              </Button>
             </div>
           </div>
         )}
