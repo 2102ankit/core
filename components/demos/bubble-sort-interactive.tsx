@@ -127,18 +127,19 @@ export default function BubbleSortVisualizer() {
 
     const comparing = steps[currentStep]?.comparing;
     const swapping = steps[currentStep]?.swapping;
-    const activeIndices = comparing || swapping || [];
+    const activeIndices = comparing ?? swapping; // Use nullish coalescing
 
-    if (activeIndices.length > 0) {
-      const midIndex = Math.floor((activeIndices[0] + activeIndices[1]) / 2);
-      const barElement = barRefs.current[midIndex];
-      if (barElement && scrollContainerRef.current) {
-        barElement.scrollIntoView({
-          behavior: "smooth",
-          block: "nearest",
-          inline: "center",
-        });
-      }
+    if (!activeIndices || activeIndices.length < 2) return;
+
+    const midIndex = Math.floor((activeIndices[0] + activeIndices[1]) / 2);
+    const barElement = barRefs.current[midIndex];
+
+    if (barElement) {
+      barElement.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
     }
   }, [currentStep, steps]);
 
