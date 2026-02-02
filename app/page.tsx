@@ -10,7 +10,7 @@ export default function Home() {
         <>
           I build{" "}
           <span className={`text-blue-400 dark:text-blue-400 font-semibold`}>
-            fast, beautiful, and functional
+            fast, beautiful and functional
           </span>{" "}
           apps. This is my digital workshop - where{" "}
           <span
@@ -18,7 +18,7 @@ export default function Home() {
           >
             ideas turn into code
           </span>
-          , prototypes come alive, and learning never stops.
+          , prototypes come alive and learning never stops.
         </>
       ),
     },
@@ -69,12 +69,12 @@ export default function Home() {
     <div className="min-h-[calc(100vh-73px)] flex items-center justify-center px-6 pt-4">
       <div className="max-w-3xl mx-auto">
         <div className="space-y-8 animate-fade-in-up">
-          <div className="space-y-4">
+          <div className="space-y-8">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-zinc-950 dark:text-zinc-50 tracking-tight ">
               Hey, I&apos;m Ankit
             </h1>
 
-            <p className="text-xl sm:text-2xl text-zinc-600 dark:text-zinc-400 leading-tight max-w-3xl text-justify transition-opacity duration-500">
+            <p className="my-16 text-md sm:text-xl text-zinc-600 dark:text-zinc-400 leading-tight max-w-3xl text-justify transition-opacity duration-500">
               {sentences[0]?.text}
             </p>
           </div>
@@ -162,7 +162,7 @@ export default function Home() {
               </div>
               <div className="group">
                 <div className="text-3xl font-bold text-zinc-950 dark:text-zinc-50 group-hover:scale-105 transition-transform duration-300">
-                  15k+
+                  50k+
                 </div>
                 <div className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
                   Lines of Code
