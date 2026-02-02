@@ -29,10 +29,11 @@ const socialLinks = [
 const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/projects", label: "Projects" },
+  { href: "/work", label: "Work" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
+  { href: "/labs", label: "Labs" },
+  { href: "/reading", label: "Reading" },
 ];
 
 export function Footer() {

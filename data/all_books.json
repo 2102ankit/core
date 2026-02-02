@@ -1,0 +1,74 @@
+[
+  {
+    "id": "book-001",
+    "title": "The Almanack Of Naval Ravikant",
+    "author": "Eric Jorgenson",
+    "year": 2008,
+    "amazonUrl": "https://www.amazon.in/dp/9354893899/",
+    "thumbnail": "https://m.media-amazon.com/images/I/41VHLrvE0rL._SY522_.jpg",
+    "order_index": 0
+  },
+  {
+    "id": "book-002",
+    "title": "White Nights",
+    "author": "Fyodor Dostoyevsky",
+    "year": 1999,
+    "amazonUrl": "https://www.amazon.in/dp/0241252083",
+    "thumbnail": "https://m.media-amazon.com/images/I/41y8H3QmVqL._SL1479_.jpg",
+    "order_index": 1
+  },
+  {
+    "id": "book-003",
+    "title": "Heart Lamp: Selected Stories",
+    "author": "Dr Banu Mushtaq (Author), Deepa Bhasthi (Translator)",
+    "year": 1994,
+    "amazonUrl": "https://www.amazon.in/dp/0143464477",
+    "thumbnail": "https://m.media-amazon.com/images/I/81RZcbuw5UL._SL1500_.jpg",
+    "order_index": 2
+  },
+  {
+    "id": "book-004",
+    "title": "Metamorphosis",
+    "author": "Franz Kafka",
+    "year": 2017,
+    "amazonUrl": "https://www.amazon.in/dp/8172345135",
+    "thumbnail": "https://m.media-amazon.com/images/I/71qR+kG+43L._SL1400_.jpg",
+    "order_index": 3
+  },
+  {
+    "id": "book-005",
+    "title": "Meditations",
+    "author": "Marcus Aurelius",
+    "year": 2018,
+    "amazonUrl": "https://www.amazon.in/dp/8175994754",
+    "thumbnail": "https://m.media-amazon.com/images/I/717Y82GZwWL._SL1500_.jpg",
+    "order_index": 4
+  },
+  {
+    "id": "book-006",
+    "title": "1984",
+    "author": "George Orwell",
+    "year": 2015,
+    "amazonUrl": "https://www.amazon.in/dp/9389053730",
+    "thumbnail": "https://m.media-amazon.com/images/I/81fcLJo+FNL._SL1500_.jpg",
+    "order_index": 5
+  },
+  {
+    "id": "book-007",
+    "title": "Animal Farm",
+    "author": "George Orwell",
+    "year": 2015,
+    "amazonUrl": "https://www.amazon.in/dp/8172344392",
+    "thumbnail": "https://m.media-amazon.com/images/I/81NmSkwhq+L._SL1500_.jpg",
+    "order_index": 6
+  },
+  {
+    "id": "book-008",
+    "title": "Sapiens",
+    "author": "Yuval Noah Harari",
+    "year": 2015,
+    "amazonUrl": "https://www.amazon.in/dp/0099590085",
+    "thumbnail": "https://m.media-amazon.com/images/I/713jIoMO3UL._SL1500_.jpg",
+    "order_index": 7
+  }
+]
