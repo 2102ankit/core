@@ -5,14 +5,22 @@ import {
   ArrowUp,
   Code,
   Github,
-  LaptopMinimal,
   Linkedin,
-  Twitter,
+  X,
+  MapPin,
+  Phone,
+  Mail,
 } from "lucide-react";
 import Link from "next/link";
 
+const contactInfo = [
+  { icon: MapPin, value: "Mumbai, India" },
+  { icon: Phone, value: "+91 7738228239", href: "tel:+917738228239" },
+  { icon: Mail, value: "2102ankitm@gmail.com", href: "mailto:2102ankitm@gmail.com" },
+];
+
 const socialLinks = [
-  { href: "https://x.com/2102ankit", icon: Twitter, label: "Twitter" },
+  { href: "https://x.com/2102ankit", icon: X, label: "X" },
   {
     href: "https://linkedin.com/in/2102ankit",
     icon: Linkedin,
@@ -22,7 +30,7 @@ const socialLinks = [
   {
     href: "https://www.leetcode.com/2102ankit",
     icon: Code,
-    label: "Codeforces",
+    label: "LeetCode",
   },
 ];
 
@@ -72,6 +80,23 @@ export function Footer() {
 
           <div>
             <h3 className="font-semibold text-lg mb-4">Connect</h3>
+            <ul className="space-y-2 mb-4">
+              {contactInfo.map((info, index) => (
+                <li key={index} className="flex items-center gap-2 text-sm">
+                  <info.icon size={14} className="text-muted-foreground" />
+                  {info.href ? (
+                    <Link
+                      href={info.href}
+                      className="text-muted-foreground hover:text-foreground hover:underline transition-colors"
+                    >
+                      {info.value}
+                    </Link>
+                  ) : (
+                    <span className="text-muted-foreground">{info.value}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
             <div className="flex flex-wrap gap-3">
               {socialLinks.map((social) => (
                 <Link

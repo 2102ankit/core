@@ -1,6 +1,13 @@
 "use client";
 
-import { ArrowRight, ArrowUpRight, FileDown, Github, Mail } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  FileDown,
+  Github,
+  Mail,
+  ChevronDown,
+} from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import ProjectThumbnail from "@/components/project-thumbnail";
@@ -10,7 +17,7 @@ import { Card } from "@/components/ui/card";
 import { getFeaturedProjects, type Project } from "@/lib/data";
 import { TechBadge } from "@/components/ui/tech-badge";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const featuredSkills = [
   {
@@ -38,46 +45,6 @@ const featuredSkills = [
     icon: "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg",
   },
   {
-    name: "C++",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg",
-  },
-  {
-    name: "Java",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg",
-  },
-  {
-    name: "JavaScript",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg",
-  },
-  {
-    name: "Redux",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg",
-  },
-  {
-    name: "Express",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg",
-  },
-  {
-    name: "Spring Boot",
-    icon: "https://www.vectorlogo.zone/logos/springio/springio-icon.svg",
-  },
-  {
-    name: "Redis",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg",
-  },
-  {
-    name: "MySQL",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg",
-  },
-  {
-    name: "PostgreSQL",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg",
-  },
-  {
-    name: "SQL Server",
-    icon: "https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg",
-  },
-  {
     name: "Docker",
     icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg",
   },
@@ -85,23 +52,13 @@ const featuredSkills = [
     name: "Git",
     icon: "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg",
   },
-  {
-    name: "Linux",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg",
-  },
-  {
-    name: "Postman",
-    icon: "https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg",
-  },
-  {
-    name: "Pandas",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/2ae2a900d2f041da66e950e4d48052658d850630/icons/pandas/pandas-original.svg",
-  },
 ];
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const hasScrolled = useRef(false);
 
   useEffect(() => {
     async function loadProjects() {
@@ -115,6 +72,16 @@ export default function Home() {
       }
     }
     loadProjects();
+
+    const handleScroll = () => {
+      if (!hasScrolled.current && window.scrollY > 50) {
+        hasScrolled.current = true;
+        setShowScrollIndicator(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -123,53 +90,109 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           className="max-w-4xl mx-auto text-center"
         >
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-bold mb-12"
-          >
-            Hey, I&apos;m Ankit
-          </motion.h1>
+          <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
+            <motion.div
+              initial={{ opacity: 0.3 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.1 }}
+              className="flex-shrink-0"
+            >
+              <Image
+                src="https://avatars.githubusercontent.com/u/105378102?v=4"
+                alt="Ankit Mishra"
+                width={100}
+                height={100}
+                className="rounded-full border-4 border-foreground/10 shadow-2xl"
+                priority
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+              className="text-center md:text-left"
+            >
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1">
+                Hey
+                <motion.span
+                  animate={{ rotate: [0, 15, -5, 0] }}
+                  transition={{ duration: 0.4, delay: 0.6 }}
+                  style={{ transformOrigin: "bottom right" }}
+                  className="inline-block"
+                >
+                  👋
+                </motion.span>
+                , I&apos;m Ankit
+              </h1>
+              <p className="text-lg sm:text-lg text-muted-foreground">
+                Full-Stack Software Engineer
+              </p>
+            </motion.div>
+          </div>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-3xl leading-relaxed"
+            transition={{ delay: 0.3, duration: 0.4 }}
+            className="text-lg sm:text-xl text-muted-foreground mb-12 max-w-3xl leading-tight text-center md:text-left"
           >
-            I build{" "}
+            I build
             <span className="text-blue-400 dark:text-blue-400 font-semibold">
-              fast, beautiful and functional
-            </span>{" "}
+              {" "}
+              fast, beautiful and functional{" "}
+            </span>
             apps.
             <br />
-            This is my digital workshop - where{" "}
+            My digital workshop - where{" "}
             <span className="text-yellow-400 dark:text-yellow-400 font-semibold">
-              ideas turn into code
+              ideas turn into code.
             </span>
-            ,
-            <br />
-            prototypes come alive and learning never stops.
           </motion.p>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-12"
-          >
-            Full-Stack Software Engineer
-          </motion.p>
+          <div className="space-y-4 max-w-3xl">
+            <blockquote
+              className="relative pl-6 border-l-4 border-blue-500 dark:border-blue-400 
+                           bg-linear-to-r from-zinc-50 to-zinc-100 
+                           dark:from-zinc-800/60 dark:to-zinc-800/50 
+                           rounded-r-lg py-3 pr-6 
+                           text-base sm:text-lg text-zinc-700 dark:text-zinc-300 
+                           leading-relaxed 
+                           transition-all duration-400 hover:shadow-md"
+            >
+              <p className="relative z-10">
+                {"Currently building "}
+                <Link
+                  href="https://github.com/2102ankit/nimbus"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-medium text-blue-600 dark:text-blue-400 
+                   underline underline-offset-4 decoration-blue-400/30 dark:decoration-blue-500/30 
+                   hover:decoration-blue-400 dark:hover:decoration-blue-400 
+                   hover:text-blue-700 dark:hover:text-blue-300 
+                   transition-all duration-300 group"
+                >
+                  Datagrid
+                  <ArrowUpRight
+                    size={16}
+                    className="opacity-70 group-hover:opacity-100 
+                     group-hover:translate-x-0.5 group-hover:-translate-y-0.5 
+                     transition-all duration-300"
+                  />
+                </Link>
+                {" in React, Motion & Tanstack Table"}
+              </p>
+            </blockquote>
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto mb-6"
+            transition={{ delay: 0.7, duration: 0.6 }}
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto mt-8"
           >
             <Button asChild size="lg" className="gap-2 text-base h-12">
               <Link href="/work">
@@ -213,6 +236,31 @@ export default function Home() {
           </motion.div>
         </motion.div>
       </section>
+
+      {showScrollIndicator && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 0.5 }}
+          className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40"
+        >
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="flex flex-col items-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer opacity-60 hover:opacity-100"
+            onClick={() =>
+              window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
+            }
+          >
+            <span className="text-xs uppercase tracking-widest">Scroll</span>
+            <ChevronDown size={20} />
+          </motion.div>
+        </motion.div>
+      )}
 
       <section className="py-20">
         <motion.div
@@ -331,6 +379,57 @@ export default function Home() {
               View All Work <ArrowRight size={18} />
             </Link>
           </Button>
+        </motion.div>
+      </section>
+
+      <section className="py-16 max-w-3xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            Featured Skills
+          </h2>
+          <p className="text-muted-foreground">Technologies I work with</p>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.01,
+              },
+            },
+          }}
+          className="grid grid-cols-4 gap-4"
+        >
+          {featuredSkills.map((skill) => (
+            <motion.div
+              key={skill.name}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { duration: 0.1 },
+                },
+              }}
+              whileHover={{ scale: 1.05 }}
+              className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border bg-card hover:border-foreground/20 transition-all"
+            >
+              <Image src={skill.icon} alt={skill.name} width={32} height={32} />
+              <span className="text-xs sm:text-sm font-medium">
+                {skill.name}
+              </span>
+            </motion.div>
+          ))}
         </motion.div>
       </section>
 

@@ -1,21 +1,21 @@
 ---
 title: "Hello World: My First Blog Post"
-description: "Welcome to my blog! This is where I'll share my thoughts on development, design, and everything in between."
+description: "Welcome to my blog! This is where I'll share my thoughts on development, design and everything in between."
 date: "2025-11-02"
 # image: "/images/blog/test.jpeg"
 ---
 
 # Welcome to My Blog
 
-Hello there! 👋 This is my first blog post, and I'm excited to share my journey with you.
+Hello there! 👋 This is my first blog post and I'm excited to share my journey with you.
 
-![A beautiful workspace setup](test.jpeg)   
+![A beautiful workspace setup](test.jpeg)
 
 ## What This Blog Is About
 
-I created this blog to share my experiences, learnings, and thoughts on:
+I created this blog to share my experiences, learnings and thoughts on:
 
-- **Web Development**: Modern frameworks, best practices, and emerging technologies
+- **Web Development**: Modern frameworks, best practices and emerging technologies
 - **Design Engineering**: The intersection of design and code
 - **Personal Projects**: Building things that matter
 - **Learning in Public**: Documenting my journey as a developer
@@ -45,5 +45,5 @@ Stay tuned for more content. You can follow me on [Twitter](https://x.com/2102an
 Thanks for reading! 🚀
 
 ---
-_This is just the beginning. Let's build something amazing together._
----
+
+## _This is just the beginning. Let's build something amazing together._

@@ -24,112 +24,6 @@ import Image from "next/image";
 import { TechBadge } from "@/components/ui/tech-badge";
 import { useEffect, useRef, useState } from "react";
 
-const skills = [
-  {
-    name: "C++",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg",
-  },
-  {
-    name: "Java",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg",
-  },
-  {
-    name: "JavaScript",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg",
-  },
-  {
-    name: "TypeScript",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
-  },
-  {
-    name: "Python",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg",
-  },
-  {
-    name: "React",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
-  },
-  {
-    name: "Redux",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg",
-  },
-  {
-    name: "Tailwind",
-    icon: "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg",
-  },
-  {
-    name: "Node.js",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg",
-  },
-  {
-    name: "Express",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg",
-  },
-  {
-    name: "Spring Boot",
-    icon: "https://www.vectorlogo.zone/logos/springio/springio-icon.svg",
-  },
-  {
-    name: "MongoDB",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg",
-  },
-  {
-    name: "Redis",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg",
-  },
-  {
-    name: "MySQL",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg",
-  },
-  {
-    name: "PostgreSQL",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg",
-  },
-  {
-    name: "SQL Server",
-    icon: "https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg",
-  },
-  {
-    name: "Docker",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg",
-  },
-  {
-    name: "Git",
-    icon: "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg",
-  },
-  {
-    name: "Linux",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg",
-  },
-  {
-    name: "Postman",
-    icon: "https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg",
-  },
-  {
-    name: "Pandas",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/2ae2a900d2f041da66e950e4d48052658d850630/icons/pandas/pandas-original.svg",
-  },
-];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
-};
-
 export default function WorkPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -175,11 +69,13 @@ export default function WorkPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center"
         >
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Work</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A collection of my work showcasing various technologies and
+            A collection of my work showcasing various technologies
+            <br/>
+            and
             problem-solving approaches
           </p>
         </motion.div>
@@ -215,34 +111,34 @@ export default function WorkPage() {
             ))}
           </div>
         ) : (
-          <div className="relative">
+          <div className="relative overflow-hidden">
             <motion.div
-              className="flex gap-6"
-              animate={{ x: [0, -((projects.length * 340)) / 2] }}
+              className="flex gap-6 w-max hover:paused"
+              animate={{ x: [0, -(projects.length * 320)] }}
               transition={{
-                duration: 40,
+                duration: projects.length * 4,
                 repeat: Infinity,
                 ease: "linear",
               }}
             >
-               {[...marqueeProjects, ...marqueeProjects].map((project, index) => (
+              {[...projects, ...projects, ...projects, ...projects].map((project, index) => (
                 <Card
                   key={`${project.id}-${index}`}
-                  className="w-[360px] flex-shrink-0 hover:border-foreground/20 transition-all pt-0"
+                  className="w-[320px] shrink-0 hover:border-foreground/20 transition-all pt-0"
                 >
-                  <div className="relative h-48 bg-muted/50 flex items-center justify-center text-xl font-medium border-b rounded-t-xl overflow-hidden">
+                  <div className="relative h-48 bg-muted/50 flex items-center justify-center text-xl font-medium border-b rounded-t-xl overflow-hidden group-hover:scale-105 transition-transform duration-300">
                     <ProjectThumbnail
                       src={project.thumbnail}
                       alt={project.title || "Project thumbnail"}
                       variant="cover"
                     />
                   </div>
-                  <div className="p-6 flex-1 flex flex-col">
-                    <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                  <div className="p-4 py-3 flex-1 flex flex-col">
+                    <h3 className="text-lg font-semibold mb-1">{project.title}</h3>
+                    <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
                       {project.description}
                     </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex flex-wrap gap-1 mb-3">
                       {project.tags.slice(0, 3).map((tag) => (
                         <Badge key={tag} variant="secondary" className="text-xs">
                           {tag}
@@ -262,6 +158,7 @@ export default function WorkPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
+                            Github
                             <Github size={14} />
                           </Link>
                         </Button>
@@ -288,41 +185,6 @@ export default function WorkPage() {
             </motion.div>
           </div>
         )}
-      </section>
-
-      <section className="py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mb-12"
-        >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6">Skills & Technologies</h2>
-        </motion.div>
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
-        >
-          {skills.map((skill) => (
-            <motion.div
-              key={skill.name}
-              variants={itemVariants}
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-3 p-4 rounded-lg border border-border bg-card hover:border-foreground/20 transition-all"
-            >
-              <Image
-                src={skill.icon}
-                alt={skill.name}
-                width={24}
-                height={24}
-              />
-              <span className="font-medium">{skill.name}</span>
-            </motion.div>
-          ))}
-        </motion.div>
       </section>
 
       <section className="py-12">
@@ -441,6 +303,30 @@ export default function WorkPage() {
               No projects found matching the selected filters.
             </motion.div>
           )}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="mt-12 pt-8 border-t border-border"
+        >
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-6 text-center">
+            Explore more of my work and experiments
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Button asChild variant="outline" className="gap-2">
+              <Link href="/labs">
+                Labs <ArrowUpRight size={16} />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="gap-2">
+              <Link href="/blog">
+                Blog <ArrowUpRight size={16} />
+              </Link>
+            </Button>
+          </div>
         </motion.div>
       </section>
     </div>

@@ -151,6 +151,77 @@ export default function AboutPage() {
           </div>
         </motion.div>
 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-20"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6">Skills & Technologies</h2>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.02,
+                },
+              },
+            }}
+            className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4"
+          >
+            {[
+              { name: "C++", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" },
+              { name: "Java", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" },
+              { name: "JavaScript", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" },
+              { name: "TypeScript", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" },
+              { name: "Python", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" },
+              { name: "React", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" },
+              { name: "Redux", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" },
+              { name: "Tailwind", icon: "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" },
+              { name: "Node.js", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" },
+              { name: "Express", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg" },
+              { name: "Spring Boot", icon: "https://www.vectorlogo.zone/logos/springio/springio-icon.svg" },
+              { name: "MongoDB", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg" },
+              { name: "Redis", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg" },
+              { name: "MySQL", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg" },
+              { name: "PostgreSQL", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg" },
+              { name: "SQL Server", icon: "https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" },
+              { name: "Docker", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" },
+              { name: "Git", icon: "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" },
+              { name: "Linux", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" },
+              { name: "Postman", icon: "https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" },
+              { name: "Pandas", icon: "https://raw.githubusercontent.com/devicons/devicon/2ae2a900d2f041da66e950e4d48052658d850630/icons/pandas/pandas-original.svg" },
+            ].map((skill) => (
+              <motion.div
+                key={skill.name}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.3 },
+                  },
+                }}
+                whileHover={{ scale: 1.05 }}
+                className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border bg-card hover:border-foreground/20 transition-all"
+              >
+                <Image
+                  src={skill.icon}
+                  alt={skill.name}
+                  width={32}
+                  height={32}
+                />
+                <span className="text-xs sm:text-sm font-medium text-center whitespace-nowrap">{skill.name}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20 pl-4">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -165,7 +236,7 @@ export default function AboutPage() {
             <div className="space-y-4 text-muted-foreground">
               <p>
                 I&apos;m a Software Engineer at ISS-Stoxx, crafting slick
-                full-stack solutions with React, Python, and Spring Boot.
+                full-stack solutions with React, Python and Spring Boot.
               </p>
               <p>
                 I live for clean, scalable code and turning complex problems

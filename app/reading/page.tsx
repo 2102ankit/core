@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { Card } from "@/components/ui/card";
-import ProjectThumbnail from "@/components/project-thumbnail";
+import { Bookshelf } from "@/components/bookshelf";
 
 interface Book {
   id: string;
@@ -57,7 +56,7 @@ export default async function ReadingPage() {
   const blogs = parseMarkdownLinks(blogsRaw);
 
   return (
-    <div className="min-h-[calc(100vh-73px)] py-16 px-6 page-transition">
+    <div className="min-h-[calc(100vh-73px)] pt-16 px-6 page-transition">
       <div className="max-w-3xl mx-auto">
         <div className="mb-12 opacity-0 animate-fade-in-up">
           <h1 className="text-4xl sm:text-5xl font-bold text-zinc-950 dark:text-zinc-50 mb-4">
@@ -68,47 +67,12 @@ export default async function ReadingPage() {
           </p>
         </div>
 
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-zinc-950 dark:text-zinc-50">
-            Bookshelf
-            {books && <>{` (${books.length})`}</>}
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
-            {books.map((book, index) => (
-              <a
-                key={book.id}
-                href={book.amazonUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block opacity-0 animate-fade-in-up h-50"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <Card className="h-full hover:border-zinc-300 dark:hover:border-zinc-600 transition-all pt-0 overflow-hidden p-0 gap-0 rounded-sm">
-                  <div className="relative aspect-5/6 bg-zinc-100 dark:bg-zinc-800">
-                    <ProjectThumbnail
-                      src={book.thumbnail}
-                      alt={book.title}
-                      variant="cover"
-                    />
-                  </div>
-                  <div className="p-3">
-                    <h3 className="font-semibold text-sm mb-1 line-clamp-2 text-zinc-950 dark:text-zinc-50 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors min-h-6">
-                      {book.title}
-                    </h3>
-                    <p className="text-xs text-zinc-600 dark:text-zinc-400">
-                      {book.author}
-                    </p>
-                  </div>
-                </Card>
-              </a>
-            ))}
-          </div>
-        </section>
+        <Bookshelf books={books} />
 
         <section className="mb-12">
           <h2 className="text-2xl font-bold mb-4 text-zinc-950 dark:text-zinc-50">
             White Papers
-            {whitepapers && <>{` (${whitepapers.length})`}</>}
+            {whitepapers.length > 0 && <>{` (${whitepapers.length})`}</>}
           </h2>
           <ul className="list-disc list-inside space-y-2 pl-2 text-zinc-950 dark:text-zinc-50">
             {whitepapers.map((paper, index) => (
@@ -133,7 +97,7 @@ export default async function ReadingPage() {
         <section className="mb-12">
           <h2 className="text-2xl font-bold mb-4 text-zinc-950 dark:text-zinc-50">
             Blogs I Follow
-            {blogs && <>{` (${blogs.length})`}</>}
+            {blogs.length > 0 && <>{` (${blogs.length})`}</>}
           </h2>
           <ul className="list-disc list-inside space-y-2 pl-2 text-zinc-950 dark:text-zinc-50">
             {blogs.map((blog, index) => (

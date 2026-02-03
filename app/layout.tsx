@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     title: "Ankit Mishra",
     siteName: "Ankit Mishra's Personal Website",
     description:
-      "Full-Stack Developer specializing in MERN, Python, and Spring Boot",
+      "Full-Stack Developer specializing in MERN, Python and Spring Boot",
     type: "website",
   },
 };

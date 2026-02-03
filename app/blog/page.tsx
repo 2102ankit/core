@@ -1,9 +1,10 @@
 import { getAllBlogPaths } from "@/lib/markdown";
 import fs from "fs";
 import matter from "gray-matter";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import path from "path";
+import { Button } from "@/components/ui/button";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
 
@@ -57,18 +58,18 @@ export default async function BlogIndex() {
       } catch (error) {
         console.error(
           `Failed to parse frontmatter for slug: ${slug} (${usedPath})`,
-          error
+          error,
         );
         // return {
         //   slug,
         //   frontmatter: { title: "Untitled" }, // Fallback
         // };
       }
-    })
+    }),
   );
 
   const posts = allPosts.filter(
-    (post): post is NonNullable<typeof post> => post !== null
+    (post): post is NonNullable<typeof post> => post !== null,
   );
   // Sort by date (newest first)
   posts.sort((a, b) => {
@@ -85,7 +86,7 @@ export default async function BlogIndex() {
             Blog
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400">
-            Thoughts, stories, and ideas about technology, design, and life.
+            Thoughts, stories and ideas about technology, design and life.
           </p>
         </div>
 
@@ -126,6 +127,19 @@ export default async function BlogIndex() {
             </p>
           </div>
         )}
+      </div>
+
+      <div className="mt-12 pt-8 border-t border-border opacity-0 animate-fade-in-up" style={{ animationDelay: `${posts.length * 100 + 300}ms` }}>
+        <p className="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-6 text-center">
+          Explore my reading list and book recommendations
+        </p>
+        <div className="flex gap-4 justify-center">
+          <Button asChild variant="outline" className="gap-2">
+            <Link href="/reading">
+              Reading List <ArrowRight size={16} />
+            </Link>
+          </Button>
+        </div>
       </div>
     </div>
   );
