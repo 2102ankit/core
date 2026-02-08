@@ -60,7 +60,7 @@ const contactInfo = [
   },
 ];
 
-const socialLinks = [
+const socialLinks: { href: string; icon: React.ElementType; label: string }[] = [
   // { href: "https://x.com/2102ankit", icon: X, label: "X" },
   // {
   //   href: "https://linkedin.com/in/2102ankit",
