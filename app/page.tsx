@@ -105,7 +105,7 @@ export default function Home() {
                 alt="Ankit Mishra"
                 width={100}
                 height={100}
-                className="rounded-full border-4 border-foreground/10 shadow-2xl"
+                className="rounded-full border-4 border-foreground/10"
                 priority
               />
             </motion.div>
@@ -119,8 +119,8 @@ export default function Home() {
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1">
                 Hey
                 <motion.span
-                  animate={{ rotate: [0, 15, -5, 0] }}
-                  transition={{ duration: 0.4, delay: 0.6 }}
+                  animate={{ rotate: [0, 15, -5, 15, -5, 0] }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
                   style={{ transformOrigin: "bottom right" }}
                   className="inline-block"
                 >
@@ -141,14 +141,14 @@ export default function Home() {
             className="text-lg sm:text-xl text-muted-foreground mb-12 max-w-3xl leading-tight text-center md:text-left"
           >
             I build
-            <span className="text-blue-400 dark:text-blue-400 font-semibold">
+            <span className="text-blue-500 dark:text-blue-400 font-semibold">
               {" "}
               fast, beautiful and functional{" "}
             </span>
             apps.
             <br />
             My digital workshop - where{" "}
-            <span className="text-yellow-400 dark:text-yellow-400 font-semibold">
+            <span className="text-yellow-500 dark:text-yellow-400 font-semibold">
               ideas turn into code.
             </span>
           </motion.p>
@@ -216,7 +216,8 @@ export default function Home() {
               className="gap-2 text-base h-12"
             >
               <Link href="/downloads/resume.pdf">
-                <FileDown size={18} /> View Resume
+                View Resume
+                <FileDown size={18} />
               </Link>
             </Button>
             <Button
@@ -382,7 +383,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <section className="py-16 max-w-3xl mx-auto">
+      <section className="py-16 max-w-3xl mx-auto px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

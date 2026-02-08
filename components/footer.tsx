@@ -10,28 +10,69 @@ import {
   MapPin,
   Phone,
   Mail,
+  TwitterIcon,
 } from "lucide-react";
 import Link from "next/link";
 
 const contactInfo = [
-  { icon: MapPin, value: "Mumbai, India" },
-  { icon: Phone, value: "+91 7738228239", href: "tel:+917738228239" },
-  { icon: Mail, value: "2102ankitm@gmail.com", href: "mailto:2102ankitm@gmail.com" },
+  { icon: MapPin, size: 16, ml: 0, value: "Mumbai, India" },
+  {
+    icon: Phone,
+    size: 14,
+    ml: 0.5,
+    value: "+91 7738228239",
+    href: "tel:+917738228239",
+  },
+  {
+    icon: Mail,
+    size: 14,
+    ml: 0.5,
+    value: "2102ankitm@gmail.com",
+    href: "mailto:2102ankitm@gmail.com",
+  },
+  {
+    icon: TwitterIcon,
+    size: 14,
+    ml: 0.5,
+    value: "X (formerly Twitter)",
+    href: "https://x.com/2102ankit",
+  },
+  {
+    icon: Linkedin,
+    size: 14,
+    ml: 0.5,
+    value: "Linkedin",
+    href: "https://linkedin.com/in/2102ankit",
+  },
+  {
+    icon: Github,
+    size: 14,
+    ml: 0.5,
+    value: "Github",
+    href: "https://linkedin.com/in/2102ankit",
+  },
+  {
+    icon: Code,
+    size: 14,
+    ml: 0.5,
+    value: "LeetCode",
+    href: "https://www.leetcode.com/2102ankit",
+  },
 ];
 
 const socialLinks = [
-  { href: "https://x.com/2102ankit", icon: X, label: "X" },
-  {
-    href: "https://linkedin.com/in/2102ankit",
-    icon: Linkedin,
-    label: "LinkedIn",
-  },
-  { href: "https://github.com/2102ankit", icon: Github, label: "GitHub" },
-  {
-    href: "https://www.leetcode.com/2102ankit",
-    icon: Code,
-    label: "LeetCode",
-  },
+  // { href: "https://x.com/2102ankit", icon: X, label: "X" },
+  // {
+  //   href: "https://linkedin.com/in/2102ankit",
+  //   icon: Linkedin,
+  //   label: "LinkedIn",
+  // },
+  // { href: "https://github.com/2102ankit", icon: Github, label: "GitHub" },
+  // {
+  //   href: "https://www.leetcode.com/2102ankit",
+  //   icon: Code,
+  //   label: "LeetCode",
+  // },
 ];
 
 const links = [
@@ -83,7 +124,10 @@ export function Footer() {
             <ul className="space-y-2 mb-4">
               {contactInfo.map((info, index) => (
                 <li key={index} className="flex items-center gap-2 text-sm">
-                  <info.icon size={14} className="text-muted-foreground" />
+                  <info.icon
+                    size={info.size}
+                    className={`text-muted-foreground ml-${info.ml}`}
+                  />
                   {info.href ? (
                     <Link
                       href={info.href}

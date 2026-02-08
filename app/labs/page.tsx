@@ -1,11 +1,23 @@
 "use client";
 
-import { ArrowUpRight, Github, X, Code2, Sparkles, Layers, ExternalLink } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import {
+  BubbleSortInteractive,
+  KaleidoscopeViewer,
+  LeatherButtonFinal,
+} from "@/components/demos/demo-exports";
 import { Badge } from "@/components/ui/badge";
-import { motion, AnimatePresence } from "framer-motion";
+import { Card } from "@/components/ui/card";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  ArrowUpRight,
+  Code2,
+  ExternalLink,
+  Github,
+  Layers,
+  Sparkles,
+  X,
+} from "lucide-react";
 import Link from "next/link";
-import { BubbleSortInteractive, LeatherButtonFinal } from "@/components/demos/demo-exports";
 import { useState } from "react";
 
 const demos = [
@@ -15,7 +27,7 @@ const demos = [
     description: "Interactive visualization of sorting algorithms",
     tech: ["React", "Framer Motion"],
     component: BubbleSortInteractive,
-    github: "https://github.com/2102ankit/nimbus",
+    github: null,
     span: "col-span-2 row-span-1",
   },
   {
@@ -24,8 +36,18 @@ const demos = [
     description: "Micro-interactions for realistic button states",
     tech: ["React", "Motion"],
     component: LeatherButtonFinal,
-    github: "https://github.com/2102ankit/nimbus",
+    github: null,
     span: "col-span-1 row-span-1",
+  },
+  {
+    id: "kaleidoscpoe",
+    title: "Kaleidoscope",
+    description:
+      "Kaleidoscope built with Three.js – Symmetric patterns, mouse/touch control, colorful reflections.",
+    tech: ["React", "ThreeJs"],
+    component: KaleidoscopeViewer,
+    github: null,
+    span: "col-span-3 row-span-1",
   },
   {
     id: "particle-effects",
@@ -46,6 +68,8 @@ const demos = [
     span: "col-span-2 row-span-1",
   },
 ];
+
+const showComponents = false;
 
 const components = [
   {
@@ -79,7 +103,9 @@ const components = [
 ];
 
 export default function LabsPage() {
-  const [selectedDemo, setSelectedDemo] = useState<(typeof demos)[0] | null>(null);
+  const [selectedDemo, setSelectedDemo] = useState<(typeof demos)[0] | null>(
+    null,
+  );
 
   return (
     <>
@@ -120,7 +146,9 @@ export default function LabsPage() {
                   )}
                   <div className="flex flex-col h-full">
                     <h3 className="text-xl font-semibold mb-2">{demo.title}</h3>
-                    <p className="text-muted-foreground mb-4 flex-1 leading-tight">{demo.description}</p>
+                    <p className="text-muted-foreground mb-4 flex-1 leading-tight">
+                      {demo.description}
+                    </p>
                     <div className="flex flex-wrap gap-2 mb-4">
                       {demo.tech.map((t) => (
                         <Badge key={t} variant="secondary" className="text-xs">
@@ -128,7 +156,7 @@ export default function LabsPage() {
                         </Badge>
                       ))}
                     </div>
-                    {!demo.comingSoon && (
+                    {!demo.comingSoon && demo.github && (
                       <Link
                         href={demo.github}
                         target="_blank"
@@ -146,36 +174,40 @@ export default function LabsPage() {
           </div>
         </section>
 
-        <section className="mb-16">
-          <h2 className="text-2xl font-bold mb-6">UI Components</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {components.map((comp, index) => (
-              <motion.div
-                key={comp.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + index * 0.05 }}
-              >
-                <Card className="p-4 hover:border-foreground/20 transition-all h-full">
-                  <div className={`flex items-center gap-2 mb-2 ${comp.color}`}>
-                    <comp.icon size={20} />
-                    <h3 className="font-semibold">{comp.title}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-3">
-                    {comp.description}
-                  </p>
-                  <div className="flex flex-wrap gap-1">
-                    {comp.tech.map((t) => (
-                      <Badge key={t} variant="outline" className="text-xs">
-                        {t}
-                      </Badge>
-                    ))}
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </section>
+        {showComponents && (
+          <section className="mb-16">
+            <h2 className="text-2xl font-bold mb-6">UI Components</h2>
+            <div className="grid grid-cols-2 gap-4">
+              {components.map((comp, index) => (
+                <motion.div
+                  key={comp.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + index * 0.05 }}
+                >
+                  <Card className="p-4 hover:border-foreground/20 transition-all h-full">
+                    <div
+                      className={`flex items-center gap-2 mb-2 ${comp.color}`}
+                    >
+                      <comp.icon size={20} />
+                      <h3 className="font-semibold">{comp.title}</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {comp.description}
+                    </p>
+                    <div className="flex flex-wrap gap-1">
+                      {comp.tech.map((t) => (
+                        <Badge key={t} variant="outline" className="text-xs">
+                          {t}
+                        </Badge>
+                      ))}
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
 
         <motion.div
           initial={{ opacity: 0 }}
@@ -184,9 +216,9 @@ export default function LabsPage() {
           className="mt-12 mb-12 text-center"
         >
           <p className="text-sm text-muted-foreground">
-            This is my playground for quick experiments and component libraries. 
-            Some demos are embedded directly, while others link to live previews or 
-            repositories. More experiments coming soon!
+            This is my playground for quick experiments and component libraries.
+            Some demos are embedded directly, while others link to live previews
+            or repositories. More experiments coming soon!
           </p>
         </motion.div>
       </div>
@@ -203,12 +235,14 @@ export default function LabsPage() {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="h-full w-full max-w-5xl mx-auto flex flex-col p-6"
+              className="h-full w-full max-w-6xl mx-auto flex flex-col p-6"
             >
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-2xl font-bold">{selectedDemo.title}</h2>
-                  <p className="text-muted-foreground">{selectedDemo.description}</p>
+                  <p className="text-muted-foreground">
+                    {selectedDemo.description}
+                  </p>
                 </div>
                 <button
                   onClick={() => setSelectedDemo(null)}
@@ -221,16 +255,19 @@ export default function LabsPage() {
               <div className="flex-1 border rounded-lg bg-muted/20 overflow-auto flex justify-center">
                 {selectedDemo.component && <selectedDemo.component />}
               </div>
-              <div className="flex gap-4 mt-6 justify-center">
-                <Link
-                  href={selectedDemo.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border hover:bg-accent transition-colors"
-                >
-                  <Github size={18} /> View on GitHub <ArrowUpRight size={14} />
-                </Link>
-              </div>
+              {!!selectedDemo.github && (
+                <div className="flex gap-4 mt-6 justify-center">
+                  <Link
+                    href={selectedDemo.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border hover:bg-accent transition-colors duration-300"
+                  >
+                    <Github size={18} /> View on GitHub{" "}
+                    <ArrowUpRight size={14} />
+                  </Link>
+                </div>
+              )}
             </motion.div>
           </motion.div>
         )}

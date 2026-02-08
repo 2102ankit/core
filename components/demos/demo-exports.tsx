@@ -3,5 +3,11 @@
 import LeatherButtonFinal from "./leather-button-final";
 import LeatherButtonStage from "./leather-button-stages";
 import BubbleSortInteractive from "./bubble-sort-interactive";
+import KaleidoscopeViewer from "./kaleidoscope";
 
-export { LeatherButtonFinal, LeatherButtonStage, BubbleSortInteractive };
+export {
+  LeatherButtonFinal,
+  LeatherButtonStage,
+  BubbleSortInteractive,
+  KaleidoscopeViewer,
+};

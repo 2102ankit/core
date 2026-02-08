@@ -44,7 +44,7 @@ export function Bookshelf({ books }: BookshelfProps) {
             style={{ animationDelay: `${index * 50}ms` }}
           >
             <Card className="h-full hover:border-zinc-300 dark:hover:border-zinc-600 transition-all pt-0 overflow-hidden p-0 gap-0 rounded-sm">
-              <div className="relative aspect-5/6 bg-zinc-100 dark:bg-zinc-800">
+              <div className="relative aspect-2/3 bg-zinc-100 dark:bg-zinc-800">
                 <ProjectThumbnail
                   src={book.thumbnail}
                   alt={book.title}

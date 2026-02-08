@@ -1,8 +1,11 @@
-[Kent C. Dodds](https://kentcdodds.com/blog)
-
-[Dan Abramov](https://overreacted.io)
-
-[Josh Comeau](https://www.joshwcomeau.com)
-
 [Lee Robinson](https://leerob.io)
-
+[Eric Zhang](https://notes.ekzhang.com/)
+[Hussein Naseer](https://hnasr.substack.com/)
+[Sean Goedecke](https://www.seangoedecke.com/)
+[Nat Friedman](https://nat.org/)
+[Guillermo Rauch](https://rauchg.com/)
+[Justin Duke](https://www.jmduke.com/)
+[Kiko Beats](https://kikobeats.com/blog)
+[Chánh Đại](https://chanhdai.com/blog)
+[Mike Bostock](https://bost.ocks.org/mike/)
+[User Interface Wiki](https://www.userinterface.wiki/)

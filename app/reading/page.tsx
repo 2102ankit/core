@@ -71,7 +71,7 @@ export default async function ReadingPage() {
 
         <section className="mb-12">
           <h2 className="text-2xl font-bold mb-4 text-zinc-950 dark:text-zinc-50">
-            White Papers
+            White Papers I have read
             {whitepapers.length > 0 && <>{` (${whitepapers.length})`}</>}
           </h2>
           <ul className="list-disc list-inside space-y-2 pl-2 text-zinc-950 dark:text-zinc-50">

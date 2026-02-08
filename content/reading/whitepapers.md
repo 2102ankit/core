@@ -1,4 +1,3 @@
-[Attention Is All You Need](https://arxiv.org/abs/1706.03762)
-[BERT: Pre-training of Deep Bidirectional Transformers](https://arxiv.org/abs/1810.04805)
-[ResNet: Deep Residual Learning](https://arxiv.org/abs/1512.03385)
-[GPT-4 Technical Report](https://arxiv.org/abs/2303.08774)
+[Bitcoin: A Peer-to-Peer Electronic Cash System](https://drive.google.com/file/d/15Fs2CSDqrtYHWwjuIvgf7XtZuI024f3O/view?usp=drive_link)
+[Recommendation systems: Principles, methods and evaluation](https://drive.google.com/file/d/18JocrTs0tOhj_-3KnZfkcVoCLaPRTx68/view?usp=drive_link)
+[A Survey of Recommendation Systems](https://drive.google.com/file/d/1hz1pqUADTBLyXjy2fhf0hTeRCpBYIpkc/view?usp=drive_link)
