@@ -4,6 +4,7 @@ import {
   BubbleSortInteractive,
   KaleidoscopeViewer,
   LeatherButtonFinal,
+  HighlightedInputDemo,
 } from "@/components/demos/demo-exports";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -59,13 +60,23 @@ const demos = [
     span: "col-span-1 row-span-1",
   },
   {
+    id: "highlighted-input",
+    title: "Highlighted Input",
+    description:
+      "Input Filed to Highlight specific words. Control colors, bold, italic and case sensitivity",
+    tech: ["React"],
+    component: HighlightedInputDemo,
+    github: null,
+    span: "col-span-2 row-span-1",
+  },
+  {
     id: "3d-transform",
     title: "3D Transform Demo",
     description: "CSS 3D transforms and perspective",
     tech: ["CSS", "Three.js"],
     comingSoon: true,
     github: "https://github.com/2102ankit",
-    span: "col-span-2 row-span-1",
+    span: "col-span-3 row-span-1",
   },
 ];
 
