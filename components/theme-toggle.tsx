@@ -40,7 +40,13 @@ export function ThemeToggle() {
     if (!mounted) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "d" || e.key === "D") {
+      const target = e.target as HTMLElement;
+      const isInputField =
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable;
+
+      if (e.key === "d" && !isInputField) {
         toggleTheme();
       }
     };
