@@ -2,9 +2,9 @@
 
 import {
   BubbleSortInteractive,
+  HighlightedInputDemo,
   KaleidoscopeViewer,
   LeatherButtonFinal,
-  HighlightedInputDemo,
 } from "@/components/demos/demo-exports";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -19,7 +19,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const demos = [
   {
@@ -117,6 +117,35 @@ export default function LabsPage() {
   const [selectedDemo, setSelectedDemo] = useState<(typeof demos)[0] | null>(
     null,
   );
+
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      const demo = demos.find((d) => d.id === hash);
+      if (demo && !demo.comingSoon) {
+        setSelectedDemo(demo);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedDemo) {
+      window.history.pushState(null, "", `#${selectedDemo.id}`);
+    } else {
+      window.history.pushState(null, "", window.location.pathname);
+    }
+  }, [selectedDemo]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const hash = window.location.hash.slice(1);
+      const demo = demos.find((d) => d.id === hash);
+      setSelectedDemo(demo && !demo.comingSoon ? demo : null);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   return (
     <>
