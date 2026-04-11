@@ -49,7 +49,7 @@ const contactInfo = [
     size: 14,
     ml: 0.5,
     value: "Github",
-    href: "https://linkedin.com/in/2102ankit",
+    href: "https://github.com/2102ankit",
   },
   {
     icon: Code,
