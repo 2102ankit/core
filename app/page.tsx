@@ -86,7 +86,7 @@ export default function Home() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <section className="min-h-[calc(100vh-5rem)] flex items-center justify-center">
+      <section className="pt-8 md:pt-16 pb-12 md:pb-20  flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -98,7 +98,7 @@ export default function Home() {
               initial={{ opacity: 0.3 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.1 }}
-              className="flex-shrink-0"
+              className="shrink-0"
             >
               <Image
                 src="https://avatars.githubusercontent.com/u/105378102?v=4"
@@ -121,8 +121,12 @@ export default function Home() {
                 <motion.span
                   animate={{ rotate: [0, 15, -5, 15, -5, 0] }}
                   transition={{ duration: 0.8, delay: 0.6 }}
+                  whileHover={{ 
+                    rotate: [0, 15, -5, 15, -5, 0],
+                    transition: { duration: 0.6, delay: 0.1 }
+                  }}
                   style={{ transformOrigin: "bottom right" }}
-                  className="inline-block"
+                  className="inline-block cursor-default"
                 >
                   👋
                 </motion.span>
@@ -169,7 +173,7 @@ export default function Home() {
                   href="https://github.com/2102ankit/nimbus"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 font-medium text-blue-600 dark:text-blue-400 
+                  className="inline-flex items-center gap-0.5 font-medium text-blue-600 dark:text-blue-400 
                    underline underline-offset-4 decoration-blue-400/30 dark:decoration-blue-500/30 
                    hover:decoration-blue-400 dark:hover:decoration-blue-400 
                    hover:text-blue-700 dark:hover:text-blue-300 
@@ -194,19 +198,21 @@ export default function Home() {
             transition={{ delay: 0.7, duration: 0.6 }}
             className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto mt-8"
           >
-            <Button asChild size="lg" className="gap-2 text-base h-12">
+            <Button asChild size="lg" className="gap-2 text-base h-12 group">
               <Link href="/work">
-                See My Work <ArrowRight size={18} />
+                See My Work 
+                <ArrowRight size={18} className="opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
               </Link>
             </Button>
             <Button
               asChild
               variant="outline"
               size="lg"
-              className="gap-2 text-base h-12"
+              className="gap-2 text-base h-12 group"
             >
               <Link href="/contact">
-                Get in Touch <Mail size={18} />
+                Get in Touch 
+                <Mail size={18} className="opacity-70 group-hover:opacity-100 transition-all duration-300" />
               </Link>
             </Button>
             <Button
@@ -224,14 +230,16 @@ export default function Home() {
               asChild
               variant="secondary"
               size="lg"
-              className="gap-2 text-base h-12"
+              className="gap-2 text-base h-12 group"
             >
               <Link
                 href="https://github.com/2102ankit"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Github size={18} /> GitHub <ArrowUpRight size={18} />
+                <Github size={18} /> 
+                GitHub 
+                <ArrowUpRight size={18} className="opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
               </Link>
             </Button>
           </motion.div>
@@ -450,12 +458,21 @@ export default function Home() {
             from you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="gap-2">
+            <Button
+              asChild
+              size="lg"
+              className="gap-2 border-2 hover:border-foreground/80 shadow-sm hover:shadow-md transition-all"
+            >
               <Link href="/contact">
                 Get in Touch <Mail size={18} />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="gap-2">
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="gap-2 border-2 hover:border-foreground/80 shadow-sm hover:shadow-md transition-all"
+            >
               <Link href="/work">
                 View My Work <ArrowRight size={18} />
               </Link>
