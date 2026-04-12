@@ -91,7 +91,7 @@ export default function BubbleSortVisualizer() {
     const sortSteps = generateSteps(nums);
     setSteps(sortSteps);
     setCurrentStep(0);
-    setIsPlaying(false);
+    setIsPlaying(true);
   };
 
   const generateRandomArray = () => {
@@ -317,7 +317,9 @@ export default function BubbleSortVisualizer() {
                     <div
                       className={`absolute w-full ${getBarColor(
                         index
-                      )} rounded-md transition-colors duration-300`}
+                      )} rounded-md transition-colors duration-300 
+                      ${isNegative && `bg-[repeating-linear-gradient(-45deg,#e5e7eb_0,#e5e7eb_2px,transparent_1px,transparent_32px)]`}
+                      `}
                       style={{
                         height: `${Math.abs(heightPct)}px`,
                         left: 0,
@@ -375,7 +377,7 @@ export default function BubbleSortVisualizer() {
               className="w-full"
             />
 
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-6 py-4!">
               <div className="flex items-center justify-center gap-4 sm:gap-8 order-2 sm:order-1">
                 <Button
                   size="icon"
