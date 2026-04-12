@@ -29,28 +29,32 @@ const featuredSkills = [
     icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
   },
   {
-    name: "Node.js",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg",
+    name: "Tailwind",
+    icon: "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg",
+  },
+  {
+    name: "SQL Server",
+    icon: "https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg",
   },
   {
     name: "Python",
     icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg",
   },
   {
-    name: "MongoDB",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg",
+    name: "Spring Boot",
+    icon: "https://www.vectorlogo.zone/logos/springio/springio-icon.svg",
   },
   {
-    name: "Tailwind",
-    icon: "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg",
+    name: "MongoDB",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg",
   },
   {
     name: "Docker",
     icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg",
   },
   {
-    name: "Git",
-    icon: "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg",
+    name: "Redis",
+    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg",
   },
 ];
 
@@ -121,9 +125,9 @@ export default function Home() {
                 <motion.span
                   animate={{ rotate: [0, 15, -5, 15, -5, 0] }}
                   transition={{ duration: 0.8, delay: 0.6 }}
-                  whileHover={{ 
+                  whileHover={{
                     rotate: [0, 15, -5, 15, -5, 0],
-                    transition: { duration: 0.6, delay: 0.1 }
+                    transition: { duration: 0.6, delay: 0.1 },
                   }}
                   style={{ transformOrigin: "bottom right" }}
                   className="inline-block cursor-default"
@@ -200,8 +204,11 @@ export default function Home() {
           >
             <Button asChild size="lg" className="gap-2 text-base h-12 group">
               <Link href="/work">
-                See My Work 
-                <ArrowRight size={18} className="opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
+                See My Work
+                <ArrowRight
+                  size={18}
+                  className="opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300"
+                />
               </Link>
             </Button>
             <Button
@@ -211,8 +218,11 @@ export default function Home() {
               className="gap-2 text-base h-12 group"
             >
               <Link href="/contact">
-                Get in Touch 
-                <Mail size={18} className="opacity-70 group-hover:opacity-100 transition-all duration-300" />
+                Get in Touch
+                <Mail
+                  size={18}
+                  className="opacity-70 group-hover:opacity-100 transition-all duration-300"
+                />
               </Link>
             </Button>
             <Button
@@ -237,9 +247,12 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Github size={18} /> 
-                GitHub 
-                <ArrowUpRight size={18} className="opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                <Github size={18} />
+                GitHub
+                <ArrowUpRight
+                  size={18}
+                  className="opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
+                />
               </Link>
             </Button>
           </motion.div>
@@ -418,7 +431,7 @@ export default function Home() {
               },
             },
           }}
-          className="grid grid-cols-4 gap-4"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:px-24"
         >
           {featuredSkills.map((skill) => (
             <motion.div
