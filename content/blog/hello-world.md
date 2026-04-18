@@ -29,21 +29,12 @@ Writing helps me clarify my thoughts and solidify my understanding. By sharing p
 3. Create a record of my growth as a developer
 4. Connect with like-minded people
 
-![Coding setup with multiple monitors](demo/2.jpeg)
-
 ## What's Next
 
 I plan to write about various topics including:
 
-- Building modern web applications with Next.js
 - Creating delightful user experiences
 - Performance optimization techniques
-- My favorite tools and workflows
+- Core Fundatamental Probles & their solutions
 
-Stay tuned for more content. You can follow me on [Twitter](https://x.com/2102ankit) or [GitHub](https://github.com/2102ankit) to get notified when I publish new posts.
-
-Thanks for reading! 🚀
-
----
-
-## _This is just the beginning. Let's build something amazing together._
+Thanks for reading!
