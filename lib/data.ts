@@ -7,6 +7,7 @@ export type Project = {
   long_description?: string;
   thumbnail: string;
   tags: string[];
+  filter_tags?: string[];
   github_url?: string;
   demo_url?: string | null;
   featured: boolean;
