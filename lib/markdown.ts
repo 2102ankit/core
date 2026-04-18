@@ -5,6 +5,7 @@ import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
 import path from "path";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
@@ -14,11 +15,18 @@ const rehypePrettyCodeOptions = {
   // theme: "nord",
 };
 
+export interface Heading {
+  id: string;
+  text: string;
+  level: number;
+}
+
 export interface BlogPost {
   slug: string[];
   frontmatter: Record<string, any>;
   content: React.ReactNode; // compiled MDX
   readingTime: number;
+  headings: Heading[];
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -52,6 +60,20 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   try {
     const { data: frontmatter, content: rawContent } = matter(fileContents);
 
+    // Extract headings from raw content
+    const headings: Heading[] = [];
+    const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+    let match;
+    while ((match = headingRegex.exec(rawContent)) !== null) {
+      const level = match[1].length;
+      const text = match[2].trim();
+      const id = text
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/\s+/g, "-");
+      headings.push({ id, text, level });
+    }
+
     // Compile the MDX/Markdown content
     const { content: compiled } = await compileMDX({
       source: rawContent,
@@ -63,7 +85,10 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
         parseFrontmatter: false, // We already parsed it with gray-matter
         mdxOptions: {
           remarkPlugins: [remarkGfm],
-          rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]],
+          rehypePlugins: [
+            rehypeSlug,
+            [rehypePrettyCode, rehypePrettyCodeOptions],
+          ],
         },
       },
     });
@@ -80,6 +105,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       },
       content: compiled,
       readingTime,
+      headings,
     };
   } catch (err) {
     console.error(`Failed to compile MDX for slug: ${slug} (${filePath})`, err);

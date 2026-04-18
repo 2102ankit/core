@@ -1,6 +1,13 @@
 import Image from "next/image";
 import type { ComponentProps } from "react";
 
+function generateId(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-");
+}
+
 const proseClasses = {
   wrapper: "prose text-zinc-700 dark:text-zinc-300 leading-7 max-w-none",
   h1: "text-3xl font-bold text-zinc-950 dark:text-zinc-50 mt-8 mb-4",
@@ -87,15 +94,30 @@ export const mdxComponents: Record<string, React.ComponentType<any>> = {
     );
   },
 
-  h1: ({ children }: ComponentProps<"h1">) => (
-    <h1 className={proseClasses.h1}>{children}</h1>
-  ),
-  h2: ({ children }: ComponentProps<"h2">) => (
-    <h2 className={proseClasses.h2}>{children}</h2>
-  ),
-  h3: ({ children }: ComponentProps<"h3">) => (
-    <h3 className={proseClasses.h3}>{children}</h3>
-  ),
+  h1: ({ children }: ComponentProps<"h1">) => {
+    const text = typeof children === "string" ? children : "";
+    return (
+      <h1 id={generateId(text)} className={proseClasses.h1}>
+        {children}
+      </h1>
+    );
+  },
+  h2: ({ children }: ComponentProps<"h2">) => {
+    const text = typeof children === "string" ? children : "";
+    return (
+      <h2 id={generateId(text)} className={proseClasses.h2}>
+        {children}
+      </h2>
+    );
+  },
+  h3: ({ children }: ComponentProps<"h3">) => {
+    const text = typeof children === "string" ? children : "";
+    return (
+      <h3 id={generateId(text)} className={proseClasses.h3}>
+        {children}
+      </h3>
+    );
+  },
 
   p: ({ children }: ComponentProps<"p">) => (
     <p className={proseClasses.p}>{children}</p>

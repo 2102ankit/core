@@ -1,3 +1,4 @@
+import { Outline } from "@/components/outline";
 import { getPostBySlug } from "@/lib/markdown";
 import { existsSync } from "fs";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
@@ -26,10 +27,11 @@ export default async function BlogPostPage({
   const post = await getPostBySlug(slug);
   if (!post) notFound();
 
-  const { frontmatter, content, readingTime } = post;
+  const { frontmatter, content, readingTime, headings } = post;
 
   return (
     <div className="min-h-[calc(100vh-73px)] py-16 px-6 page-transition">
+      <Outline headings={headings} />
       <article className="max-w-3xl mx-auto">
         {/* Back button */}
         <Link
