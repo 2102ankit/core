@@ -415,6 +415,7 @@ Avoid leaking total counts unless necessary — `COUNT(*)` on large tables is ex
 **Unstable Sorting** — If your `ORDER BY` doesn't include a unique tiebreaker column (like `id`), rows with identical sort values appear in random order across pages. Users see duplicates or miss items. Always add a unique column as the final sort key.
 
 **Mobile vs Desktop** — Mobile users scroll; desktop users click page numbers. Design your API to support both patterns. Make sure your frontend teams know which endpoints support cursor vs offset.
+
 ---
 
 ## Conclusion
