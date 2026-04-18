@@ -260,7 +260,7 @@ Infinite scroll uses cursor-based pagination under the hood — each scroll even
 
 When you must load large amounts of data into the browser, **windowed rendering** with libraries like React Window or TanStack Virtual only renders visible DOM nodes:
 
-```
+```sql
 Total rows in memory: 10,000
 Rows rendered in DOM at any moment: ~20 (the visible window)
 ```
@@ -334,7 +334,7 @@ ORDER BY CreatedAt DESC, PostId DESC;
 
 For frequently accessed pages (page 1 is almost always the most-requested), cache at the Redis layer:
 
-```
+```sql
 Cache Key: pagination:products:sort=price_asc:cursor=NULL:limit=20
 TTL: 60 seconds
 ```
