@@ -1,10 +1,10 @@
+import { Button } from "@/components/ui/button";
 import { getAllBlogPaths } from "@/lib/markdown";
 import fs from "fs";
 import matter from "gray-matter";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import path from "path";
-import { Button } from "@/components/ui/button";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
 
@@ -51,6 +51,7 @@ export default async function BlogIndex() {
             title: frontmatter.title ?? "Untitled",
             date: frontmatter.date ?? null,
             description: frontmatter.description ?? null,
+            show: frontmatter.show ?? true,
             image: frontmatter.image ?? null,
             ...frontmatter,
           },
@@ -68,9 +69,9 @@ export default async function BlogIndex() {
     }),
   );
 
-  const posts = allPosts.filter(
-    (post): post is NonNullable<typeof post> => post !== null,
-  );
+  const posts = allPosts.filter((post): post is NonNullable<typeof post> => {
+    return post !== null && post?.frontmatter.show;
+  });
   // Sort by date (newest first)
   posts.sort((a, b) => {
     const dA = a.frontmatter.date ?? "1970-01-01";
@@ -129,7 +130,10 @@ export default async function BlogIndex() {
         )}
       </div>
 
-      <div className="mt-12 pt-8 border-t border-border opacity-0 animate-fade-in-up" style={{ animationDelay: `${posts.length * 100 + 300}ms` }}>
+      <div
+        className="mt-12 pt-8 border-t border-border opacity-0 animate-fade-in-up"
+        style={{ animationDelay: `${posts.length * 100 + 300}ms` }}
+      >
         <p className="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-6 text-center">
           Explore my reading list and book recommendations
         </p>
