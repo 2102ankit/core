@@ -1,23 +1,22 @@
 "use client";
 
-import {
-  ArrowRight,
-  ArrowUpRight,
-  FileDown,
-  Github,
-  Mail,
-  ChevronDown,
-} from "lucide-react";
-import Link from "next/link";
-import Image from "next/image";
 import ProjectThumbnail from "@/components/project-thumbnail";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getFeaturedProjects, type Project } from "@/lib/data";
-import { TechBadge } from "@/components/ui/tech-badge";
 import { motion } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  ChevronDown,
+  FileDown,
+  Github,
+  Mail,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 const featuredSkills = [
   {
@@ -146,19 +145,11 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.4 }}
-            className="text-lg sm:text-xl text-muted-foreground mb-12 max-w-3xl leading-tight text-center md:text-left"
+            className="text-lg sm:text-xl text-muted-foreground mb-12 max-w-3xl leading-tight text-center"
           >
-            I build
-            <span className="text-blue-500 dark:text-blue-400 font-semibold">
-              {" "}
-              fast, beautiful and functional{" "}
-            </span>
-            apps.
+            I build applications that feel polished to users and
             <br />
-            My digital workshop - where{" "}
-            <span className="text-yellow-500 dark:text-yellow-400 font-semibold">
-              ideas turn into code.
-            </span>
+            systems that stay simple for developers.
           </motion.p>
 
           <div className="space-y-4 max-w-3xl">
@@ -203,9 +194,9 @@ export default function Home() {
             className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto mt-8"
           >
             <Button asChild size="lg" className="gap-2 text-base h-12 group">
-              <Link href="/work">
-                See My Work
-                <ArrowRight
+              <Link href="/contact">
+                Let&apos;s Work Together
+                <Mail
                   size={18}
                   className="opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300"
                 />
@@ -217,9 +208,9 @@ export default function Home() {
               size="lg"
               className="gap-2 text-base h-12 group"
             >
-              <Link href="/contact">
-                Get in Touch
-                <Mail
+              <Link href="/work">
+                See My Work
+                <ArrowRight
                   size={18}
                   className="opacity-70 group-hover:opacity-100 transition-all duration-300"
                 />
