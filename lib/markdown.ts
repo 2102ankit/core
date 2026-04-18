@@ -1,10 +1,11 @@
+import * as DemoComponents from "@/components/demos/demo-exports";
 import { mdxComponents } from "@/components/mdx-components";
 import fs from "fs";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
-import rehypePrettyCode from "rehype-pretty-code";
 import path from "path";
-import * as DemoComponents from "@/components/demos/demo-exports";
+import rehypePrettyCode from "rehype-pretty-code";
+import remarkGfm from "remark-gfm";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
 
@@ -61,6 +62,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       options: {
         parseFrontmatter: false, // We already parsed it with gray-matter
         mdxOptions: {
+          remarkPlugins: [remarkGfm],
           rehypePlugins: [[rehypePrettyCode, rehypePrettyCodeOptions]],
         },
       },

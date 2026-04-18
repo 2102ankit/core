@@ -17,6 +17,11 @@ const proseClasses = {
     "border-l-4 border-zinc-300 dark:border-zinc-700 pl-4 italic my-4",
   hr: "border-zinc-200 dark:border-zinc-800 my-8",
   figcaption: "text-sm text-center text-zinc-500 dark:text-zinc-400 mt-2",
+  table: "w-full border-collapse mb-6 text-sm bg-transparent",
+  thead: "border-b border-zinc-200 dark:border-zinc-800",
+  th: "py-2 px-4 text-left font-semibold text-zinc-950 dark:text-zinc-50",
+  td: "py-2 px-4 text-zinc-700 dark:text-zinc-300",
+  tr: "border-b border-zinc-100 dark:border-zinc-800/60 last:border-0",
 };
 
 const BlockImage = ({
@@ -130,5 +135,25 @@ export const mdxComponents: Record<string, React.ComponentType<any>> = {
 
   figcaption: ({ children }: ComponentProps<"figcaption">) => (
     <figcaption className={proseClasses.figcaption}>{children}</figcaption>
+  ),
+
+  // === Tables ===
+  table: ({ children }: ComponentProps<"table">) => (
+    <div className="overflow-x-auto my-6">
+      <table className={proseClasses.table}>{children}</table>
+    </div>
+  ),
+  thead: ({ children }: ComponentProps<"thead">) => (
+    <thead className={proseClasses.thead}>{children}</thead>
+  ),
+  tbody: ({ children }: ComponentProps<"tbody">) => <tbody>{children}</tbody>,
+  tr: ({ children }: ComponentProps<"tr">) => (
+    <tr className={proseClasses.tr}>{children}</tr>
+  ),
+  th: ({ children }: ComponentProps<"th">) => (
+    <th className={proseClasses.th}>{children}</th>
+  ),
+  td: ({ children }: ComponentProps<"td">) => (
+    <td className={proseClasses.td}>{children}</td>
   ),
 };
