@@ -2,6 +2,7 @@
 
 import {
   BubbleSortInteractive,
+  CommandBarDemo,
   HighlightedInputDemo,
   KaleidoscopeViewer,
   LeatherButtonFinal,
@@ -19,26 +20,37 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
-const demos = [
+type DemoItem = {
+  id: string;
+  title: string;
+  description: string;
+  tech: string[];
+  github: string | null;
+  span: string;
+  comingSoon?: boolean;
+  renderPreview?: () => ReactNode;
+};
+
+const demos: DemoItem[] = [
   {
     id: "bubble-sort",
     title: "Bubble Sort Visualizer",
     description: "Interactive visualization of sorting algorithms",
     tech: ["React", "Framer Motion"],
-    component: BubbleSortInteractive,
     github: null,
     span: "col-span-2 row-span-1",
+    renderPreview: () => <BubbleSortInteractive />,
   },
   {
     id: "leather-button",
     title: "Leather Button",
     description: "Micro-interactions for realistic button states",
     tech: ["React", "Motion"],
-    component: LeatherButtonFinal,
     github: null,
     span: "col-span-1 row-span-1",
+    renderPreview: () => <LeatherButtonFinal />,
   },
   {
     id: "kaleidoscpoe",
@@ -46,9 +58,9 @@ const demos = [
     description:
       "Kaleidoscope built with Three.js – Symmetric patterns, mouse/touch control, colorful reflections.",
     tech: ["React", "ThreeJs"],
-    component: KaleidoscopeViewer,
     github: null,
     span: "col-span-3 row-span-1",
+    renderPreview: () => <KaleidoscopeViewer />,
   },
   {
     id: "particle-effects",
@@ -65,9 +77,19 @@ const demos = [
     description:
       "Input Filed to Highlight specific words. Control colors, bold, italic and case sensitivity",
     tech: ["React"],
-    component: HighlightedInputDemo,
     github: null,
     span: "col-span-2 row-span-1",
+    renderPreview: () => <HighlightedInputDemo />,
+  },
+  {
+    id: "command-bar",
+    title: "Command Bar",
+    description:
+      "Lightweight command palette with fuzzy search, recent history, and full keyboard navigation.",
+    tech: ["React", "TypeScript", "Tailwind v4", "Motion"],
+    github: null,
+    span: "col-span-2 row-span-1",
+    renderPreview: () => <CommandBarDemo inline defaultOpen />,
   },
   {
     id: "3d-transform",
@@ -76,9 +98,14 @@ const demos = [
     tech: ["CSS", "Three.js"],
     comingSoon: true,
     github: "https://github.com/2102ankit",
-    span: "col-span-3 row-span-1",
+    span: "col-span-1 row-span-1",
   },
 ];
+
+function getDemoFromHash(hash: string) {
+  const demo = demos.find((item) => item.id === hash);
+  return demo && !demo.comingSoon ? demo : null;
+}
 
 const showComponents = false;
 
@@ -114,19 +141,13 @@ const components = [
 ];
 
 export default function LabsPage() {
-  const [selectedDemo, setSelectedDemo] = useState<(typeof demos)[0] | null>(
-    null,
-  );
-
-  useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    if (hash) {
-      const demo = demos.find((d) => d.id === hash);
-      if (demo && !demo.comingSoon) {
-        setSelectedDemo(demo);
-      }
+  const [selectedDemo, setSelectedDemo] = useState<DemoItem | null>(() => {
+    if (typeof window === "undefined") {
+      return null;
     }
-  }, []);
+
+    return getDemoFromHash(window.location.hash.slice(1));
+  });
 
   useEffect(() => {
     if (selectedDemo) {
@@ -138,9 +159,7 @@ export default function LabsPage() {
 
   useEffect(() => {
     const handlePopState = () => {
-      const hash = window.location.hash.slice(1);
-      const demo = demos.find((d) => d.id === hash);
-      setSelectedDemo(demo && !demo.comingSoon ? demo : null);
+      setSelectedDemo(getDemoFromHash(window.location.hash.slice(1)));
     };
 
     window.addEventListener("popstate", handlePopState);
@@ -293,7 +312,7 @@ export default function LabsPage() {
                 </button>
               </div>
               <div className="flex-1 border rounded-lg bg-muted/20 overflow-auto flex justify-center">
-                {selectedDemo.component && <selectedDemo.component />}
+                {selectedDemo.renderPreview?.()}
               </div>
               {!!selectedDemo.github && (
                 <div className="flex gap-4 mt-6 justify-center">

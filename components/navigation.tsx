@@ -1,24 +1,24 @@
 "use client";
 
+import CommandBar from "@/components/command-bar";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Navigation() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCommandBarOpen, setIsCommandBarOpen] = useState(false);
 
   useEffect(() => {
     // Only scroll to top if no hash (i.e., not an anchor link)
     if (!window.location.hash) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-    // Close mobile menu on route change
-    setIsMobileMenuOpen(false);
   }, [pathname]);
 
   const links = [
@@ -74,6 +74,17 @@ export function Navigation() {
 
             {/* Mobile Menu Button + Theme Toggle */}
             <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsCommandBarOpen(true)}
+                className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-600 transition-none hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-600"
+                aria-label="Open command bar"
+              >
+                <Search size={14} />
+                <span className="hidden sm:inline">Search</span>
+                <kbd className="rounded border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[10px] font-medium text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-400">
+                  K
+                </kbd>
+              </button>
               <ThemeToggle />
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -152,6 +163,8 @@ export function Navigation() {
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
+
+      <CommandBar open={isCommandBarOpen} onOpenChange={setIsCommandBarOpen} />
     </>
   );
 }

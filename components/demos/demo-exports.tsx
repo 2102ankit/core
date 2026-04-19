@@ -5,6 +5,7 @@ import LeatherButtonStage from "./leather-button-stages";
 import BubbleSortInteractive from "./bubble-sort-interactive";
 import KaleidoscopeViewer from "./kaleidoscope";
 import HighlightedInputDemo from "./highlighted-input";
+import CommandBarDemo from "@/components/command-bar";
 
 export {
   LeatherButtonFinal,
@@ -12,4 +13,5 @@ export {
   BubbleSortInteractive,
   KaleidoscopeViewer,
   HighlightedInputDemo,
+  CommandBarDemo,
 };
