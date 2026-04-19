@@ -8,6 +8,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -233,6 +234,7 @@ export function CommandPalette({
   const inputRef = useRef<HTMLInputElement>(null);
   const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const shellRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ x: -1, y: -1 });
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [query, setQuery] = useState("");
@@ -324,15 +326,26 @@ export function CommandPalette({
     return () => window.clearTimeout(focusInput);
   }, [inline, open]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!open) {
       return;
     }
 
-    itemRefs.current[activeIndex]?.scrollIntoView({
-      block: "nearest",
-      behavior: "smooth",
-    });
+    const container = listRef.current;
+    const activeItem = itemRefs.current[activeIndex];
+
+    if (!container || !activeItem) {
+      return;
+    }
+
+    const containerRect = container.getBoundingClientRect();
+    const itemRect = activeItem.getBoundingClientRect();
+
+    if (itemRect.top < containerRect.top) {
+      container.scrollTop += itemRect.top - containerRect.top;
+    } else if (itemRect.bottom > containerRect.bottom) {
+      container.scrollTop += itemRect.bottom - containerRect.bottom;
+    }
   }, [activeIndex, open]);
 
   useEffect(() => {
@@ -425,14 +438,14 @@ export function CommandPalette({
 
     if (event.key === "ArrowDown") {
       event.preventDefault();
-      setActiveIndex((index) => (index + 1) % visibleCommands.length);
+      setActiveIndex((index) =>
+        Math.min(index + 1, visibleCommands.length - 1),
+      );
     }
 
     if (event.key === "ArrowUp") {
       event.preventDefault();
-      setActiveIndex((index) =>
-        index === 0 ? visibleCommands.length - 1 : index - 1,
-      );
+      setActiveIndex((index) => Math.max(index - 1, 0));
     }
 
     if (event.key === "Enter") {
@@ -496,7 +509,7 @@ export function CommandPalette({
         </div>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto p-3">
+      <div ref={listRef} className="min-h-0 flex-1 overflow-y-auto p-3">
         {visibleCommands.length ? (
           <div className="space-y-2">
             {visibleCommands.map(({ command, recent }, index) => {

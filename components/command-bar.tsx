@@ -192,7 +192,7 @@ export default function CommandBar(props: AppCommandBarProps) {
               resolvedTheme === "dark" ? "Switch to Light" : "Switch to Dark",
             subtitle: "Flip the interface theme instantly",
             section: "Workspace",
-            keywords: ["appearance", "mode", "theme"],
+            keywords: ["appearance", "mode", "theme", "dark","light"],
             // shortcut: "mod+shift+l",
             icon: resolvedTheme === "dark" ? SunMedium : MoonStar,
             kind: "action" as const,
