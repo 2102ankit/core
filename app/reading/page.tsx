@@ -69,7 +69,7 @@ export default async function ReadingPage() {
 
         <Bookshelf books={books} />
 
-        <section className="mb-12">
+        <section id="whitepapers" className="mb-12 scroll-mt-28">
           <h2 className="text-2xl font-bold mb-4 text-zinc-950 dark:text-zinc-50">
             White Papers I have read
             {whitepapers.length > 0 && <>{` (${whitepapers.length})`}</>}
@@ -78,6 +78,7 @@ export default async function ReadingPage() {
             {whitepapers.map((paper, index) => (
               <li
                 key={paper.url}
+                id={`whitepaper-${index}`}
                 className="opacity-0 animate-fade-in-up"
                 style={{ animationDelay: `${200 + index * 50}ms` }}
               >
@@ -94,7 +95,7 @@ export default async function ReadingPage() {
           </ul>
         </section>
 
-        <section className="mb-12">
+        <section id="blogs-i-follow" className="mb-12 scroll-mt-28">
           <h2 className="text-2xl font-bold mb-4 text-zinc-950 dark:text-zinc-50">
             Blogs I Follow
             {blogs.length > 0 && <>{` (${blogs.length})`}</>}
@@ -103,6 +104,7 @@ export default async function ReadingPage() {
             {blogs.map((blog, index) => (
               <li
                 key={blog.url}
+                id={`reading-blog-${index}`}
                 className="opacity-0 animate-fade-in-up"
                 style={{ animationDelay: `${400 + index * 50}ms` }}
               >

@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import ProjectThumbnail from "@/components/project-thumbnail";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Book {
   id: string;
@@ -26,8 +26,44 @@ export function Bookshelf({ books }: BookshelfProps) {
     setExpanded(!expanded);
   };
 
+  useEffect(() => {
+    const expandForHash = () => {
+      const hash = window.location.hash.replace(/^#/, "");
+      const hiddenBookIds = books
+        .slice(booksPerRow)
+        .map((book) => `book-${book.id}`);
+
+      if (hiddenBookIds.includes(hash)) {
+        setExpanded(true);
+      }
+    };
+
+    expandForHash();
+    window.addEventListener("hashchange", expandForHash);
+    return () => window.removeEventListener("hashchange", expandForHash);
+  }, [books]);
+
+  useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, "");
+    if (!hash) {
+      return;
+    }
+
+    const target = document.getElementById(hash);
+    if (!target) {
+      return;
+    }
+
+    const scrollTarget = () => {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    const frame = window.requestAnimationFrame(scrollTarget);
+    return () => window.cancelAnimationFrame(frame);
+  }, [books, expanded]);
+
   return (
-    <section className="mb-12">
+    <section id="bookshelf" className="mb-12 scroll-mt-28">
       <h2 className="text-2xl font-bold mb-6 text-zinc-950 dark:text-zinc-50">
         Bookshelf {books.length > 0 && `(${books.length})`}
       </h2>
@@ -35,6 +71,7 @@ export function Bookshelf({ books }: BookshelfProps) {
         {books.map((book, index) => (
           <a
             key={book.id}
+            id={`book-${book.id}`}
             href={book.amazonUrl}
             target="_blank"
             rel="noopener noreferrer"

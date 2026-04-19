@@ -21,6 +21,7 @@ export type CommandPaletteItem = {
   keywords?: string[];
   shortcut?: string;
   icon: ComponentType<{ className?: string }>;
+  kind?: "action" | "search";
   run: () => void | Promise<void>;
 };
 
@@ -39,55 +40,98 @@ export type CommandPaletteProps = {
   shortcutKey?: string;
 };
 
+// Global configuration for the command palette used by the command bar
+// Controls which actions and search kinds are included by default
+export const commandBarConfig = {
+  includeActions: {
+    home: true,
+    work: true,
+    blog: true,
+    contact: true,
+    theme: true,
+    copyEmail: true,
+    scrollTop: true,
+    github: true,
+  },
+  includeSearchKinds: {
+    page: true,
+    blog: true,
+    project: true,
+    reading: true,
+    about: true,
+    link: true,
+  },
+} as const;
+
 function fuzzyScore(command: CommandPaletteItem, rawQuery: string) {
   const query = rawQuery.trim().toLowerCase();
 
   if (!query) {
-    return 1;
+    return {
+      exact: false,
+      prefix: false,
+      score: 1,
+    };
   }
 
-  const haystack = [
-    command.title,
-    command.subtitle,
-    command.section,
-    ...(command.keywords ?? []),
-  ]
-    .join(" ")
-    .toLowerCase();
+  const title = command.title.toLowerCase();
+  const subtitle = command.subtitle.toLowerCase();
+  const keywords = (command.keywords ?? []).map((keyword) =>
+    keyword.toLowerCase(),
+  );
+
+  const sources = [title, subtitle, ...keywords];
+  const words = sources.flatMap((source) =>
+    source.split(/[^a-z0-9]+/).filter(Boolean),
+  );
+
+  const exact = words.includes(query) || sources.includes(query);
+  const titleStartsWith = title.startsWith(query);
+  const subtitleStartsWith = subtitle.startsWith(query);
+  const prefix = words.some((word) => word.startsWith(query));
+  const containsWord = words.some((word) => word.includes(query));
+  const containsPhrase = sources.some((source) => source.includes(query));
+
+  if (!exact && !prefix && !containsWord && !containsPhrase) {
+    return null;
+  }
 
   let score = 0;
-  let pointer = -1;
 
-  if (haystack.startsWith(query)) {
-    score += 120;
+  if (exact) {
+    score += 400;
   }
 
-  const containedAt = haystack.indexOf(query);
-  if (containedAt >= 0) {
-    score += 80 - Math.min(containedAt, 40);
+  if (titleStartsWith) {
+    score += 220;
+  } else if (subtitleStartsWith) {
+    score += 140;
   }
 
-  for (const char of query) {
-    const nextIndex = haystack.indexOf(char, pointer + 1);
-    if (nextIndex === -1) {
-      return null;
-    }
-
-    score += 14;
-
-    if (nextIndex === pointer + 1) {
-      score += 10;
-    }
-
-    if (nextIndex === 0 || " /-_".includes(haystack[nextIndex - 1] ?? "")) {
-      score += 9;
-    }
-
-    score -= Math.max(0, nextIndex - pointer - 1);
-    pointer = nextIndex;
+  if (prefix) {
+    score += 180;
+  } else if (containsWord) {
+    score += 80;
   }
 
-  return score - haystack.length * 0.025;
+  if (containsPhrase) {
+    score += 40;
+  }
+
+  const titleWordIndex = title
+    .split(/[^a-z0-9]+/)
+    .filter(Boolean)
+    .findIndex((word) => word === query || word.startsWith(query));
+
+  if (titleWordIndex >= 0) {
+    score += 30 - titleWordIndex * 2;
+  }
+
+  return {
+    exact,
+    prefix,
+    score: score - title.length * 0.025,
+  };
 }
 
 function highlightTitle(title: string, rawQuery: string) {
@@ -193,7 +237,9 @@ export function CommandPalette({
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
-  const [history, setHistory] = useState<string[]>(() => readHistory(historyKey));
+  const [history, setHistory] = useState<string[]>(() =>
+    readHistory(historyKey),
+  );
   const [lastAction, setLastAction] = useState("Ready");
 
   const open = openProp ?? internalOpen;
@@ -219,13 +265,34 @@ export function CommandPalette({
       return commands
         .map((command) => ({
           command,
-          score: fuzzyScore(command, query),
+          match: fuzzyScore(command, query),
           recent: history.includes(command.id),
         }))
         .filter(
-          (item): item is typeof item & { score: number } => item.score !== null,
+          (
+            item,
+          ): item is typeof item & {
+            match: { exact: boolean; prefix: boolean; score: number };
+          } => item.match !== null,
         )
-        .sort((a, b) => b.score - a.score);
+        .sort((a, b) => {
+          if (a.match.exact !== b.match.exact) {
+            return a.match.exact ? -1 : 1;
+          }
+
+          if (a.match.prefix !== b.match.prefix) {
+            return a.match.prefix ? -1 : 1;
+          }
+
+          const aIsAction = (a.command.kind ?? "action") === "action";
+          const bIsAction = (b.command.kind ?? "action") === "action";
+
+          if (aIsAction !== bIsAction) {
+            return aIsAction ? -1 : 1;
+          }
+
+          return b.match.score - a.match.score;
+        });
     }
 
     return [
@@ -537,11 +604,12 @@ export function CommandPalette({
           </span>
           <span className="hidden rounded-md border border-zinc-200 px-2 py-1 dark:border-zinc-700 sm:inline-flex">
             <Command className="mr-1 size-3" />
-            {isMac() ? `Cmd ${shortcutKey.toUpperCase()}` : `Ctrl ${shortcutKey.toUpperCase()}`}
+            {isMac()
+              ? `Cmd ${shortcutKey.toUpperCase()}`
+              : `Ctrl ${shortcutKey.toUpperCase()}`}
           </span>
         </div>
         <span className="hidden sm:flex items-center gap-2">
-          {activeCommand ? activeCommand.subtitle : lastAction || footerHint}
           <ExternalLink className="size-3.5 opacity-60" />
         </span>
       </div>

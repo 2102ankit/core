@@ -126,10 +126,12 @@ export default function WorkPage() {
             {filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
+                id={`project-${project.id}`}
                 layout
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
+                className="scroll-mt-28"
               >
                 <Card className="h-full flex flex-col hover:border-foreground/20 transition-all pt-0">
                   <div className="relative h-48 bg-muted/50 flex items-center justify-center text-xl font-medium border-b rounded-t-xl overflow-hidden">

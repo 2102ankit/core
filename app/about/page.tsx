@@ -10,6 +10,7 @@ import Link from "next/link";
 
 const timeline = [
   {
+    id: "education",
     icon: GraduationCap,
     title: "Education",
     date: "2021 - 2025",
@@ -19,6 +20,7 @@ const timeline = [
     ],
   },
   {
+    id: "achievements",
     icon: Trophy,
     title: "Achievements",
     date: "2023 - 2024",
@@ -31,6 +33,7 @@ const timeline = [
 
 const experience = [
   {
+    id: "iss-stoxx",
     title: "Software Engineer",
     company: "ISS-Stoxx",
     date: "Jan 2025 - Present | Mumbai",
@@ -44,6 +47,7 @@ const experience = [
     logo: "/images/experience/iss-mi.png",
   },
   {
+    id: "alhansat-solutions",
     title: "Web Development Intern (Remote)",
     company: "Alhansat Solutions",
     date: "Sep 2023 - Nov 2023 | Remote",
@@ -80,18 +84,23 @@ export default function AboutPage() {
           transition={{ duration: 0.6 }}
           className="mb-20"
         >
-          <h2 className="text-3xl font-bold mb-8 flex items-baseline gap-3">
+          <h2
+            id="experience"
+            className="text-3xl font-bold mb-8 flex items-baseline gap-3 scroll-mt-28"
+          >
             <Briefcase className="text-primary" />
             Experience
           </h2>
           <div className="space-y-6">
             {experience.map((exp, index) => (
               <motion.div
-                key={index}
+                key={exp.id}
+                id={exp.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
+                className="scroll-mt-28"
               >
                 <Card className="group p-6 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 rounded-md">
                   {/* accent bar */}
@@ -158,7 +167,12 @@ export default function AboutPage() {
           transition={{ duration: 0.6 }}
           className="mb-20"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6">Skills & Technologies</h2>
+          <h2
+            id="skills"
+            className="text-3xl sm:text-4xl font-bold mb-6 scroll-mt-28"
+          >
+            Skills & Technologies
+          </h2>
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -216,7 +230,9 @@ export default function AboutPage() {
                   width={32}
                   height={32}
                 />
-                <span className="text-xs sm:text-sm font-medium text-center whitespace-nowrap">{skill.name}</span>
+                <span className="text-xs sm:text-sm font-medium text-center whitespace-nowrap">
+                  {skill.name}
+                </span>
               </motion.div>
             ))}
           </motion.div>
@@ -228,6 +244,8 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
+            id="background"
+            className="scroll-mt-28"
           >
             <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
               <Award className="text-primary" />
@@ -255,17 +273,19 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="relative"
+            id="timeline"
+            className="relative scroll-mt-28"
           >
             <div className="relative border-l-2 border-border pl-8 space-y-8">
               {timeline.map((item, index) => (
                 <motion.div
-                  key={index}
+                  key={item.id}
+                  id={item.id}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.2 }}
-                  className="relative group"
+                  className="relative group scroll-mt-28"
                 >
                   <div className="absolute -left-[50px] top-0 w-8 h-8 rounded-full bg-background border-2 border-border flex items-center justify-center group-hover:border-foreground group-hover:bg-accent transition-all">
                     <item.icon size={16} />
