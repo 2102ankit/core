@@ -1,10 +1,23 @@
 "use client";
 
-import ProjectThumbnail from "@/components/project-thumbnail";
+import {
+  AlhansatSolutionsTooltipContent,
+  DefaultTooltipContent,
+  IssStoxxTooltipContent,
+} from "@/components/experience-tooltip-content";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Tooltip } from "@/components/ui/tooltip-card";
+import { formatDateRange, formatDuration } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Award, Briefcase, GraduationCap, Trophy } from "lucide-react";
+import {
+  Award,
+  Briefcase,
+  Calendar1,
+  GraduationCap,
+  MapPin,
+  Trophy,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -36,7 +49,9 @@ const experience = [
     id: "iss-stoxx",
     title: "Software Engineer",
     company: "ISS-Stoxx",
-    date: "Jan 2025 - Present | Mumbai",
+    startDate: new Date("2025-01-01"),
+    endDate: null,
+    location: "Mumbai",
     description: [
       "UI development using React, Spring Boot and SQL Server",
       "Data Pipeline development in Python",
@@ -45,17 +60,23 @@ const experience = [
     ],
     tags: ["React", "SQL Server", "Python", "Docker"],
     logo: "/images/experience/iss-mi.png",
+    current: true,
+    TooltipComponent: IssStoxxTooltipContent,
   },
   {
     id: "alhansat-solutions",
     title: "Web Development Intern (Remote)",
     company: "Alhansat Solutions",
-    date: "Sep 2023 - Nov 2023 | Remote",
+    startDate: new Date("2023-09-01"),
+    endDate: new Date("2023-11-30"),
+    location: "Remote",
     tags: ["SvelteKit", "PDF Js", "Tailwind"],
     description: [
       "Created a dynamic business card generator module and integrated it with Developerstar",
       "Collaborated with Team Lead to understand user requirements and added customization",
     ],
+    current: false,
+    TooltipComponent: AlhansatSolutionsTooltipContent,
   },
 ];
 
@@ -86,12 +107,12 @@ export default function AboutPage() {
         >
           <h2
             id="experience"
-            className="text-3xl font-bold mb-8 flex items-baseline gap-3 scroll-mt-28"
+            className="text-3xl sm:text-4xl font-bold mb-6 flex items-baseline gap-3 scroll-mt-28"
           >
             <Briefcase className="text-primary" />
             Experience
           </h2>
-          <div className="space-y-6">
+          <div className="space-y-4">
             {experience.map((exp, index) => (
               <motion.div
                 key={exp.id}
@@ -102,54 +123,89 @@ export default function AboutPage() {
                 transition={{ delay: index * 0.1 }}
                 className="scroll-mt-28"
               >
-                <Card className="group p-6 relative overflow-hidden transition-all duration-300 hover:-translate-y-1 rounded-md">
+                <Card className="group p-6 relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/20 rounded-md">
                   {/* accent bar */}
-                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-linear-to-b from-primary to-primary/60" />
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-primary to-primary/40" />
 
-                  <div className="flex flex-col gap-4 justify-baseline">
-                    <div className="flex gap-4 items-end">
-                      {exp.logo && (
-                        <div
-                          className="relative rounded-md border border-border color-transparent
-                       min-h-24 h-full w-24 md:w-36 sm:w-52"
-                        >
-                          <ProjectThumbnail src={exp.logo} alt={exp.company} />
-                        </div>
-                      )}
-
-                      <div className="flex-1">
+                  <div className="flex flex-col gap-3.5">
+                    {/* Header: Title, company, and duration badge */}
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-1 flex-wrap">
                         <h3 className="text-xl font-semibold">{exp.title}</h3>
-                        <p className="text-primary font-medium">
-                          {exp.company}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {exp.date}
-                        </p>
-
-                        {exp.tags?.length && (
-                          <div className="flex flex-wrap gap-1.5 mt-2">
-                            {exp.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="px-2 py-0.5 text-xs rounded-full bg-primary/10 text-primary"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
+                        <span className="text-muted-foreground">@</span>
+                        <Tooltip
+                          content={(() => {
+                            const Component =
+                              exp.TooltipComponent || DefaultTooltipContent;
+                            return <Component {...exp} />;
+                          })()}
+                          containerClassName="inline-block"
+                        >
+                          <span className="font-medium text-primary hover:underline cursor-pointer transition-colors">
+                            {exp.company}
+                          </span>
+                        </Tooltip>
+                        {exp.current && (
+                          <span className="relative flex h-2.5 w-2.5 shrink-0 mt-0.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                          </span>
                         )}
                       </div>
+
+                      {/* Duration badge aligned to right */}
+                      <div className="text-xs px-2.5 py-1 rounded-md bg-primary/5 border border-primary/10 text-primary font-medium whitespace-nowrap shrink-0">
+                        {formatDuration(exp.startDate, exp.endDate)}
+                      </div>
                     </div>
-                    <ul className="mt-3 space-y-1.5 text-muted-foreground">
+
+                    {/* Date and location row */}
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1.5">
+                        <Calendar1 className="w-3.5 h-3.5" />
+                        <span>
+                          {formatDateRange(exp.startDate, exp.endDate)}
+                        </span>
+                      </div>
+                      <span className="text-muted-foreground/50">•</span>
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="w-3.5 h-3.5" />
+                        <span>{exp.location}</span>
+                      </div>
+                    </div>
+
+                    {/* Tags */}
+                    {exp.tags?.length && (
+                      <div className="flex flex-wrap gap-2">
+                        {exp.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-2.5 py-1 text-xs font-medium rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors border border-primary/10"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Description */}
+                    <ul className="space-y-2 text-sm text-muted-foreground">
                       {exp.description.map((item, i) => (
                         <li
                           key={i}
-                          className="flex gap-2 items-start transition-colors hover:text-foreground"
+                          className="flex gap-2 items-center group-hover:text-foreground transition-colors"
                         >
-                          <span className="text-primary mt-0.5 transition-transform group-hover:scale-125">
-                            ▹
+                          <span className="text-primary mt-0.5 shrink-0">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              className="w-3.5 h-3.5"
+                            >
+                              <circle cx="12" cy="12" r="5" />
+                            </svg>
                           </span>
-                          <span>{item}</span>
+                          <span className="leading-relaxed">{item}</span>
                         </li>
                       ))}
                     </ul>
