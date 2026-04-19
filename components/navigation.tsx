@@ -8,6 +8,9 @@ import { useEffect, useState } from "react";
 import { Menu, Search, X } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { motion, AnimatePresence } from "framer-motion";
+import Clock24 from "@/components/Clock24";
+
+// Clock24 is now a separate component in Clock24.tsx
 
 export function Navigation() {
   const pathname = usePathname();
@@ -95,6 +98,9 @@ export function Navigation() {
               </button>
             </div>
           </div>
+              <span className="hidden md:inline-flex items-center text-sm text-zinc-600 dark:text-zinc-400 absolute right-4 top-6" aria-label="Current time">
+                <Clock24 />
+              </span>
         </nav>
       </header>
 
