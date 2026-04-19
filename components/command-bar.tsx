@@ -110,7 +110,7 @@ export default function CommandBar(props: AppCommandBarProps) {
       try {
         const response = await fetch("/api/search-index", {
           method: "GET",
-          cache: "force-cache",
+          // cache: "force-cache",
         });
 
         if (!response.ok) {
@@ -142,7 +142,7 @@ export default function CommandBar(props: AppCommandBarProps) {
             subtitle: "Jump back to the landing page",
             section: "Navigation",
             keywords: ["landing", "start", "main"],
-            shortcut: "mod+h",
+            // shortcut: "mod+h",
             icon: Home,
             kind: "action" as const,
             run: () => navigateToHref("/"),
@@ -155,7 +155,7 @@ export default function CommandBar(props: AppCommandBarProps) {
             subtitle: "Open the project showcase",
             section: "Navigation",
             keywords: ["portfolio", "projects", "case studies"],
-            shortcut: "mod+w",
+            // shortcut: "mod+w",
             icon: LaptopMinimal,
             kind: "action" as const,
             run: () => navigateToHref("/work"),
@@ -193,7 +193,7 @@ export default function CommandBar(props: AppCommandBarProps) {
             subtitle: "Flip the interface theme instantly",
             section: "Workspace",
             keywords: ["appearance", "mode", "theme"],
-            shortcut: "mod+shift+l",
+            // shortcut: "mod+shift+l",
             icon: resolvedTheme === "dark" ? SunMedium : MoonStar,
             kind: "action" as const,
             run: () => setTheme(resolvedTheme === "dark" ? "light" : "dark"),
@@ -206,10 +206,10 @@ export default function CommandBar(props: AppCommandBarProps) {
             subtitle: "Copy contact details to the clipboard",
             section: "Quick Actions",
             keywords: ["mail", "clipboard", "copy"],
-            shortcut: "mod+shift+c",
+            // shortcut: "mod+shift+c",
             icon: Copy,
             kind: "action" as const,
-            run: () => navigator.clipboard.writeText("ankit21022002@gmail.com"),
+            run: () => navigator.clipboard.writeText("2102ankitm@gmail.com"),
           }
         : null,
       commandBarConfig.includeActions.scrollTop
