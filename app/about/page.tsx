@@ -141,7 +141,7 @@ export default function AboutPage() {
                           })()}
                           containerClassName="inline-block"
                         >
-                          <span className="font-medium text-primary hover:underline cursor-pointer transition-colors">
+                          <span className="font-medium text-primary underline cursor-pointer transition-colors p-4 -m-4">
                             {exp.company}
                           </span>
                         </Tooltip>
