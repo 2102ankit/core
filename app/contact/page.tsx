@@ -19,18 +19,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { submitContactForm } from "@/lib/data";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
+import {
+  CallIcon,
+  CodeIcon,
+  GithubIcon,
+  Linkedin01Icon,
+  Mail01Icon,
+  Location08Icon,
+  NewTwitterIcon,
+} from "@hugeicons/core-free-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import {
-  Code,
-  Github,
-  LaptopMinimal,
-  Linkedin,
-  Mail,
-  MapPin,
-  Phone,
-  Twitter,
-} from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -46,34 +46,43 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-const contactInfo = [
+const contactInfo: {
+  icon: IconSvgElement;
+  label: string;
+  value: string;
+  href?: string;
+}[] = [
   {
-    icon: MapPin,
+    icon: Location08Icon,
     label: "Location",
     value: "Mumbai, India",
   },
   {
-    icon: Phone,
+    icon: CallIcon,
     label: "Phone",
     value: "+91 7738228239",
     href: "tel:+917738228239",
   },
   {
-    icon: Mail,
+    icon: Mail01Icon,
     label: "Email",
     value: "2102ankitm@gmail.com",
     href: "mailto:2102ankitm@gmail.com",
   },
 ];
 
-const socialLinks: { href: string; icon: React.ElementType; label: string }[] = [
-  { href: "https://x.com/2102ankit", icon: Twitter, label: "Twitter" },
+const socialLinks: {
+  href: string;
+  icon: IconSvgElement;
+  label: string;
+}[] = [
+  { href: "https://x.com/2102ankit", icon: NewTwitterIcon, label: "Twitter" },
   {
     href: "https://linkedin.com/in/2102ankit",
-    icon: Linkedin,
+    icon: Linkedin01Icon,
     label: "LinkedIn",
   },
-  { href: "https://github.com/2102ankit", icon: Github, label: "GitHub" },
+  { href: "https://github.com/2102ankit", icon: GithubIcon, label: "GitHub" },
   // {
   //   href: "https://codeforces.com/profile/2102ankit",
   //   icon: Code,
@@ -81,7 +90,7 @@ const socialLinks: { href: string; icon: React.ElementType; label: string }[] = 
   // },
   {
     href: "https://www.leetcode.com/2102ankit",
-    icon: Code,
+    icon: CodeIcon,
     label: "LeetCode",
   },
 ];
@@ -239,68 +248,67 @@ export default function ContactPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="space-y-4"
           >
-            <motion.div
-            className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full"
-            >
-            <Card>
-              <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
-                <CardDescription>
-                  Reach out through any of these channels
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {contactInfo.map((info) => (
-                  <div key={info.label} className="flex items-start gap-4">
-                    <div className="p-2 rounded-lg bg-muted">
-                      <info.icon size={20} />
+            <motion.div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Contact Information</CardTitle>
+                  <CardDescription>
+                    Reach out through any of these channels
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {contactInfo.map((info) => (
+                    <div key={info.label} className="flex items-start gap-4">
+                      <div className="p-2 rounded-lg bg-muted">
+                        <HugeiconsIcon icon={info.icon} size={20} />
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">
+                          {info.label}
+                        </p>
+                        {info.href ? (
+                          <a
+                            href={info.href}
+                            className="font-medium hover:text-primary transition-colors"
+                          >
+                            {info.value}
+                          </a>
+                        ) : (
+                          <p className="font-medium">{info.value}</p>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">
-                        {info.label}
-                      </p>
-                      {info.href ? (
-                        <a
-                          href={info.href}
-                          className="font-medium hover:text-primary transition-colors"
-                        >
-                          {info.value}
-                        </a>
-                      ) : (
-                        <p className="font-medium">{info.value}</p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Connect with Me</CardTitle>
-                <CardDescription>Find me on these platforms</CardDescription>
-              </CardHeader>
-              <CardContent className="h-full">
-                <div className="grid grid-cols-2 gap-3 h-full">
-                  {socialLinks.map((social) => (
-                    <Link
-                      key={social.label}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center p-3 rounded-lg border border-border hover:border-foreground hover:bg-accent transition-all group h-24 sm:h-full"
-                      aria-label={social.label}
-                      title={social.label}
-                    >
-                      <social.icon
-                        size={24}
-                        className="group-hover:scale-110 transition-transform"
-                      />
-                    </Link>
                   ))}
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Connect with Me</CardTitle>
+                  <CardDescription>Find me on these platforms</CardDescription>
+                </CardHeader>
+                <CardContent className="h-full">
+                  <div className="grid grid-cols-2 gap-3 h-full">
+                    {socialLinks.map((social) => (
+                      <Link
+                        key={social.label}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center p-3 rounded-lg border border-border hover:border-foreground hover:bg-accent transition-all group h-24 sm:h-full"
+                        aria-label={social.label}
+                        title={social.label}
+                      >
+                        <HugeiconsIcon
+                          icon={social.icon}
+                          size={24}
+                          className="group-hover:scale-110 transition-transform"
+                        />
+                      </Link>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
 
             <Card className="bg-muted/30">
@@ -309,9 +317,9 @@ export default function ContactPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  I typically respond within <u>24-48 hours</u> during weekdays. For
-                  urgent matters, feel free to reach out directly via phone or
-                  LinkedIn.
+                  I typically respond within <u>24-48 hours</u> during weekdays.
+                  For urgent matters, feel free to reach out directly via phone
+                  or LinkedIn.
                 </p>
               </CardContent>
             </Card>

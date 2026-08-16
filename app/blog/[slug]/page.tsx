@@ -1,7 +1,12 @@
 import { Outline } from "@/components/outline";
 import { getPostBySlug } from "@/lib/markdown";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  ArrowLeft01Icon,
+  Calendar01Icon,
+  Clock01Icon,
+} from "@hugeicons/core-free-icons";
 import { existsSync } from "fs";
-import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -38,7 +43,10 @@ export default async function BlogPostPage({
           href="/blog"
           className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-200 mb-8 group opacity-0 animate-fade-in"
         >
-          <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
+          <HugeiconsIcon
+            icon={ArrowLeft01Icon}
+            className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1"
+          />
           Back to blog
         </Link>
 
@@ -51,7 +59,7 @@ export default async function BlogPostPage({
           <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400">
             {frontmatter.date && (
               <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
+                <HugeiconsIcon icon={Calendar01Icon} className="w-4 h-4" />
                 <time dateTime={frontmatter.date}>
                   {new Date(frontmatter.date).toLocaleDateString("en-US", {
                     year: "numeric",
@@ -62,7 +70,7 @@ export default async function BlogPostPage({
               </div>
             )}
             <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4" />
+              <HugeiconsIcon icon={Clock01Icon} className="w-4 h-4" />
               <span>{readingTime} min read</span>
             </div>
           </div>
@@ -106,7 +114,10 @@ export default async function BlogPostPage({
             href="/blog"
             className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-200 group"
           >
-            <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
+            <HugeiconsIcon
+              icon={ArrowLeft01Icon}
+              className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1"
+            />
             More articles
           </Link>
 

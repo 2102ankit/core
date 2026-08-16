@@ -5,8 +5,15 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  DiceFaces06Icon,
+  NextIcon,
+  PauseIcon,
+  PlayIcon,
+  PreviousIcon,
+} from "@hugeicons/core-free-icons";
 import { motion } from "framer-motion";
-import { Dice6, Pause, Play, SkipBack, SkipForward } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 interface Element {
@@ -239,7 +246,7 @@ export default function BubbleSortVisualizer() {
               Sort Array
             </Button>
             <Button onClick={generateRandomArray} variant="outline">
-              <Dice6 className="h-5 w-5 sm:mr-2" />
+              <HugeiconsIcon icon={DiceFaces06Icon} className="h-5 w-5 sm:mr-2" />
               <span className="hidden sm:inline">Random</span>
             </Button>
           </div>
@@ -385,18 +392,18 @@ export default function BubbleSortVisualizer() {
                   onClick={goPrevious}
                   disabled={currentStep === 0}
                 >
-                  <SkipBack className="h-5 w-5" />
+                  <HugeiconsIcon icon={PreviousIcon} className="h-5 w-5" />
                 </Button>
 
                 <Button size="lg" onClick={togglePlay} className="w-36">
                   {isPlaying ? (
                     <>
-                      <Pause className="h-5 w-5 mr-2" />
+                      <HugeiconsIcon icon={PauseIcon} className="h-5 w-5 mr-2" />
                       Pause
                     </>
                   ) : (
                     <>
-                      <Play className="h-5 w-5 mr-2" />
+                      <HugeiconsIcon icon={PlayIcon} className="h-5 w-5 mr-2" />
                       {currentStep >= steps.length - 1 ? "Replay" : "Play"}
                     </>
                   )}
@@ -408,7 +415,7 @@ export default function BubbleSortVisualizer() {
                   onClick={goNext}
                   disabled={currentStep >= steps.length - 1}
                 >
-                  <SkipForward className="h-5 w-5" />
+                  <HugeiconsIcon icon={NextIcon} className="h-5 w-5" />
                 </Button>
               </div>
 

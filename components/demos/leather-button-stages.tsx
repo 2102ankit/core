@@ -55,7 +55,7 @@ const LeatherButtonStage = ({ stage = 6 }) => {
         background,
         boxShadow,
         border: stage == 1 ? "solid 1px grey" : "",
-        fontFamily: "sans-serif",
+        fontFamily: "var(--font-sans)",
       }}
       whileTap={whileTap}
       transition={{ duration: 0.15, ease: "easeOut" }}

@@ -9,16 +9,17 @@ import {
 } from "@/components/demos/demo-exports";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { AnimatePresence, motion } from "framer-motion";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import {
-  ArrowUpRight,
-  Code2,
-  ExternalLink,
-  Github,
-  Layers,
-  Sparkles,
-  X,
-} from "lucide-react";
+  ArrowUpRight01Icon,
+  Cancel01Icon,
+  CodeIcon,
+  ExternalLinkIcon,
+  GithubIcon,
+  Layers01Icon,
+  SparklesIcon,
+} from "@hugeicons/core-free-icons";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { type ReactNode, useEffect, useState } from "react";
 
@@ -109,33 +110,39 @@ function getDemoFromHash(hash: string) {
 
 const showComponents = false;
 
-const components = [
+const components: {
+  title: string;
+  description: string;
+  tech: string[];
+  icon: IconSvgElement;
+  color: string;
+}[] = [
   {
     title: "Loading Spinners",
     description: "Collection of CSS loading animations",
     tech: ["CSS", "Tailwind"],
-    icon: Sparkles,
+    icon: SparklesIcon,
     color: "text-purple-500",
   },
   {
     title: "Toast Notifications",
     description: "Custom toast notification components",
     tech: ["React", "TypeScript"],
-    icon: Layers,
+    icon: Layers01Icon,
     color: "text-blue-500",
   },
   {
     title: "Form Inputs",
     description: "Styled form input components",
     tech: ["React", "Tailwind"],
-    icon: Code2,
+    icon: CodeIcon,
     color: "text-green-500",
   },
   {
     title: "Modal Dialogs",
     description: "Accessible modal dialog patterns",
     tech: ["React", "Radix UI"],
-    icon: ExternalLink,
+    icon: ExternalLinkIcon,
     color: "text-orange-500",
   },
 ];
@@ -223,7 +230,8 @@ export default function LabsPage() {
                         className="inline-flex items-center gap-1 text-sm font-medium hover:underline self-start ml-1"
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <Github size={14} /> Code <ArrowUpRight size={12} />
+                        <HugeiconsIcon icon={GithubIcon} size={14} /> Code{" "}
+                        <HugeiconsIcon icon={ArrowUpRight01Icon} size={12} />
                       </Link>
                     )}
                   </div>
@@ -248,7 +256,7 @@ export default function LabsPage() {
                     <div
                       className={`flex items-center gap-2 mb-2 ${comp.color}`}
                     >
-                      <comp.icon size={20} />
+                      <HugeiconsIcon icon={comp.icon} size={20} />
                       <h3 className="font-semibold">{comp.title}</h3>
                     </div>
                     <p className="text-sm text-muted-foreground mb-3">
@@ -308,7 +316,7 @@ export default function LabsPage() {
                   className="p-2 rounded-lg hover:bg-accent transition-colors"
                   aria-label="Close demo"
                 >
-                  <X size={24} />
+                  <HugeiconsIcon icon={Cancel01Icon} size={24} />
                 </button>
               </div>
               <div className="flex-1 border rounded-lg bg-muted/20 overflow-auto flex justify-center">
@@ -322,8 +330,8 @@ export default function LabsPage() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border hover:bg-accent transition-colors duration-300"
                   >
-                    <Github size={18} /> View on GitHub{" "}
-                    <ArrowUpRight size={14} />
+                    <HugeiconsIcon icon={GithubIcon} size={18} /> View on GitHub{" "}
+                    <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} />
                   </Link>
                 </div>
               )}

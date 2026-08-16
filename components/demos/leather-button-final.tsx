@@ -6,7 +6,7 @@ const LeatherButtonFinal = () => {
   return (
     <div
       className="flex items-center justify-center"
-      style={{ fontFamily: "sans-serif" }}
+      style={{ fontFamily: "var(--font-sans)" }}
     >
       <motion.button
         className="relative px-12 py-6 rounded-full overflow-hidden focus:outline-none"

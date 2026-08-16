@@ -1,11 +1,16 @@
 "use client";
 
 import CommandBar from "@/components/command-bar";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  Cancel01Icon,
+  Menu01Icon,
+  Search01Icon,
+} from "@hugeicons/core-free-icons";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, Search, X } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
 import { motion, AnimatePresence } from "framer-motion";
 import Clock24 from "@/components/Clock24";
@@ -57,51 +62,59 @@ export function Navigation() {
                 />
               </Link>
 
-              {/* Desktop Links */}
-              <div className="hidden sm:flex items-center gap-6">
-                {links.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`text-sm transition-colors duration-200 ${
-                      pathname === link.href
-                        ? "text-zinc-950 dark:text-zinc-50 font-medium"
-                        : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                {/* Desktop Links */}
+                <div className="hidden sm:flex items-center gap-6">
+                  {links.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`text-sm transition-colors duration-200 ${
+                        pathname === link.href
+                          ? "text-zinc-950 dark:text-zinc-50 font-medium"
+                          : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mobile Menu Button + Theme Toggle */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsCommandBarOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-600 transition-none hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-600"
+                  aria-label="Open command bar"
+                >
+                  <HugeiconsIcon icon={Search01Icon} size={14} />
+                  <span className="hidden sm:inline">Search</span>
+                  <kbd className="rounded border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[10px] font-medium text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-400">
+                    K
+                  </kbd>
+                </button>
+                <ThemeToggle />
+                <button
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  className="sm:hidden p-2 text-zinc-700 dark:text-zinc-300"
+                  aria-label="Toggle menu"
+                >
+                  {isMobileMenuOpen ? (
+                    <HugeiconsIcon icon={Cancel01Icon} size={24} />
+                  ) : (
+                    <HugeiconsIcon icon={Menu01Icon} size={24} />
+                  )}
+                </button>
               </div>
             </div>
-
-            {/* Mobile Menu Button + Theme Toggle */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setIsCommandBarOpen(true)}
-                className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-600 transition-none hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-600"
-                aria-label="Open command bar"
-              >
-                <Search size={14} />
-                <span className="hidden sm:inline">Search</span>
-                <kbd className="rounded border border-zinc-200 bg-zinc-50 px-1.5 py-0.5 text-[10px] font-medium text-zinc-500 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-400">
-                  K
-                </kbd>
-              </button>
-              <ThemeToggle />
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="sm:hidden p-2 text-zinc-700 dark:text-zinc-300"
-                aria-label="Toggle menu"
-              >
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
-          </div>
-              <span className="hidden md:inline-flex items-center text-sm text-zinc-600 dark:text-zinc-400 absolute right-4 top-6" aria-label="Current time">
-                <Clock24 />
-              </span>
-        </nav>
+            <span
+              className="hidden md:inline-flex items-center text-sm text-zinc-600 dark:text-zinc-400 absolute right-4 top-6"
+              aria-label="Current time"
+            >
+              <Clock24 />
+            </span>
+          </nav>
+        {/* </div> */}
       </header>
 
       {/* Mobile Menu Overlay */}
@@ -130,7 +143,7 @@ export function Navigation() {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="p-2 text-zinc-600 dark:text-zinc-400"
                 >
-                  <X size={20} />
+                  <HugeiconsIcon icon={Cancel01Icon} size={20} />
                 </button>
               </div>
 

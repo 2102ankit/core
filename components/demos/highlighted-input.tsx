@@ -167,7 +167,7 @@ function buildHTML(text: string, config: HighlightRule[]): string {
 // HighlightedInput 
 
 const sharedInputStyle: CSSProperties = {
-  fontFamily: "var(--font-sans, inherit)",
+  fontFamily: "var(--font-sans)",
   fontSize: "14px",
   lineHeight: "1.6",
   padding: "8px 12px",

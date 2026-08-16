@@ -9,38 +9,70 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tooltip } from "@/components/ui/tooltip-card";
 import { formatDateRange, formatDuration } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import {
-  Award,
-  Briefcase,
-  Calendar1,
-  GraduationCap,
-  MapPin,
-  Trophy,
-} from "lucide-react";
-import Image from "next/image";
+  Award01Icon,
+  Briefcase01Icon,
+  Calendar01Icon,
+  GraduationCapIcon,
+  Location08Icon,
+  Medal01Icon,
+  ComputerTerminal01Icon,
+  ChevronDownIcon,
+} from "@hugeicons/core-free-icons";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
+import { skillCategories } from "@/data/skills";
+import { useTheme } from "next-themes";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
-const timeline = [
+type TimelineItem =
+  | {
+      name: string;
+      degree?: string;
+      location?: string;
+      startYear?: string | number;
+      endYear?: string | number;
+      logo?: string;
+    }
+  | {
+      title: string;
+      subtitle?: string;
+      startYear?: string | number;
+      endYear?: string | number;
+      logo?: string;
+    };
+
+const educationItems: TimelineItem[] = [
   {
-    id: "education",
-    icon: GraduationCap,
-    title: "Education",
-    date: "2021 - 2025",
-    items: [
-      "B. Tech in Computer Engineering, Sardar Patel Institute of Technology, Mumbai",
-      "Minor in Management, S. P. Jain Institute of Management and Research, Mumbai",
-    ],
+    name: "B. Tech in Computer Engineering",
+    degree: "Sardar Patel Institute of Technology, Mumbai",
+    startYear: 2021,
+    endYear: 2025,
+    logo: "/images/education/SPIT_logo.png",
   },
   {
-    id: "achievements",
-    icon: Trophy,
-    title: "Achievements",
-    date: "2023 - 2024",
-    items: [
-      "Top 6 out of 350+ teams in Smart India Hackathon 2023 Finals",
-      "Top 25 Teams out of 300+ in S.P.I.T. Hackathon 2024",
-    ],
+    name: "Minor in Management",
+    degree: "S. P. Jain Institute of Management and Research, Mumbai",
+    startYear: 2021,
+    endYear: 2025,
+    logo: "/images/education/spjimr.png",
+  },
+];
+
+const achievementItems: TimelineItem[] = [
+  {
+    title: "Top 6 out of 350+ teams",
+    subtitle: "Smart India Hackathon 2023, Kolkata",
+    startYear: 2023,
+    endYear: 2024,
+  },
+  {
+    title: "Top 25 Teams out of 300+ teams",
+    subtitle: "S.P.I.T. Hackathon 2024, Mumbai",
+    startYear: 2023,
+    endYear: 2024,
   },
 ];
 
@@ -81,6 +113,28 @@ const experience = [
 ];
 
 export default function AboutPage() {
+  const { theme, systemTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [showAllSkills, setShowAllSkills] = useState(false);
+  const [isSmall, setIsSmall] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 639px)");
+    const onChange = () => setIsSmall(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  const currentTheme = mounted
+    ? theme === "system"
+      ? systemTheme
+      : theme
+    : null;
+
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
@@ -90,7 +144,7 @@ export default function AboutPage() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">About Me</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4">About Me</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-center">
             Passionate software engineer with expertise in full-stack
             development, dedicated to building innovative solutions that make a
@@ -107,9 +161,9 @@ export default function AboutPage() {
         >
           <h2
             id="experience"
-            className="text-3xl sm:text-4xl font-bold mb-6 flex items-baseline gap-3 scroll-mt-28"
+            className="text-xl sm:text-xl font-bold mb-6 flex items-center gap-3 scroll-mt-28"
           >
-            <Briefcase className="text-primary" />
+            <HugeiconsIcon icon={Briefcase01Icon} className="text-primary" />
             Experience
           </h2>
           <div className="space-y-4">
@@ -124,14 +178,10 @@ export default function AboutPage() {
                 className="scroll-mt-28"
               >
                 <Card className="group p-6 relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/20 rounded-md">
-                  {/* accent bar */}
-                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-primary to-primary/40" />
-
                   <div className="flex flex-col gap-3.5">
-                    {/* Header: Title, company, and duration badge */}
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-1 flex-wrap">
-                        <h3 className="text-xl font-semibold">{exp.title}</h3>
+                        <h3 className="text-lg font-semibold">{exp.title}</h3>
                         <span className="text-muted-foreground">@</span>
                         <Tooltip
                           content={(() => {
@@ -153,28 +203,31 @@ export default function AboutPage() {
                         )}
                       </div>
 
-                      {/* Duration badge aligned to right */}
                       <div className="text-xs px-2.5 py-1 rounded-md bg-primary/5 border border-primary/10 text-primary font-medium whitespace-nowrap shrink-0">
                         {formatDuration(exp.startDate, exp.endDate)}
                       </div>
                     </div>
 
-                    {/* Date and location row */}
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1.5">
-                        <Calendar1 className="w-3.5 h-3.5" />
+                        <HugeiconsIcon
+                          icon={Calendar01Icon}
+                          className="w-3.5 h-3.5"
+                        />
                         <span>
                           {formatDateRange(exp.startDate, exp.endDate)}
                         </span>
                       </div>
                       <span className="text-muted-foreground/50">•</span>
                       <div className="flex items-center gap-1.5">
-                        <MapPin className="w-3.5 h-3.5" />
+                        <HugeiconsIcon
+                          icon={Location08Icon}
+                          className="w-3.5 h-3.5"
+                        />
                         <span>{exp.location}</span>
                       </div>
                     </div>
 
-                    {/* Tags */}
                     {exp.tags?.length && (
                       <div className="flex flex-wrap gap-2">
                         {exp.tags.map((tag) => (
@@ -188,7 +241,6 @@ export default function AboutPage() {
                       </div>
                     )}
 
-                    {/* Description */}
                     <ul className="space-y-2 text-sm text-muted-foreground">
                       {exp.description.map((item, i) => (
                         <li
@@ -223,78 +275,53 @@ export default function AboutPage() {
           transition={{ duration: 0.6 }}
           className="mb-20"
         >
-          <h2
+          <div
+            className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 scroll-mt-28 gap-3"
             id="skills"
-            className="text-3xl sm:text-4xl font-bold mb-6 scroll-mt-28"
           >
-            Skills & Technologies
-          </h2>
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.02,
-                },
-              },
-            }}
-            className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4"
-          >
-            {[
-              { name: "C++", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" },
-              { name: "Java", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" },
-              { name: "JavaScript", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" },
-              { name: "TypeScript", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" },
-              { name: "Python", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" },
-              { name: "React", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" },
-              { name: "Redux", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" },
-              { name: "Tailwind", icon: "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" },
-              { name: "Node.js", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" },
-              { name: "Express", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg" },
-              { name: "Spring Boot", icon: "https://www.vectorlogo.zone/logos/springio/springio-icon.svg" },
-              { name: "MongoDB", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg" },
-              { name: "Redis", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg" },
-              { name: "MySQL", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg" },
-              { name: "PostgreSQL", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg" },
-              { name: "SQL Server", icon: "https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" },
-              { name: "Docker", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg" },
-              { name: "Git", icon: "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg" },
-              { name: "Linux", icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg" },
-              { name: "Postman", icon: "https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg" },
-              { name: "Pandas", icon: "https://raw.githubusercontent.com/devicons/devicon/2ae2a900d2f041da66e950e4d48052658d850630/icons/pandas/pandas-original.svg" },
-            ].map((skill) => (
-              <motion.div
-                key={skill.name}
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.3 },
-                  },
-                }}
-                whileHover={{ scale: 1.05 }}
-                className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border bg-card hover:border-foreground/20 transition-all"
+            <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
+              <HugeiconsIcon
+                icon={ComputerTerminal01Icon}
+                className="text-primary"
+              />
+              Skills & Technologies
+            </h2>
+            <div className="self-start sm:self-auto">
+              <button
+                aria-expanded={showAllSkills}
+                onClick={() => setShowAllSkills((s) => !s)}
+                className="inline-flex items-center gap-2 text-sm text-primary font-medium hover:underline"
               >
-                <Image
-                  src={skill.icon}
-                  alt={skill.name}
-                  width={32}
-                  height={32}
+                <span>{showAllSkills ? "Showing all" : "Show all"}</span>
+                <HugeiconsIcon
+                  icon={ChevronDownIcon}
+                  size={14}
+                  className={`transform transition-transform ${showAllSkills ? "rotate-180" : ""}`}
                 />
-                <span className="text-xs sm:text-sm font-medium text-center whitespace-nowrap">
-                  {skill.name}
-                </span>
-              </motion.div>
-            ))}
-          </motion.div>
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {skillCategories.map((cat) => {
+              const visible = cat.skills.filter(
+                (s: any) => showAllSkills || s.featured,
+              );
+              return (
+                <SkillCategoryRow
+                  key={cat.label}
+                  cat={cat}
+                  visible={visible}
+                  mounted={mounted}
+                  currentTheme={currentTheme ?? null}
+                  isSmall={isSmall}
+                />
+              );
+            })}
+          </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20 pl-4">
+        <div className="space-y-24 mb-32">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -303,8 +330,8 @@ export default function AboutPage() {
             id="background"
             className="scroll-mt-28"
           >
-            <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
-              <Award className="text-primary" />
+            <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
+              <HugeiconsIcon icon={Award01Icon} className="text-primary" />
               Background
             </h2>
             <div className="space-y-4 text-muted-foreground">
@@ -329,41 +356,118 @@ export default function AboutPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            id="timeline"
-            className="relative scroll-mt-28"
+            id="education"
+            className="scroll-mt-28"
           >
-            <div className="relative border-l-2 border-border pl-8 space-y-8">
-              {timeline.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  id={item.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                  className="relative group scroll-mt-28"
-                >
-                  <div className="absolute -left-[50px] top-0 w-8 h-8 rounded-full bg-background border-2 border-border flex items-center justify-center group-hover:border-foreground group-hover:bg-accent transition-all">
-                    <item.icon size={16} />
-                  </div>
-                  <div className="mb-2">
-                    <h3 className="text-xl font-semibold flex items-center gap-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground italic">
-                      {item.date}
-                    </p>
-                  </div>
-                  <ul className="space-y-2 text-muted-foreground">
-                    {item.items.map((detail, i) => (
-                      <li key={i} className="flex gap-2">
-                        <span className="text-primary mt-1">▹</span>
-                        <span>{detail}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
+            <div className="mb-8">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
+                  <HugeiconsIcon
+                    icon={GraduationCapIcon}
+                    className="text-primary"
+                    size={22}
+                  />
+                  Education
+                </h3>
+              </div>
+
+              <ul className="mt-4 space-y-6">
+                {educationItems.map((item, i) => (
+                  <li
+                    key={i}
+                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0"
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full border border-border/80 ring-2 ring-border flex items-center justify-center overflow-hidden relative shrink-0 bg-white p-0.5">
+                        {item.logo ? (
+                          <Image
+                            src={item.logo}
+                            alt={(item as any).name}
+                            width={48}
+                            height={48}
+                          />
+                        ) : (
+                          <HugeiconsIcon icon={GraduationCapIcon} size={18} />
+                        )}
+                      </div>
+
+                      <div className="leading-tight">
+                        <div className="font-semibold text-foreground">
+                          {(item as any).name}
+                        </div>
+                        {(item as any).degree && (
+                          <div className="text-sm text-muted-foreground">
+                            {(item as any).degree}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="hidden sm:block text-right text-sm text-muted-foreground sm:ml-4">
+                      {(item as any).startYear || (item as any).endYear ? (
+                        <div className="whitespace-nowrap sm:whitespace-normal">
+                          {(item as any).startYear ?? ""} —{" "}
+                          {(item as any).endYear ?? ""}
+                        </div>
+                      ) : null}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            id="achievements"
+            className="scroll-mt-28"
+          >
+            <div className="mb-8">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
+                  <HugeiconsIcon
+                    icon={Medal01Icon}
+                    className="text-primary"
+                    size={22}
+                  />
+                  Achievements
+                </h3>
+              </div>
+
+              <ul className="mt-4 space-y-6">
+                {achievementItems.map((item, i) => (
+                  <li key={i} className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full bg-background border border-border flex items-center justify-center">
+                        <HugeiconsIcon icon={Medal01Icon} size={18} />
+                      </div>
+
+                      <div className="leading-tight">
+                        <div className="font-semibold text-foreground">
+                          {(item as any).title}
+                        </div>
+                        {(item as any).subtitle ? (
+                          <div className="text-sm text-muted-foreground">
+                            {(item as any).subtitle}
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+
+                    <div className="hidden sm:block text-right text-sm text-muted-foreground">
+                      {(item as any).startYear || (item as any).endYear ? (
+                        <div>
+                          {(item as any).startYear ?? ""} —{" "}
+                          {(item as any).endYear ?? ""}
+                        </div>
+                      ) : null}
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           </motion.div>
         </div>
@@ -391,5 +495,422 @@ export default function AboutPage() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+// Unified SkillCategoryRow: two-column mobile layout, hide empty categories,
+// animate labels and chips on entry/exit, desktop uses measured height.
+function SkillCategoryRow({
+  cat,
+  visible,
+  mounted,
+  currentTheme,
+  isSmall,
+}: {
+  cat: any;
+  visible: any[];
+  mounted: boolean;
+  currentTheme: string | null;
+  isSmall: boolean;
+}) {
+  const innerRef = useRef<HTMLDivElement | null>(null);
+  const smoothEase = "cubic-bezier(0.22, 1, 0.36, 1)" as const;
+  const entryEase = [0.16, 1, 0.3, 1] as const;
+  const exitEase = [0.4, 0, 0.2, 1] as const;
+  const heightSpring = {
+    type: "spring",
+    stiffness: 320,
+    damping: 34,
+    mass: 0.6,
+  } as const;
+  const chipTransition = { duration: 0.72, ease: entryEase } as const;
+  const containerVariants = {
+    initial: { opacity: 0 },
+    animate: {
+      opacity: 1,
+      transition: {
+        duration: 0.7,
+        ease: entryEase,
+        staggerChildren: 0.05,
+        when: "beforeChildren",
+      },
+    },
+    exit: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: exitEase,
+        staggerChildren: 0.02,
+        staggerDirection: -1,
+      },
+    },
+  } as const;
+  const chipVariants = {
+    initial: { opacity: 0, scale: 0.72, filter: "blur(8px)", y: 4 },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      y: 0,
+      transition: chipTransition,
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.8,
+      filter: "blur(10px)",
+      y: -2,
+      transition: { duration: 0.22, ease: exitEase, delay: 0.08 },
+    },
+  } as const;
+  const [measured, setMeasured] = useState(0);
+
+  useLayoutEffect(() => {
+    const el = innerRef.current;
+    if (!el) return;
+    const update = () => setMeasured(el.scrollHeight);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [visible.length, isSmall]);
+
+  // hide empty categories everywhere
+  if (!visible || visible.length === 0) return null;
+
+  // mobile: two-column layout with animated category container and chip animations
+  if (isSmall) {
+    // If we haven't measured yet, render a non-animated version with `ref`
+    // so the ResizeObserver can pick up the height. This prevents the
+    // initial flash/jump on mobile when toggling categories.
+    if (measured === 0) {
+      return (
+        <div
+          className="grid grid-cols-[96px_1fr] gap-x-4 gap-y-2 items-start"
+          key={cat.label}
+        >
+          <span className="shrink-0 w-[96px] text-sm text-muted-foreground pt-0.5">
+            {cat.label}
+          </span>
+          <div ref={innerRef}>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              {visible.map((skill) => (
+                <div
+                  key={skill.name}
+                  className="inline-flex items-center gap-2 text-sm h-8 leading-none"
+                >
+                  {mounted ? (
+                    currentTheme === "dark" ? (
+                      skill.darkIcon ? (
+                        <span
+                          className="flex-none"
+                          style={
+                            skill.darkFilter
+                              ? { filter: skill.darkFilter }
+                              : undefined
+                          }
+                        >
+                          <skill.darkIcon size={18 * (skill.scale || 1)} />
+                        </span>
+                      ) : skill.lightIcon ? (
+                        <span
+                          className="flex-none"
+                          style={
+                            skill.lightFilter
+                              ? { filter: skill.lightFilter }
+                              : undefined
+                          }
+                        >
+                          <skill.lightIcon size={18 * (skill.scale || 1)} />
+                        </span>
+                      ) : null
+                    ) : skill.lightIcon ? (
+                      <span
+                        className="flex-none"
+                        style={
+                          skill.lightFilter
+                            ? { filter: skill.lightFilter }
+                            : undefined
+                        }
+                      >
+                        <skill.lightIcon size={18 * (skill.scale || 1)} />
+                      </span>
+                    ) : skill.darkIcon ? (
+                      <span
+                        className="flex-none"
+                        style={
+                          skill.darkFilter
+                            ? { filter: skill.darkFilter }
+                            : undefined
+                        }
+                      >
+                        <skill.darkIcon size={18 * (skill.scale || 1)} />
+                      </span>
+                    ) : null
+                  ) : skill.lightIcon ? (
+                    <span
+                      className="flex-none"
+                      style={
+                        skill.lightFilter
+                          ? { filter: skill.lightFilter }
+                          : undefined
+                      }
+                    >
+                      <skill.lightIcon size={18 * (skill.scale || 1)} />
+                    </span>
+                  ) : skill.darkIcon ? (
+                    <span
+                      className="flex-none"
+                      style={
+                        skill.darkFilter
+                          ? { filter: skill.darkFilter }
+                          : undefined
+                      }
+                    >
+                      <skill.darkIcon size={18 * (skill.scale || 1)} />
+                    </span>
+                  ) : null}
+
+                  {skill.name}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <AnimatePresence>
+        <motion.div
+          key={cat.label}
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: measured, opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={heightSpring}
+          style={{ overflow: "hidden" }}
+          className="grid grid-cols-[96px_1fr] gap-x-4 gap-y-2 items-start"
+        >
+          <motion.span
+            className="shrink-0 w-[96px] text-sm text-muted-foreground pt-0.5"
+            initial={{ opacity: 0, x: -8, scale: 0.96 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -8, scale: 0.96 }}
+            transition={{ duration: 0.7, ease: entryEase }}
+            style={{ transformOrigin: "left center" }}
+          >
+            {cat.label}
+          </motion.span>
+
+          <motion.div
+            ref={innerRef}
+            className="flex flex-wrap items-center gap-x-4 gap-y-2"
+            variants={containerVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            <AnimatePresence initial={false}>
+              {visible.map((skill) => (
+                <motion.div
+                  key={skill.name}
+                  variants={chipVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  className="inline-flex items-center gap-2 text-sm h-8 leading-none will-change-transform"
+                  style={{ transformOrigin: "center center" }}
+                >
+                  {mounted ? (
+                    currentTheme === "dark" ? (
+                      skill.darkIcon ? (
+                        <span
+                          className="flex-none"
+                          style={
+                            skill.darkFilter
+                              ? { filter: skill.darkFilter }
+                              : undefined
+                          }
+                        >
+                          <skill.darkIcon size={18 * (skill.scale || 1)} />
+                        </span>
+                      ) : skill.lightIcon ? (
+                        <span
+                          className="flex-none"
+                          style={
+                            skill.lightFilter
+                              ? { filter: skill.lightFilter }
+                              : undefined
+                          }
+                        >
+                          <skill.lightIcon size={18 * (skill.scale || 1)} />
+                        </span>
+                      ) : null
+                    ) : skill.lightIcon ? (
+                      <span
+                        className="flex-none"
+                        style={
+                          skill.lightFilter
+                            ? { filter: skill.lightFilter }
+                            : undefined
+                        }
+                      >
+                        <skill.lightIcon size={18 * (skill.scale || 1)} />
+                      </span>
+                    ) : skill.darkIcon ? (
+                      <span
+                        className="flex-none"
+                        style={
+                          skill.darkFilter
+                            ? { filter: skill.darkFilter }
+                            : undefined
+                        }
+                      >
+                        <skill.darkIcon size={18 * (skill.scale || 1)} />
+                      </span>
+                    ) : null
+                  ) : skill.lightIcon ? (
+                    <span
+                      className="flex-none"
+                      style={
+                        skill.lightFilter
+                          ? { filter: skill.lightFilter }
+                          : undefined
+                      }
+                    >
+                      <skill.lightIcon size={18 * (skill.scale || 1)} />
+                    </span>
+                  ) : skill.darkIcon ? (
+                    <span
+                      className="flex-none"
+                      style={
+                        skill.darkFilter
+                          ? { filter: skill.darkFilter }
+                          : undefined
+                      }
+                    >
+                      <skill.darkIcon size={18 * (skill.scale || 1)} />
+                    </span>
+                  ) : null}
+
+                  {skill.name}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
+  // desktop: measured-height animation to avoid layout jumps
+  return (
+    <AnimatePresence>
+      <motion.div
+        layout={false}
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: measured, opacity: 1 }}
+        exit={{ height: 0, opacity: 0 }}
+        transition={heightSpring}
+        style={{ overflow: "hidden" }}
+        className="grid grid-cols-1 sm:grid-cols-[96px_1fr] gap-x-8 gap-y-2 items-start"
+        key={cat.label}
+      >
+        <span className="sm:shrink-0 text-sm text-muted-foreground pt-0.5">
+          {cat.label}
+        </span>
+        <motion.div
+          ref={innerRef}
+          className="flex flex-wrap items-center gap-x-4 gap-y-2"
+          variants={containerVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
+          {visible.map((skill) => (
+            <motion.div
+              key={skill.name}
+              variants={chipVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="inline-flex items-center gap-2 text-sm h-8 leading-none will-change-transform"
+              style={{ transformOrigin: "center center" }}
+            >
+              {mounted ? (
+                currentTheme === "dark" ? (
+                  skill.darkIcon ? (
+                    <span
+                      className="flex-none"
+                      style={
+                        skill.darkFilter
+                          ? { filter: skill.darkFilter }
+                          : undefined
+                      }
+                    >
+                      <skill.darkIcon size={18 * (skill.scale || 1)} />
+                    </span>
+                  ) : skill.lightIcon ? (
+                    <span
+                      className="flex-none"
+                      style={
+                        skill.lightFilter
+                          ? { filter: skill.lightFilter }
+                          : undefined
+                      }
+                    >
+                      <skill.lightIcon size={18 * (skill.scale || 1)} />
+                    </span>
+                  ) : null
+                ) : skill.lightIcon ? (
+                  <span
+                    className="flex-none"
+                    style={
+                      skill.lightFilter
+                        ? { filter: skill.lightFilter }
+                        : undefined
+                    }
+                  >
+                    <skill.lightIcon size={18 * (skill.scale || 1)} />
+                  </span>
+                ) : skill.darkIcon ? (
+                  <span
+                    className="flex-none"
+                    style={
+                      skill.darkFilter
+                        ? { filter: skill.darkFilter }
+                        : undefined
+                    }
+                  >
+                    <skill.darkIcon size={18 * (skill.scale || 1)} />
+                  </span>
+                ) : null
+              ) : skill.lightIcon ? (
+                <span
+                  className="flex-none"
+                  style={
+                    skill.lightFilter
+                      ? { filter: skill.lightFilter }
+                      : undefined
+                  }
+                >
+                  <skill.lightIcon size={18 * (skill.scale || 1)} />
+                </span>
+              ) : skill.darkIcon ? (
+                <span
+                  className="flex-none"
+                  style={
+                    skill.darkFilter ? { filter: skill.darkFilter } : undefined
+                  }
+                >
+                  <skill.darkIcon size={18 * (skill.scale || 1)} />
+                </span>
+              ) : null}
+
+              {skill.name}
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 }

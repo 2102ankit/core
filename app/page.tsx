@@ -4,58 +4,36 @@ import ProjectThumbnail from "@/components/project-thumbnail";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  ArrowRight01Icon,
+  ArrowUpRight01Icon,
+  ChevronDownIcon,
+  FileDownIcon,
+  GithubIcon,
+  Mail01Icon,
+} from "@hugeicons/core-free-icons";
 import { getFeaturedProjects, type Project } from "@/lib/data";
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  ChevronDown,
-  FileDown,
-  Github,
-  Mail,
-} from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
+import { skillCategories } from "@/data/skills";
 
-const featuredSkills = [
-  {
-    name: "React",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg",
-  },
-  {
-    name: "TypeScript",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
-  },
-  {
-    name: "Tailwind",
-    icon: "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg",
-  },
-  {
-    name: "SQL Server",
-    icon: "https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg",
-  },
-  {
-    name: "Python",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg",
-  },
-  {
-    name: "Spring Boot",
-    icon: "https://www.vectorlogo.zone/logos/springio/springio-icon.svg",
-  },
-  {
-    name: "MongoDB",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg",
-  },
-  {
-    name: "Docker",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original.svg",
-  },
-  {
-    name: "Redis",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original.svg",
-  },
-];
+function SectionDivider({ label }: { label: string }) {
+  return (
+    <div className="mb-4">
+      <div className="flex items-center gap-2">
+        <div className="h-0.5 flex-1 bg-linear-to-l from-border/60 to-transparent" />
+        <div className="inline-flex items-center rounded-2xl bg-foreground px-5 py-2 text-sm font-semibold text-background shadow-sm">
+          {label}
+        </div>
+        <div className="h-0.5 flex-1 bg-linear-to-r from-border/60 to-transparent" />
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -129,7 +107,7 @@ export default function Home() {
                     transition: { duration: 0.6, delay: 0.1 },
                   }}
                   style={{ transformOrigin: "bottom right" }}
-                  className="inline-block cursor-default"
+                  className="inline-block cursor-default p-4 -m-4"
                 >
                   👋
                 </motion.span>
@@ -175,7 +153,8 @@ export default function Home() {
                    transition-all duration-300 group"
                 >
                   Datagrid
-                  <ArrowUpRight
+                  <HugeiconsIcon
+                    icon={ArrowUpRight01Icon}
                     size={16}
                     className="opacity-70 group-hover:opacity-100 
                      group-hover:translate-x-0.5 group-hover:-translate-y-0.5 
@@ -196,7 +175,8 @@ export default function Home() {
             <Button asChild size="lg" className="gap-2 text-base h-12 group">
               <Link href="/contact">
                 Let&apos;s Work Together
-                <Mail
+                <HugeiconsIcon
+                  icon={Mail01Icon}
                   size={18}
                   className="opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300"
                 />
@@ -210,7 +190,8 @@ export default function Home() {
             >
               <Link href="/work">
                 See My Work
-                <ArrowRight
+                <HugeiconsIcon
+                  icon={ArrowRight01Icon}
                   size={18}
                   className="opacity-70 group-hover:opacity-100 transition-all duration-300"
                 />
@@ -224,7 +205,7 @@ export default function Home() {
             >
               <Link href="/downloads/resume.pdf">
                 View Resume
-                <FileDown size={18} />
+                <HugeiconsIcon icon={FileDownIcon} size={18} />
               </Link>
             </Button>
             <Button
@@ -238,9 +219,10 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Github size={18} />
+                <HugeiconsIcon icon={GithubIcon} size={18} />
                 GitHub
-                <ArrowUpRight
+                <HugeiconsIcon
+                  icon={ArrowUpRight01Icon}
                   size={18}
                   className="opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
                 />
@@ -270,7 +252,7 @@ export default function Home() {
             }
           >
             <span className="text-xs uppercase tracking-widest">Scroll</span>
-            <ChevronDown size={20} />
+            <HugeiconsIcon icon={ChevronDownIcon} size={20} />
           </motion.div>
         </motion.div>
       )}
@@ -281,12 +263,15 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="mb-10"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <SectionDivider label="Featured Projects" />
+          {/* <h2 className="text-3xl sm:text-4xl font-bold text-center mb-2">
             Featured Projects
-          </h2>
-          <p className="text-muted-foreground">A selection of my best work</p>
+          </h2> */}
+          <p className="text-muted-foreground text-center">
+            A selection of my best work
+          </p>
         </motion.div>
 
         {loading ? (
@@ -357,7 +342,7 @@ export default function Home() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            <Github size={16} /> GitHub
+                            <HugeiconsIcon icon={GithubIcon} size={16} /> GitHub
                           </a>
                         </Button>
                       )}
@@ -368,7 +353,11 @@ export default function Home() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            Demo <ArrowUpRight size={16} />
+                            Demo{" "}
+                            <HugeiconsIcon
+                              icon={ArrowUpRight01Icon}
+                              size={16}
+                            />
                           </a>
                         </Button>
                       )}
@@ -389,60 +378,90 @@ export default function Home() {
         >
           <Button asChild variant="outline" size="lg" className="gap-2">
             <Link href="/work">
-              View All Work <ArrowRight size={18} />
+              View All Work <HugeiconsIcon icon={ArrowRight01Icon} size={18} />
             </Link>
           </Button>
         </motion.div>
       </section>
 
-      <section className="py-16 max-w-3xl mx-auto px-12">
+      <section className="py-16 max-w-3xl mx-auto px-6 sm:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="mb-10"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Featured Skills
-          </h2>
-          <p className="text-muted-foreground">Technologies I work with</p>
+          <SectionDivider label="Skills" />
+          {/* <h2 className="text-3xl sm:text-4xl font-bold text-center">Skills</h2> */}
         </motion.div>
 
+        {/* Featured skills tiles (homepage) */}
         <motion.div
-          initial="hidden"
-          whileInView="visible"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.01,
-              },
-            },
-          }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:px-24"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="space-y-3"
         >
-          {featuredSkills.map((skill) => (
-            <motion.div
-              key={skill.name}
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { duration: 0.1 },
-                },
-              }}
-              whileHover={{ scale: 1.05 }}
-              className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border bg-card hover:border-foreground/20 transition-all"
-            >
-              <Image src={skill.icon} alt={skill.name} width={32} height={32} />
-              <span className="text-xs sm:text-sm font-medium">
-                {skill.name}
-              </span>
-            </motion.div>
-          ))}
+          {/* compute featured skills */}
+          {(() => {
+            const all = skillCategories.flatMap((c) => c.skills);
+            const featuredNames = [
+              "TypeScript",
+              "React",
+              "Next.js",
+              "Tailwind CSS",
+              "Node.js",
+              "Docker",
+              "AWS",
+              "Prisma",
+              "GraphQL",
+              "PostgreSQL",
+              "Kubernetes",
+              "GitHub",
+            ];
+            const featured = featuredNames
+              .map((n) => all.find((s) => s.name === n))
+              .filter(Boolean) as typeof all;
+
+            return (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+                {featured.map((skill) => (
+                  <div key={skill.name} className="w-full">
+                    <div className="relative w-full pt-[100%]">
+                      {/* square spacer */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center p-3 rounded-md border border-border bg-card text-center overflow-hidden">
+                        <div className="flex items-center justify-center mb-2">
+                          {(() => {
+                            if (skill.lightIcon) {
+                              return (
+                                <span
+                                  style={
+                                    skill.lightFilter
+                                      ? { filter: skill.lightFilter }
+                                      : undefined
+                                  }
+                                >
+                                  <skill.lightIcon className="w-20 h-20" />
+                                </span>
+                              );
+                            }
+                            return null;
+                          })()}
+                        </div>
+                        <div className="text-sm font-medium mt-1 w-full leading-tight">
+                          <span className="block text-center break-words">
+                            {skill.name}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
         </motion.div>
       </section>
 
@@ -468,7 +487,7 @@ export default function Home() {
               className="gap-2 border-2 hover:border-foreground/80 shadow-sm hover:shadow-md transition-all"
             >
               <Link href="/contact">
-                Get in Touch <Mail size={18} />
+                Get in Touch <HugeiconsIcon icon={Mail01Icon} size={18} />
               </Link>
             </Button>
             <Button
@@ -478,7 +497,7 @@ export default function Home() {
               className="gap-2 border-2 hover:border-foreground/80 shadow-sm hover:shadow-md transition-all"
             >
               <Link href="/work">
-                View My Work <ArrowRight size={18} />
+                View My Work <HugeiconsIcon icon={ArrowRight01Icon} size={18} />
               </Link>
             </Button>
           </div>

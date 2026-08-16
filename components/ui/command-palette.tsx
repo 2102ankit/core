@@ -1,10 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import { AnimatePresence, motion } from "motion/react";
-import { Clock3, Command, ExternalLink, Search } from "lucide-react";
+import { Clock03Icon, CommandIcon, ExternalLinkIcon, Search01Icon } from "@hugeicons/core-free-icons";
 import {
-  type ComponentType,
   type KeyboardEvent as ReactKeyboardEvent,
   useCallback,
   useEffect,
@@ -21,7 +21,7 @@ export type CommandPaletteItem = {
   section: string;
   keywords?: string[];
   shortcut?: string;
-  icon: ComponentType<{ className?: string }>;
+  icon: IconSvgElement;
   kind?: "action" | "search";
   run: () => void | Promise<void>;
 };
@@ -472,7 +472,10 @@ export function CommandPalette({
     >
       <div className="border-b border-zinc-200/80 px-4 pt-4 dark:border-zinc-800">
         <div className="flex items-center gap-3 rounded-[20px] border border-zinc-200 bg-zinc-50/90 px-4 py-3 text-zinc-950 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-50">
-          <Search className="size-4 text-zinc-500 dark:text-zinc-400" />
+          <HugeiconsIcon
+            icon={Search01Icon}
+            className="size-4 text-zinc-500 dark:text-zinc-400"
+          />
           <input
             ref={inputRef}
             value={query}
@@ -503,7 +506,7 @@ export function CommandPalette({
                 : "Start typing or browse all commands"}
           </span>
           <span className="flex items-center gap-1">
-            <Clock3 className="size-3.5" />
+            <HugeiconsIcon icon={Clock03Icon} className="size-3.5" />
             {history.length} recent
           </span>
         </div>
@@ -513,8 +516,6 @@ export function CommandPalette({
         {visibleCommands.length ? (
           <div className="space-y-2">
             {visibleCommands.map(({ command, recent }, index) => {
-              const Icon = command.icon;
-
               return (
                 <button
                   key={command.id}
@@ -541,7 +542,7 @@ export function CommandPalette({
                         : "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200",
                     )}
                   >
-                    <Icon className="size-4" />
+                    <HugeiconsIcon icon={command.icon} className="size-4" />
                   </div>
 
                   <div className="min-w-0 flex-1">
@@ -616,14 +617,14 @@ export function CommandPalette({
             Enter run
           </span>
           <span className="hidden rounded-md border border-zinc-200 px-2 py-1 dark:border-zinc-700 sm:inline-flex">
-            <Command className="mr-1 size-3" />
+            <HugeiconsIcon icon={CommandIcon} className="mr-1 size-3" />
             {isMac()
               ? `Cmd ${shortcutKey.toUpperCase()}`
               : `Ctrl ${shortcutKey.toUpperCase()}`}
           </span>
         </div>
         <span className="hidden sm:flex items-center gap-2">
-          <ExternalLink className="size-3.5 opacity-60" />
+          <HugeiconsIcon icon={ExternalLinkIcon} className="size-3.5 opacity-60" />
         </span>
       </div>
     </motion.div>

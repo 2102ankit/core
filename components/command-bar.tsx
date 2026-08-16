@@ -6,22 +6,23 @@ import {
   type CommandPaletteItem,
   type CommandPaletteProps,
 } from "@/components/ui/command-palette";
+import { type IconSvgElement } from "@hugeicons/react";
 import {
-  ArrowRight,
-  BookOpen,
-  Briefcase,
-  Copy,
-  FileText,
-  Github,
-  Home,
-  LaptopMinimal,
-  Link2,
-  MoonStar,
-  Newspaper,
-  Sparkles,
-  SunMedium,
-  UserRound,
-} from "lucide-react";
+  ArrowRight01Icon,
+  BookOpen01Icon,
+  Briefcase01Icon,
+  Copy01Icon,
+  File01Icon,
+  GithubIcon,
+  Home01Icon,
+  LaptopIcon,
+  Link01Icon,
+  Moon02Icon,
+  News01Icon,
+  SparklesIcon,
+  Sun03Icon,
+  UserIcon,
+} from "@hugeicons/core-free-icons";
 import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -39,20 +40,20 @@ type SearchIndexEntry = {
 
 type AppCommandBarProps = Omit<CommandPaletteProps, "commands" | "historyKey">;
 
-function getSearchIcon(kind: SearchIndexEntry["kind"]) {
+function getSearchIcon(kind: SearchIndexEntry["kind"]): IconSvgElement {
   switch (kind) {
     case "blog":
-      return Newspaper;
+      return News01Icon;
     case "project":
-      return Briefcase;
+      return Briefcase01Icon;
     case "reading":
-      return BookOpen;
+      return BookOpen01Icon;
     case "about":
-      return UserRound;
+      return UserIcon;
     case "link":
-      return Link2;
+      return Link01Icon;
     default:
-      return Home;
+      return Home01Icon;
   }
 }
 
@@ -143,7 +144,7 @@ export default function CommandBar(props: AppCommandBarProps) {
             section: "Navigation",
             keywords: ["landing", "start", "main"],
             // shortcut: "mod+h",
-            icon: Home,
+            icon: Home01Icon,
             kind: "action" as const,
             run: () => navigateToHref("/"),
           }
@@ -156,7 +157,7 @@ export default function CommandBar(props: AppCommandBarProps) {
             section: "Navigation",
             keywords: ["portfolio", "projects", "case studies"],
             // shortcut: "mod+w",
-            icon: LaptopMinimal,
+            icon: LaptopIcon,
             kind: "action" as const,
             run: () => navigateToHref("/work"),
           }
@@ -168,7 +169,7 @@ export default function CommandBar(props: AppCommandBarProps) {
             subtitle: "Open recent writing and notes",
             section: "Navigation",
             keywords: ["articles", "posts", "writing"],
-            icon: FileText,
+            icon: File01Icon,
             kind: "action" as const,
             run: () => navigateToHref("/blog"),
           }
@@ -180,7 +181,7 @@ export default function CommandBar(props: AppCommandBarProps) {
             subtitle: "Jump to the contact page",
             section: "Navigation",
             keywords: ["email", "hire", "reach out"],
-            icon: ArrowRight,
+            icon: ArrowRight01Icon,
             kind: "action" as const,
             run: () => navigateToHref("/contact"),
           }
@@ -192,9 +193,9 @@ export default function CommandBar(props: AppCommandBarProps) {
               resolvedTheme === "dark" ? "Switch to Light" : "Switch to Dark",
             subtitle: "Flip the interface theme instantly",
             section: "Workspace",
-            keywords: ["appearance", "mode", "theme", "dark","light"],
+            keywords: ["appearance", "mode", "theme", "dark", "light"],
             // shortcut: "mod+shift+l",
-            icon: resolvedTheme === "dark" ? SunMedium : MoonStar,
+            icon: resolvedTheme === "dark" ? Sun03Icon : Moon02Icon,
             kind: "action" as const,
             run: () => setTheme(resolvedTheme === "dark" ? "light" : "dark"),
           }
@@ -207,7 +208,7 @@ export default function CommandBar(props: AppCommandBarProps) {
             section: "Quick Actions",
             keywords: ["mail", "clipboard", "copy"],
             // shortcut: "mod+shift+c",
-            icon: Copy,
+            icon: Copy01Icon,
             kind: "action" as const,
             run: () => navigator.clipboard.writeText("2102ankitm@gmail.com"),
           }
@@ -219,7 +220,7 @@ export default function CommandBar(props: AppCommandBarProps) {
             subtitle: "Snap back to the beginning of the page",
             section: "Quick Actions",
             keywords: ["top", "scroll", "jump"],
-            icon: Sparkles,
+            icon: SparklesIcon,
             kind: "action" as const,
             run: () => window.scrollTo({ top: 0, behavior: "smooth" }),
           }
@@ -231,7 +232,7 @@ export default function CommandBar(props: AppCommandBarProps) {
             subtitle: "Launch the external profile in a new tab",
             section: "Links",
             keywords: ["source", "repositories", "profile"],
-            icon: Github,
+            icon: GithubIcon,
             kind: "action" as const,
             run: () =>
               window.open("https://github.com/2102ankit", "_blank", "noopener"),

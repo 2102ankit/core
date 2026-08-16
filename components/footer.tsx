@@ -1,58 +1,64 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import {
-  ArrowUp,
-  Code,
-  Github,
-  Linkedin,
-  X,
-  MapPin,
-  Phone,
-  Mail,
-  TwitterIcon,
-} from "lucide-react";
+  ArrowUp01Icon,
+  CallIcon,
+  CodeIcon,
+  GithubIcon,
+  Linkedin01Icon,
+  Mail01Icon,
+  Location08Icon,
+  NewTwitterIcon,
+} from "@hugeicons/core-free-icons";
 import Link from "next/link";
 
-const contactInfo = [
-  { icon: MapPin, size: 16, ml: 0, value: "Mumbai, India" },
+const contactInfo: {
+  icon: IconSvgElement;
+  size: number;
+  ml: number;
+  value: string;
+  href?: string;
+}[] = [
+  { icon: Location08Icon, size: 16, ml: 0, value: "Mumbai, India" },
   {
-    icon: Phone,
+    icon: CallIcon,
     size: 14,
     ml: 0.5,
     value: "+91 7738228239",
     href: "tel:+917738228239",
   },
   {
-    icon: Mail,
+    icon: Mail01Icon,
     size: 14,
     ml: 0.5,
     value: "2102ankitm@gmail.com",
     href: "mailto:2102ankitm@gmail.com",
   },
   {
-    icon: TwitterIcon,
+    icon: NewTwitterIcon,
     size: 14,
     ml: 0.5,
     value: "X (formerly Twitter)",
     href: "https://x.com/2102ankit",
   },
   {
-    icon: Linkedin,
+    icon: Linkedin01Icon,
     size: 14,
     ml: 0.5,
     value: "Linkedin",
     href: "https://linkedin.com/in/2102ankit",
   },
   {
-    icon: Github,
+    icon: GithubIcon,
     size: 14,
     ml: 0.5,
     value: "Github",
     href: "https://github.com/2102ankit",
   },
   {
-    icon: Code,
+    icon: CodeIcon,
     size: 14,
     ml: 0.5,
     value: "LeetCode",
@@ -60,20 +66,21 @@ const contactInfo = [
   },
 ];
 
-const socialLinks: { href: string; icon: React.ElementType; label: string }[] = [
-  // { href: "https://x.com/2102ankit", icon: X, label: "X" },
-  // {
-  //   href: "https://linkedin.com/in/2102ankit",
-  //   icon: Linkedin,
-  //   label: "LinkedIn",
-  // },
-  // { href: "https://github.com/2102ankit", icon: Github, label: "GitHub" },
-  // {
-  //   href: "https://www.leetcode.com/2102ankit",
-  //   icon: Code,
-  //   label: "LeetCode",
-  // },
-];
+const socialLinks: { href: string; icon: React.ElementType; label: string }[] =
+  [
+    // { href: "https://x.com/2102ankit", icon: X, label: "X" },
+    // {
+    //   href: "https://linkedin.com/in/2102ankit",
+    //   icon: Linkedin,
+    //   label: "LinkedIn",
+    // },
+    // { href: "https://github.com/2102ankit", icon: Github, label: "GitHub" },
+    // {
+    //   href: "https://www.leetcode.com/2102ankit",
+    //   icon: Code,
+    //   label: "LeetCode",
+    // },
+  ];
 
 const links = [
   { href: "/", label: "Home" },
@@ -124,7 +131,8 @@ export function Footer() {
             <ul className="space-y-2 mb-4">
               {contactInfo.map((info, index) => (
                 <li key={index} className="flex items-center gap-2 text-sm">
-                  <info.icon
+                  <HugeiconsIcon
+                    icon={info.icon}
                     size={info.size}
                     className={`text-muted-foreground ml-${info.ml}`}
                   />
@@ -168,7 +176,7 @@ export function Footer() {
             onClick={scrollToTop}
             className="gap-2"
           >
-            Back to Top <ArrowUp size={16} />
+            Back to Top <HugeiconsIcon icon={ArrowUp01Icon} size={16} />
           </Button>
         </div>
       </div>

@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowRight01Icon, ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import { getAllBlogPaths } from "@/lib/markdown";
 import fs from "fs";
 import matter from "gray-matter";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import path from "path";
 
@@ -115,7 +116,10 @@ export default async function BlogIndex() {
                 >
                   {frontmatter.title ?? slug.split("/").at(-1)}
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-zinc-400" />
+                <HugeiconsIcon
+                  icon={ArrowUpRight01Icon}
+                  className="w-4 h-4 text-zinc-400"
+                />
               </article>
             </Link>
           ))}
@@ -140,7 +144,7 @@ export default async function BlogIndex() {
         <div className="flex gap-4 justify-center">
           <Button asChild variant="outline" className="gap-2">
             <Link href="/reading">
-              Reading List <ArrowRight size={16} />
+              Reading List <HugeiconsIcon icon={ArrowRight01Icon} size={16} />
             </Link>
           </Button>
         </div>

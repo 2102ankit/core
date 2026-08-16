@@ -4,9 +4,13 @@ import ProjectThumbnail from "@/components/project-thumbnail";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  ArrowUpRight01Icon,
+  GithubIcon,
+} from "@hugeicons/core-free-icons";
 import { getProjects, type Project } from "@/lib/data";
 import { motion } from "framer-motion";
-import { ArrowUpRight, Github } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -175,7 +179,7 @@ export default function WorkPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            <Github size={16} /> GitHub
+                            <HugeiconsIcon icon={GithubIcon} size={16} /> GitHub
                           </a>
                         </Button>
                       )}
@@ -186,7 +190,7 @@ export default function WorkPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            Demo <ArrowUpRight size={16} />
+                            Demo <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} />
                           </a>
                         </Button>
                       )}
@@ -221,12 +225,12 @@ export default function WorkPage() {
           <div className="flex gap-4 justify-center">
             <Button asChild variant="outline" className="gap-2">
               <Link href="/labs">
-                Labs <ArrowUpRight size={16} />
+                Labs <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} />
               </Link>
             </Button>
             <Button asChild variant="outline" className="gap-2">
               <Link href="/blog">
-                Blog <ArrowUpRight size={16} />
+                Blog <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} />
               </Link>
             </Button>
           </div>
