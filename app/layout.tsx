@@ -66,7 +66,7 @@ export default function RootLayout({
         />
         <link rel="manifest" href="public/favicon/site.webmanifest" />
       </head>
-      <body className="spotlight-glow">
+      <body className="font-sans antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
