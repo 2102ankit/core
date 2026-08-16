@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Container } from "@/components/container";
 import {
   Card,
   CardContent,
@@ -127,16 +128,15 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
+    <Container size="default" className="py-12 md:py-16">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">Get in Touch</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <h1 className="text-display text-foreground mb-4">Get in Touch</h1>
+          <p className="text-body text-muted-foreground max-w-2xl mx-auto">
             Have a project in mind or want to collaborate? Feel free to reach
             out!
           </p>
@@ -325,7 +325,6 @@ export default function ContactPage() {
             </Card>
           </motion.div>
         </div>
-      </div>
-    </div>
+    </Container>
   );
 }

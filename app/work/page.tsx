@@ -1,6 +1,7 @@
 "use client";
 
 import ProjectThumbnail from "@/components/project-thumbnail";
+import { Container } from "@/components/container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -69,15 +70,15 @@ export default function WorkPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <section className="pt-12">
+    <Container size="wide" className="pt-12 md:pt-16">
+      <section>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
           className="text-center"
         >
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-body text-muted-foreground max-w-2xl mx-auto">
             A collection of my work showcasing various technologies
             <br />
             and problem-solving approaches
@@ -236,6 +237,6 @@ export default function WorkPage() {
           </div>
         </motion.div>
       </section>
-    </div>
+    </Container>
   );
 }

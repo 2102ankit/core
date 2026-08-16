@@ -1,6 +1,7 @@
 "use client";
 
 import ProjectThumbnail from "@/components/project-thumbnail";
+import { Container } from "@/components/container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -23,14 +24,8 @@ import { skillCategories } from "@/data/skills";
 
 function SectionDivider({ label }: { label: string }) {
   return (
-    <div className="mb-4">
-      <div className="flex items-center gap-2">
-        <div className="h-0.5 flex-1 bg-linear-to-l from-border/60 to-transparent" />
-        <div className="inline-flex items-center rounded-2xl bg-foreground px-5 py-2 text-sm font-semibold text-background shadow-sm">
-          {label}
-        </div>
-        <div className="h-0.5 flex-1 bg-linear-to-r from-border/60 to-transparent" />
-      </div>
+    <div className="mb-6">
+      <h2 className="text-title-2 text-foreground">{label}</h2>
     </div>
   );
 }
@@ -66,12 +61,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <Container size="wide">
       <section className="pt-8 md:pt-16 pb-12 md:pb-20  flex items-center justify-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
           className="max-w-4xl mx-auto text-center"
         >
           <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
@@ -97,33 +92,22 @@ export default function Home() {
               transition={{ delay: 0.3, duration: 0.4 }}
               className="text-center md:text-left"
             >
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1">
+              <h1 className="text-title-1 text-foreground mb-1">
                 Hey
-                <motion.span
-                  animate={{ rotate: [0, 15, -5, 15, -5, 0] }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                  whileHover={{
-                    rotate: [0, 15, -5, 15, -5, 0],
-                    transition: { duration: 0.6, delay: 0.1 },
-                  }}
-                  style={{ transformOrigin: "bottom right" }}
-                  className="inline-block cursor-default p-4 -m-4"
-                >
-                  👋
-                </motion.span>
+                <span className="inline-block p-2 -m-2">👋</span>
                 , I&apos;m Ankit
               </h1>
-              <p className="text-lg sm:text-lg text-muted-foreground">
+              <p className="text-body text-muted-foreground">
                 Full-Stack Software Engineer
               </p>
             </motion.div>
           </div>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.4 }}
-            className="text-lg sm:text-xl text-muted-foreground mb-12 max-w-3xl leading-tight text-center"
+            transition={{ delay: 0.15, duration: 0.35 }}
+            className="text-body text-muted-foreground mb-12 max-w-3xl text-center mx-auto"
           >
             I build applications that feel polished to users and
             <br />
@@ -131,34 +115,20 @@ export default function Home() {
           </motion.p>
 
           <div className="space-y-4 max-w-3xl">
-            <blockquote
-              className="relative pl-6 border-l-4 border-blue-500 dark:border-blue-400 
-                           bg-linear-to-r from-zinc-50 to-zinc-100 
-                           dark:from-zinc-800/60 dark:to-zinc-800/50 
-                           rounded-r-lg py-3 pr-6 
-                           text-base sm:text-lg text-zinc-700 dark:text-zinc-300 
-                           leading-relaxed 
-                           transition-all duration-400 hover:shadow-md"
-            >
-              <p className="relative z-10">
+            <blockquote className="relative pl-6 border-l-2 border-foreground/20 bg-muted/50 rounded-r-lg py-3 pr-6 text-callout text-muted-foreground">
+              <p>
                 {"Currently building "}
                 <Link
                   href="https://github.com/2102ankit/nimbus"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-0.5 font-medium text-blue-600 dark:text-blue-400 
-                   underline underline-offset-4 decoration-blue-400/30 dark:decoration-blue-500/30 
-                   hover:decoration-blue-400 dark:hover:decoration-blue-400 
-                   hover:text-blue-700 dark:hover:text-blue-300 
-                   transition-all duration-300 group"
+                  className="inline-flex items-center gap-0.5 font-medium text-foreground underline underline-offset-4 decoration-border hover:decoration-foreground transition-fast group"
                 >
                   Datagrid
                   <HugeiconsIcon
                     icon={ArrowUpRight01Icon}
                     size={16}
-                    className="opacity-70 group-hover:opacity-100 
-                     group-hover:translate-x-0.5 group-hover:-translate-y-0.5 
-                     transition-all duration-300"
+                    className="opacity-70 group-hover:opacity-100 transition-fast"
                   />
                 </Link>
                 {" in React, Motion & Tanstack Table"}
@@ -503,6 +473,6 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
-    </div>
+    </Container>
   );
 }

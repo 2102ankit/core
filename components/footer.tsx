@@ -1,5 +1,6 @@
 "use client";
 
+import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import {
@@ -16,71 +17,41 @@ import Link from "next/link";
 
 const contactInfo: {
   icon: IconSvgElement;
-  size: number;
-  ml: number;
   value: string;
   href?: string;
 }[] = [
-  { icon: Location08Icon, size: 16, ml: 0, value: "Mumbai, India" },
+  { icon: Location08Icon, value: "Mumbai, India" },
   {
     icon: CallIcon,
-    size: 14,
-    ml: 0.5,
     value: "+91 7738228239",
     href: "tel:+917738228239",
   },
   {
     icon: Mail01Icon,
-    size: 14,
-    ml: 0.5,
     value: "2102ankitm@gmail.com",
     href: "mailto:2102ankitm@gmail.com",
   },
   {
     icon: NewTwitterIcon,
-    size: 14,
-    ml: 0.5,
     value: "X (formerly Twitter)",
     href: "https://x.com/2102ankit",
   },
   {
     icon: Linkedin01Icon,
-    size: 14,
-    ml: 0.5,
-    value: "Linkedin",
+    value: "LinkedIn",
     href: "https://linkedin.com/in/2102ankit",
   },
   {
     icon: GithubIcon,
-    size: 14,
-    ml: 0.5,
-    value: "Github",
+    value: "GitHub",
     href: "https://github.com/2102ankit",
   },
   {
     icon: CodeIcon,
-    size: 14,
-    ml: 0.5,
     value: "LeetCode",
     href: "https://www.leetcode.com/2102ankit",
   },
 ];
-
-const socialLinks: { href: string; icon: React.ElementType; label: string }[] =
-  [
-    // { href: "https://x.com/2102ankit", icon: X, label: "X" },
-    // {
-    //   href: "https://linkedin.com/in/2102ankit",
-    //   icon: Linkedin,
-    //   label: "LinkedIn",
-    // },
-    // { href: "https://github.com/2102ankit", icon: Github, label: "GitHub" },
-    // {
-    //   href: "https://www.leetcode.com/2102ankit",
-    //   icon: Code,
-    //   label: "LeetCode",
-    // },
-  ];
 
 const links = [
   { href: "/", label: "Home" },
@@ -98,26 +69,25 @@ export function Footer() {
   };
 
   return (
-    <footer className="border-t border-border bg-background/50 backdrop-blur-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-4">
+    <footer className="border-t border-border/60 bg-background/50">
+      <Container size="wide" className="pt-12 pb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
-            <h3 className="font-semibold text-lg mb-4">Ankit Mishra</h3>
-            <p className="text-sm text-muted-foreground max-w-80">
+            <h3 className="text-title-3 text-foreground mb-4">Ankit Mishra</h3>
+            <p className="text-callout text-muted-foreground max-w-xs">
               Full-Stack Developer passionate about creating innovative
               solutions with modern technologies.
             </p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
-            <ul className="space-y-1">
+            <h3 className="text-title-3 text-foreground mb-4">Quick Links</h3>
+            <ul className="space-y-2">
               {links.map((link) => (
                 <li key={link.href}>
                   <Link
-                    key={link.href}
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground hover:underline transition-colors"
+                    className="text-callout text-muted-foreground hover:text-foreground transition-fast"
                   >
                     {link.label}
                   </Link>
@@ -127,47 +97,35 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4">Connect</h3>
-            <ul className="space-y-2 mb-4">
-              {contactInfo.map((info, index) => (
-                <li key={index} className="flex items-center gap-2 text-sm">
+            <h3 className="text-title-3 text-foreground mb-4">Connect</h3>
+            <ul className="space-y-2">
+              {contactInfo.map((info) => (
+                <li key={info.value} className="flex items-center gap-2">
                   <HugeiconsIcon
                     icon={info.icon}
-                    size={info.size}
-                    className={`text-muted-foreground ml-${info.ml}`}
+                    size={14}
+                    className="text-muted-foreground shrink-0"
                   />
                   {info.href ? (
                     <Link
                       href={info.href}
-                      className="text-muted-foreground hover:text-foreground hover:underline transition-colors"
+                      className="text-callout text-muted-foreground hover:text-foreground transition-fast"
                     >
                       {info.value}
                     </Link>
                   ) : (
-                    <span className="text-muted-foreground">{info.value}</span>
+                    <span className="text-callout text-muted-foreground">
+                      {info.value}
+                    </span>
                   )}
                 </li>
               ))}
             </ul>
-            <div className="flex flex-wrap gap-3">
-              {socialLinks.map((social) => (
-                <Link
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 rounded-lg border border-border hover:border-foreground hover:bg-accent transition-all"
-                  aria-label={social.label}
-                >
-                  <social.icon size={20} />
-                </Link>
-              ))}
-            </div>
           </div>
         </div>
 
-        <div className="pt-2 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground">
+        <div className="pt-6 border-t border-border/60 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p className="text-caption text-muted-foreground">
             © {new Date().getFullYear()} Ankit Mishra. All rights reserved.
           </p>
           <Button
@@ -179,7 +137,7 @@ export function Footer() {
             Back to Top <HugeiconsIcon icon={ArrowUp01Icon} size={16} />
           </Button>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 }

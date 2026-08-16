@@ -5,6 +5,7 @@ import {
   DefaultTooltipContent,
   IssStoxxTooltipContent,
 } from "@/components/experience-tooltip-content";
+import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tooltip } from "@/components/ui/tooltip-card";
@@ -136,16 +137,15 @@ export default function AboutPage() {
     : null;
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+    <Container size="narrow" className="py-12 md:py-16">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.4 }}
           className="text-center mb-16"
         >
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4">About Me</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-center">
+          <h1 className="text-display text-foreground mb-4">About Me</h1>
+          <p className="text-body text-muted-foreground max-w-2xl mx-auto text-center">
             Passionate software engineer with expertise in full-stack
             development, dedicated to building innovative solutions that make a
             difference.
@@ -493,8 +493,7 @@ export default function AboutPage() {
             </Button>
           </div>
         </motion.div>
-      </div>
-    </div>
+    </Container>
   );
 }
 
