@@ -1,344 +1,107 @@
 "use client";
 
-import {
-  BubbleSortInteractive,
-  CommandBarDemo,
-  HighlightedInputDemo,
-  KaleidoscopeViewer,
-  LeatherButtonFinal,
-} from "@/components/demos/demo-exports";
+import { Container } from "@/components/container";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
+import { labDemos } from "@/lib/labs-data";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowUpRight01Icon,
-  Cancel01Icon,
-  CodeIcon,
-  ExternalLinkIcon,
   GithubIcon,
-  Layers01Icon,
-  SparklesIcon,
 } from "@hugeicons/core-free-icons";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import { type ReactNode, useEffect, useState } from "react";
-
-type DemoItem = {
-  id: string;
-  title: string;
-  description: string;
-  tech: string[];
-  github: string | null;
-  span: string;
-  comingSoon?: boolean;
-  renderPreview?: () => ReactNode;
-};
-
-const demos: DemoItem[] = [
-  {
-    id: "bubble-sort",
-    title: "Bubble Sort Visualizer",
-    description: "Interactive visualization of sorting algorithms",
-    tech: ["React", "Framer Motion"],
-    github: null,
-    span: "col-span-2 row-span-1",
-    renderPreview: () => <BubbleSortInteractive />,
-  },
-  {
-    id: "leather-button",
-    title: "Leather Button",
-    description: "Micro-interactions for realistic button states",
-    tech: ["React", "Motion"],
-    github: null,
-    span: "col-span-1 row-span-1",
-    renderPreview: () => <LeatherButtonFinal />,
-  },
-  {
-    id: "kaleidoscpoe",
-    title: "Kaleidoscope",
-    description:
-      "Kaleidoscope built with Three.js – Symmetric patterns, mouse/touch control, colorful reflections.",
-    tech: ["React", "ThreeJs"],
-    github: null,
-    span: "col-span-3 row-span-1",
-    renderPreview: () => <KaleidoscopeViewer />,
-  },
-  {
-    id: "particle-effects",
-    title: "Particle Effects",
-    description: "Canvas-based particle system experiments",
-    tech: ["JavaScript", "Canvas"],
-    comingSoon: true,
-    github: "https://github.com/2102ankit",
-    span: "col-span-1 row-span-1",
-  },
-  {
-    id: "highlighted-input",
-    title: "Highlighted Input",
-    description:
-      "Input Filed to Highlight specific words. Control colors, bold, italic and case sensitivity",
-    tech: ["React"],
-    github: null,
-    span: "col-span-2 row-span-1",
-    renderPreview: () => <HighlightedInputDemo />,
-  },
-  {
-    id: "command-bar",
-    title: "Command Bar",
-    description:
-      "Lightweight command palette with fuzzy search, recent history, and full keyboard navigation.",
-    tech: ["React", "TypeScript", "Tailwind v4", "Motion"],
-    github: null,
-    span: "col-span-2 row-span-1",
-    renderPreview: () => <CommandBarDemo inline defaultOpen />,
-  },
-  {
-    id: "3d-transform",
-    title: "3D Transform Demo",
-    description: "CSS 3D transforms and perspective",
-    tech: ["CSS", "Three.js"],
-    comingSoon: true,
-    github: "https://github.com/2102ankit",
-    span: "col-span-1 row-span-1",
-  },
-];
-
-function getDemoFromHash(hash: string) {
-  const demo = demos.find((item) => item.id === hash);
-  return demo && !demo.comingSoon ? demo : null;
-}
-
-const showComponents = false;
-
-const components: {
-  title: string;
-  description: string;
-  tech: string[];
-  icon: IconSvgElement;
-  color: string;
-}[] = [
-  {
-    title: "Loading Spinners",
-    description: "Collection of CSS loading animations",
-    tech: ["CSS", "Tailwind"],
-    icon: SparklesIcon,
-    color: "text-purple-500",
-  },
-  {
-    title: "Toast Notifications",
-    description: "Custom toast notification components",
-    tech: ["React", "TypeScript"],
-    icon: Layers01Icon,
-    color: "text-blue-500",
-  },
-  {
-    title: "Form Inputs",
-    description: "Styled form input components",
-    tech: ["React", "Tailwind"],
-    icon: CodeIcon,
-    color: "text-green-500",
-  },
-  {
-    title: "Modal Dialogs",
-    description: "Accessible modal dialog patterns",
-    tech: ["React", "Radix UI"],
-    icon: ExternalLinkIcon,
-    color: "text-orange-500",
-  },
-];
 
 export default function LabsPage() {
-  const [selectedDemo, setSelectedDemo] = useState<DemoItem | null>(() => {
-    if (typeof window === "undefined") {
-      return null;
-    }
-
-    return getDemoFromHash(window.location.hash.slice(1));
-  });
-
-  useEffect(() => {
-    if (selectedDemo) {
-      window.history.pushState(null, "", `#${selectedDemo.id}`);
-    } else {
-      window.history.pushState(null, "", window.location.pathname);
-    }
-  }, [selectedDemo]);
-
-  useEffect(() => {
-    const handlePopState = () => {
-      setSelectedDemo(getDemoFromHash(window.location.hash.slice(1)));
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
-
   return (
-    <>
-      <div className="max-w-3xl mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12 pt-12"
-        >
-          <h1 className="text-4xl sm:text-5xl font-bold mb-4">Labs</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Experimental projects, UI components and technical explorations
-          </p>
-        </motion.div>
+    <Container size="default" className="py-12 md:py-16">
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="text-center mb-12 md:mb-16"
+      >
+        <h1 className="text-display text-foreground mb-4">Labs</h1>
+        <p className="text-body text-muted-foreground max-w-2xl mx-auto">
+          Experimental projects, UI components, and technical explorations
+        </p>
+      </motion.div>
 
-        <section className="mb-20">
-          <h2 className="text-2xl font-bold mb-6">Interactive Experiments</h2>
-          <div className="grid grid-cols-3 auto-rows-[200px] gap-4">
-            {demos.map((demo) => (
-              <motion.div
-                key={demo.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 }}
-                className={demo.span}
-              >
-                <Card
-                  className={`h-full p-6 hover:border-foreground/20 transition-all cursor-pointer relative overflow-hidden ${
-                    demo.comingSoon ? "cursor-not-allowed opacity-60" : ""
-                  }`}
-                  onClick={() => !demo.comingSoon && setSelectedDemo(demo)}
-                >
-                  {demo.comingSoon && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-10">
-                      <Badge variant="secondary">Coming Soon</Badge>
-                    </div>
-                  )}
-                  <div className="flex flex-col h-full">
-                    <h3 className="text-xl font-semibold mb-2">{demo.title}</h3>
-                    <p className="text-muted-foreground mb-4 flex-1 leading-tight">
-                      {demo.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {demo.tech.map((t) => (
-                        <Badge key={t} variant="secondary" className="text-xs">
-                          {t}
-                        </Badge>
-                      ))}
-                    </div>
-                    {!demo.comingSoon && demo.github && (
-                      <Link
-                        href={demo.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-sm font-medium hover:underline self-start ml-1"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <HugeiconsIcon icon={GithubIcon} size={14} /> Code{" "}
-                        <HugeiconsIcon icon={ArrowUpRight01Icon} size={12} />
-                      </Link>
-                    )}
-                  </div>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {showComponents && (
-          <section className="mb-16">
-            <h2 className="text-2xl font-bold mb-6">UI Components</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {components.map((comp, index) => (
-                <motion.div
-                  key={comp.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + index * 0.05 }}
-                >
-                  <Card className="p-4 hover:border-foreground/20 transition-all h-full">
-                    <div
-                      className={`flex items-center gap-2 mb-2 ${comp.color}`}
-                    >
-                      <HugeiconsIcon icon={comp.icon} size={20} />
-                      <h3 className="font-semibold">{comp.title}</h3>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {comp.description}
-                    </p>
-                    <div className="flex flex-wrap gap-1">
-                      {comp.tech.map((t) => (
-                        <Badge key={t} variant="outline" className="text-xs">
-                          {t}
-                        </Badge>
-                      ))}
-                    </div>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="mt-12 mb-12 text-center"
-        >
-          <p className="text-sm text-muted-foreground">
-            This is my playground for quick experiments and component libraries.
-            Some demos are embedded directly, while others link to live previews
-            or repositories. More experiments coming soon!
-          </p>
-        </motion.div>
-      </div>
-
-      <AnimatePresence>
-        {selectedDemo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm"
-          >
+      <section className="mb-16 md:mb-20">
+        <h2 className="text-title-2 text-foreground mb-6">
+          Interactive Experiments
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr">
+          {labDemos.map((demo, index) => (
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="h-full w-full max-w-6xl mx-auto flex flex-col p-6"
+              key={demo.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05, duration: 0.35 }}
+              className={demo.span}
             >
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <h2 className="text-2xl font-bold">{selectedDemo.title}</h2>
-                  <p className="text-muted-foreground">
-                    {selectedDemo.description}
-                  </p>
-                </div>
-                <button
-                  onClick={() => setSelectedDemo(null)}
-                  className="p-2 rounded-lg hover:bg-accent transition-colors"
-                  aria-label="Close demo"
-                >
-                  <HugeiconsIcon icon={Cancel01Icon} size={24} />
-                </button>
-              </div>
-              <div className="flex-1 border rounded-lg bg-muted/20 overflow-auto flex justify-center">
-                {selectedDemo.renderPreview?.()}
-              </div>
-              {!!selectedDemo.github && (
-                <div className="flex gap-4 mt-6 justify-center">
-                  <Link
-                    href={selectedDemo.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border hover:bg-accent transition-colors duration-300"
-                  >
-                    <HugeiconsIcon icon={GithubIcon} size={18} /> View on GitHub{" "}
-                    <HugeiconsIcon icon={ArrowUpRight01Icon} size={14} />
-                  </Link>
-                </div>
+              {demo.comingSoon ? (
+                <Card className="h-full p-6 opacity-60 cursor-not-allowed relative overflow-hidden">
+                  <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-10">
+                    <Badge variant="secondary">Coming Soon</Badge>
+                  </div>
+                  <LabCardContent demo={demo} />
+                </Card>
+              ) : (
+                <Link href={`/labs/${demo.id}`} className="block h-full group">
+                  <Card className="h-full p-6 transition-fast hover:shadow-elevation-2">
+                    <LabCardContent demo={demo} showArrow />
+                  </Card>
+                </Link>
               )}
             </motion.div>
-          </motion.div>
+          ))}
+        </div>
+      </section>
+
+      <p className="text-caption text-muted-foreground text-center max-w-xl mx-auto">
+        A playground for quick experiments and component libraries. Each demo
+        opens in its own view for full interaction on any screen size.
+      </p>
+    </Container>
+  );
+}
+
+function LabCardContent({
+  demo,
+  showArrow = false,
+}: {
+  demo: (typeof labDemos)[number];
+  showArrow?: boolean;
+}) {
+  return (
+    <div className="flex flex-col h-full">
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <h3 className="text-title-3 text-foreground">{demo.title}</h3>
+        {showArrow && (
+          <HugeiconsIcon
+            icon={ArrowUpRight01Icon}
+            size={16}
+            className="text-muted-foreground shrink-0 mt-1 transition-fast group-hover:text-foreground"
+          />
         )}
-      </AnimatePresence>
-    </>
+      </div>
+      <p className="text-callout text-muted-foreground mb-4 flex-1">
+        {demo.description}
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {demo.tech.map((tech) => (
+          <Badge key={tech} variant="secondary" className="text-caption">
+            {tech}
+          </Badge>
+        ))}
+      </div>
+      {!demo.comingSoon && demo.github && (
+        <span className="inline-flex items-center gap-1 text-caption font-medium mt-4 text-muted-foreground">
+          <HugeiconsIcon icon={GithubIcon} size={14} />
+          Source available
+        </span>
+      )}
+    </div>
   );
 }
