@@ -13,20 +13,17 @@ export function ThemeToggle() {
   useEffect(() => {
     setMounted(true);
 
-    // Preload the click sound (client-side only)
     if (typeof window !== "undefined") {
-      clickSoundRef.current = new Audio("/sounds/click.wav"); // Path from /public
-      clickSoundRef.current.volume = 0.4; // Adjust volume (0-1); keep subtle
+      clickSoundRef.current = new Audio("/sounds/click.wav");
+      clickSoundRef.current.volume = 0.4;
       clickSoundRef.current.preload = "auto";
     }
   }, []);
 
   const playClickSound = () => {
     if (clickSoundRef.current) {
-      clickSoundRef.current.currentTime = 0; // Reset for rapid toggles
-      clickSoundRef.current.play().catch((e) => {
-        console.warn("Click sound play failed:", e); // Rare, but handles any edge cases
-      });
+      clickSoundRef.current.currentTime = 0;
+      clickSoundRef.current.play().catch(() => {});
     }
   };
 
@@ -36,7 +33,6 @@ export function ThemeToggle() {
     playClickSound();
   };
 
-  // Keyboard shortcut for 'd' key
   useEffect(() => {
     if (!mounted) return;
 
@@ -57,9 +53,7 @@ export function ThemeToggle() {
   }, [mounted, theme, systemTheme, setTheme]);
 
   if (!mounted) {
-    return (
-      <div className="w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-900" />
-    );
+    return <div className="size-9 rounded-lg bg-muted" />;
   }
 
   const currentTheme = theme === "system" ? systemTheme : theme;
@@ -67,19 +61,13 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="w-9 h-9 rounded-full bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-all duration-300 hover:scale-110 active:scale-95"
+      className="size-9 rounded-lg bg-muted flex items-center justify-center hover:bg-accent transition-fast"
       aria-label="Toggle theme (or press 'd')"
     >
       {currentTheme === "dark" ? (
-        <HugeiconsIcon
-          icon={Sun03Icon}
-          className="w-4 h-4 text-zinc-50 transition-transform duration-300"
-        />
+        <HugeiconsIcon icon={Sun03Icon} className="size-4 text-foreground" />
       ) : (
-        <HugeiconsIcon
-          icon={Moon02Icon}
-          className="w-4 h-4 text-zinc-950 transition-transform duration-300"
-        />
+        <HugeiconsIcon icon={Moon02Icon} className="size-4 text-foreground" />
       )}
     </button>
   );
