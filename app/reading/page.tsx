@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Bookshelf } from "@/components/bookshelf";
+import { Container } from "@/components/container";
 
 interface Book {
   id: string;
@@ -56,13 +57,10 @@ export default async function ReadingPage() {
   const blogs = parseMarkdownLinks(blogsRaw);
 
   return (
-    <div className="min-h-[calc(100vh-73px)] pt-16 px-6 page-transition">
-      <div className="max-w-3xl mx-auto">
+    <Container size="narrow" className="py-16 md:py-20 page-transition">
         <div className="mb-12 opacity-0 animate-fade-in-up">
-          <h1 className="text-4xl sm:text-5xl font-bold text-zinc-950 dark:text-zinc-50 mb-4">
-            Reading
-          </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400">
+          <h1 className="text-display text-foreground mb-4">Reading</h1>
+          <p className="text-body text-muted-foreground">
             Books, whitepapers and blogs that shape my thinking
           </p>
         </div>
@@ -70,11 +68,11 @@ export default async function ReadingPage() {
         <Bookshelf books={books} />
 
         <section id="whitepapers" className="mb-12 scroll-mt-28">
-          <h2 className="text-2xl font-bold mb-4 text-zinc-950 dark:text-zinc-50">
+          <h2 className="text-title-2 text-foreground mb-4">
             White Papers I have read
             {whitepapers.length > 0 && <>{` (${whitepapers.length})`}</>}
           </h2>
-          <ul className="list-disc list-inside space-y-2 pl-2 text-zinc-950 dark:text-zinc-50">
+          <ul className="list-disc list-inside space-y-2 pl-2 text-foreground">
             {whitepapers.map((paper, index) => (
               <li
                 key={paper.url}
@@ -86,7 +84,7 @@ export default async function ReadingPage() {
                   href={paper.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-zinc-950 dark:text-zinc-50 hover:underline"
+                  className="text-foreground hover:underline"
                 >
                   {paper.title}
                 </a>
@@ -96,11 +94,11 @@ export default async function ReadingPage() {
         </section>
 
         <section id="blogs-i-follow" className="mb-12 scroll-mt-28">
-          <h2 className="text-2xl font-bold mb-4 text-zinc-950 dark:text-zinc-50">
+          <h2 className="text-title-2 text-foreground mb-4">
             Blogs I Follow
             {blogs.length > 0 && <>{` (${blogs.length})`}</>}
           </h2>
-          <ul className="list-disc list-inside space-y-2 pl-2 text-zinc-950 dark:text-zinc-50">
+          <ul className="list-disc list-inside space-y-2 pl-2 text-foreground">
             {blogs.map((blog, index) => (
               <li
                 key={blog.url}
@@ -112,7 +110,7 @@ export default async function ReadingPage() {
                   href={blog.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-zinc-950 dark:text-zinc-50 hover:underline"
+                  className="text-foreground hover:underline"
                 >
                   {blog.title}
                 </a>
@@ -125,14 +123,13 @@ export default async function ReadingPage() {
           className="mb-12 text-center opacity-0 animate-fade-in-up"
           style={{ animationDelay: "600ms" }}
         >
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="text-caption text-muted-foreground">
             I believe continuous learning is essential for growth. These
             resources have shaped my thinking and approach to software
             development. Looking for recommendations? I&apos;d love to hear what
             you&apos;re reading!
           </p>
         </div>
-      </div>
-    </div>
+    </Container>
   );
 }

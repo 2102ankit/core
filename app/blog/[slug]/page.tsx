@@ -1,4 +1,5 @@
 import { Outline } from "@/components/outline";
+import { Container } from "@/components/container";
 import { getPostBySlug } from "@/lib/markdown";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -35,13 +36,12 @@ export default async function BlogPostPage({
   const { frontmatter, content, readingTime, headings } = post;
 
   return (
-    <div className="min-h-[calc(100vh-73px)] py-16 px-6 page-transition">
+    <Container size="narrow" className="py-16 md:py-20 page-transition">
       <Outline headings={headings} />
-      <article className="max-w-3xl mx-auto">
-        {/* Back button */}
+      <article>
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-200 mb-8 group opacity-0 animate-fade-in"
+          className="inline-flex items-center gap-2 text-callout text-muted-foreground hover:text-foreground transition-fast mb-8 group opacity-0 animate-fade-in"
         >
           <HugeiconsIcon
             icon={ArrowLeft01Icon}
@@ -50,13 +50,12 @@ export default async function BlogPostPage({
           Back to blog
         </Link>
 
-        {/* Article header */}
         <header className="mb-12 opacity-0 animate-fade-in-up delay-50">
-          <h1 className="text-4xl sm:text-5xl font-bold text-zinc-950 dark:text-zinc-50 mb-6 leading-tight">
+          <h1 className="text-display text-foreground mb-6">
             {frontmatter.title ?? "Untitled"}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400">
+          <div className="flex flex-wrap items-center gap-4 text-caption text-muted-foreground">
             {frontmatter.date && (
               <div className="flex items-center gap-2">
                 <HugeiconsIcon icon={Calendar01Icon} className="w-4 h-4" />
@@ -76,7 +75,7 @@ export default async function BlogPostPage({
           </div>
 
           {frontmatter.description && (
-            <p className="text-lg text-zinc-600 dark:text-zinc-400 mt-6 leading-relaxed">
+            <p className="text-body text-muted-foreground mt-6">
               {frontmatter.description}
             </p>
           )}
@@ -96,23 +95,18 @@ export default async function BlogPostPage({
           )}
         </header>
 
-        {/* Divider */}
-        <hr className="border-zinc-200 dark:border-zinc-800 mb-12 opacity-0 animate-fade-in-up delay-100" />
+        <hr className="border-border mb-12 opacity-0 animate-fade-in-up delay-100" />
 
-        {/* Article content */}
-        {/* Render compiled MDX content */}
-        <section className="prose max-w-none opacity-0 animate-fade-in-up delay-150 tracking-wide dark:prose-invert">
+        <section className="prose max-w-none opacity-0 animate-fade-in-up delay-150">
           {content}
         </section>
 
-        {/* Divider */}
-        <hr className="border-zinc-200 dark:border-zinc-800 mt-12 mb-8 opacity-0 animate-fade-in-up delay-200" />
+        <hr className="border-border mt-12 mb-8 opacity-0 animate-fade-in-up delay-200" />
 
-        {/* Footer */}
         <footer className="flex items-center justify-between opacity-0 animate-fade-in-up delay-200">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-200 group"
+            className="inline-flex items-center gap-2 text-callout text-muted-foreground hover:text-foreground transition-fast group"
           >
             <HugeiconsIcon
               icon={ArrowLeft01Icon}
@@ -128,14 +122,14 @@ export default async function BlogPostPage({
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors duration-200"
+              className="text-callout text-muted-foreground hover:text-foreground transition-fast"
             >
               Share on X
             </Link>
           </div>
         </footer>
       </article>
-    </div>
+    </Container>
   );
 }
 

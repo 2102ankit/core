@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Container } from "@/components/container";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowRight01Icon, ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import { getAllBlogPaths } from "@/lib/markdown";
@@ -81,13 +82,10 @@ export default async function BlogIndex() {
   });
 
   return (
-    <div className="min-h-[calc(100vh-73px)] py-16 px-6 page-transition">
-      <div className="max-w-3xl mx-auto">
+    <Container size="narrow" className="py-16 md:py-20 page-transition">
         <div className="mb-12 opacity-0 animate-fade-in-up">
-          <h1 className="text-4xl sm:text-5xl font-bold text-zinc-950 dark:text-zinc-50 mb-4">
-            Blog
-          </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400">
+          <h1 className="text-display text-foreground mb-4">Blog</h1>
+          <p className="text-body text-muted-foreground">
             Thoughts, stories and ideas about technology, design and life.
           </p>
         </div>
@@ -102,7 +100,7 @@ export default async function BlogIndex() {
             >
               <article className="flex items-center gap-3 p-3 rounded-lg transition-colors group">
                 {frontmatter.date && (
-                  <time className="text-sm text-zinc-500 dark:text-zinc-500 whitespace-nowrap w-20">
+                  <time className="text-caption text-muted-foreground whitespace-nowrap w-20">
                     {new Date(frontmatter.date).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -112,13 +110,13 @@ export default async function BlogIndex() {
                 )}
                 <div
                   // href={`/blog/${slug}`}
-                  className="flex-1 text-zinc-950 dark:text-zinc-50 group-hover:underline hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors"
+                  className="flex-1 text-foreground group-hover:underline hover:text-muted-foreground transition-fast"
                 >
                   {frontmatter.title ?? slug.split("/").at(-1)}
                 </div>
                 <HugeiconsIcon
                   icon={ArrowUpRight01Icon}
-                  className="w-4 h-4 text-zinc-400"
+                  className="w-4 h-4 text-muted-foreground"
                 />
               </article>
             </Link>
@@ -127,18 +125,16 @@ export default async function BlogIndex() {
 
         {posts.length === 0 && (
           <div className="text-center py-16 opacity-0 animate-fade-in-up">
-            <p className="text-zinc-500 dark:text-zinc-400">
+            <p className="text-muted-foreground">
               No blog posts yet. Check back soon!
             </p>
           </div>
         )}
-      </div>
-
       <div
         className="mt-12 pt-8 border-t border-border opacity-0 animate-fade-in-up"
         style={{ animationDelay: `${posts.length * 100 + 300}ms` }}
       >
-        <p className="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-6 text-center">
+        <p className="text-muted-foreground max-w-2xl mx-auto mb-6 text-center">
           Explore my reading list and book recommendations
         </p>
         <div className="flex gap-4 justify-center">
@@ -149,6 +145,6 @@ export default async function BlogIndex() {
           </Button>
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
