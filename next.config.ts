@@ -10,7 +10,6 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "raw.githubusercontent.com",
-        port: "",
         pathname: "/**",
       },
       {
@@ -21,6 +20,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  allowedDevOrigins: ["192.168.0.111"],
 };
 
 export default nextConfig;

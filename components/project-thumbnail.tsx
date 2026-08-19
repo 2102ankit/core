@@ -22,14 +22,15 @@ export default function ProjectThumbnail({
   if (!src || hasError) {
     return (
       <div className="flex h-full w-full items-center justify-center bg-muted text-xs text-muted-foreground">
-        {src ? alt ?? "Logo" : "Project"}
+        {src ? (alt ?? "Logo") : "Project"}
       </div>
     );
   }
 
-  const objectFitClass = variant === "cover" ? "object-cover" : "object-contain";
+  const objectFitClass =
+    variant === "cover" ? "object-cover" : "object-contain";
   return (
-    <div className="h-full w-full">
+    <div className="relative h-full w-full">
       <Image
         src={src}
         alt={alt ?? "Project thumbnail"}

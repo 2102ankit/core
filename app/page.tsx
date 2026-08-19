@@ -83,7 +83,10 @@ function SkillChip({
   isDark: boolean;
 }) {
   return (
-    <div className="flex items-center gap-2.5 h-11 px-4 rounded-squircle border border-border bg-card shadow-elevation-1 shrink-0 whitespace-nowrap">
+    <div
+      className="flex items-center gap-2.5 h-11 px-4 rounded-squircle border border-border bg-card 
+    shrink-0 whitespace-nowrap"
+    >
       <SkillIcon skill={skill} mounted={mounted} isDark={isDark} />
       <span className="text-callout font-medium text-foreground">
         {skill.name}
@@ -181,7 +184,6 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.35 }}
             className="text-body text-muted-foreground mb-8 max-w-2xl text-center mx-auto"
-            
           >
             I build applications that feel polished to users and
             <br className="hidden sm:block" /> systems that stay simple for

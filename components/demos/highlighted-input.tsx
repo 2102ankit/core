@@ -2,6 +2,7 @@
 import {
   ClipboardEvent,
   CSSProperties,
+  Dispatch,
   FC,
   FocusEvent,
   KeyboardEvent,
@@ -11,7 +12,6 @@ import {
   useRef,
   useState,
 } from "react";
-
 // Types
 
 export interface HighlightRule {
@@ -368,20 +368,6 @@ const ConfigEditor: FC<ConfigEditorProps> = ({ config, onChange }) => {
         >
           Config
         </span>
-        {/* <button
-          onClick={() => setJsonMode((m) => !m)}
-          style={{
-            fontSize: "12px",
-            padding: "3px 10px",
-            background: "var(--color-background-primary)",
-            border: "0.5px solid var(--color-border-secondary)",
-            borderRadius: "var(--border-radius-md)",
-            cursor: "pointer",
-            color: "var(--color-text-secondary)",
-          }}
-        >
-          {jsonMode ? "visual" : "JSON"}
-        </button> */}
         <ModeToggle jsonMode={jsonMode} setJsonMode={setJsonMode} />
       </div>
 
@@ -649,7 +635,7 @@ function ModeToggle({
   setJsonMode,
 }: {
   jsonMode: boolean;
-  setJsonMode: SetStateAction<boolean>;
+  setJsonMode: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
     <div
