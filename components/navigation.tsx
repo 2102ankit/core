@@ -49,22 +49,22 @@ export function Navigation() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md transition-fast">
-        <Container size="wide" className="py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6 md:gap-8">
-              <Link href="/" className="flex items-center">
+      <header className="sticky top-0 z-50 bg-background/85 backdrop-blur-md">
+        <Container size="wide" className="py-3">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-5 md:gap-7 min-w-0">
+              <Link href="/" className="flex shrink-0 items-center">
                 <Image
                   src="https://avatars.githubusercontent.com/u/105378102?v=4"
                   alt="Ankit Mishra"
                   className="rounded-full ring-1 ring-border"
                   priority
-                  width={40}
-                  height={40}
+                  width={36}
+                  height={36}
                 />
               </Link>
 
-              <div className="hidden sm:flex items-center gap-6">
+              <div className="hidden sm:flex items-center gap-5">
                 {links.map((link) => (
                   <Link
                     key={link.href}
@@ -81,15 +81,21 @@ export function Navigation() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
+              <span
+                className="hidden lg:inline-flex items-center text-footnote text-muted-foreground tabular-nums mr-2"
+                aria-label="Current time"
+              >
+                <Clock24 />
+              </span>
               <button
                 onClick={() => setIsCommandBarOpen(true)}
-                className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-footnote text-muted-foreground transition-fast hover:bg-accent hover:text-foreground"
+                className="hidden sm:inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-footnote text-muted-foreground transition-none hover:border-border hover:bg-muted/60"
                 aria-label="Open command bar"
               >
                 <HugeiconsIcon icon={Search01Icon} size={14} />
                 <span className="hidden sm:inline">Search</span>
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 text-footnote font-medium text-muted-foreground">
+                <kbd className="rounded-full border border-border bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
                   K
                 </kbd>
               </button>
@@ -100,19 +106,13 @@ export function Navigation() {
                 aria-label="Toggle menu"
               >
                 {isMobileMenuOpen ? (
-                  <HugeiconsIcon icon={Cancel01Icon} size={24} />
+                  <HugeiconsIcon icon={Cancel01Icon} size={22} />
                 ) : (
-                  <HugeiconsIcon icon={Menu01Icon} size={24} />
+                  <HugeiconsIcon icon={Menu01Icon} size={22} />
                 )}
               </button>
             </div>
           </div>
-          <span
-            className="hidden md:inline-flex items-center text-callout text-muted-foreground absolute right-4 sm:right-6 lg:right-8 top-5"
-            aria-label="Current time"
-          >
-            <Clock24 />
-          </span>
         </Container>
       </header>
 
@@ -126,10 +126,10 @@ export function Navigation() {
             className="fixed inset-y-0 right-0 z-[60] w-full max-w-xs bg-background border-l border-border shadow-elevation-3 sm:hidden"
           >
             <div className="flex flex-col h-full">
-              <div className="flex items-center justify-between p-6 border-b border-border">
+              <div className="flex items-center justify-between p-5 border-b border-border">
                 <Link
                   href="/"
-                  className="font-semibold text-foreground"
+                  className="text-headline text-foreground"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Ankit Mishra
@@ -139,17 +139,17 @@ export function Navigation() {
                   className="p-2 text-muted-foreground hover:text-foreground transition-fast"
                   aria-label="Close menu"
                 >
-                  <HugeiconsIcon icon={Cancel01Icon} size={20} />
+                  <HugeiconsIcon icon={Cancel01Icon} size={18} />
                 </button>
               </div>
 
-              <nav className="flex-1 space-y-1 p-4">
+              <nav className="flex-1 space-y-1 p-3">
                 {links.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className={`block rounded-lg px-3 py-3 text-headline transition-fast ${
+                    className={`block rounded-lg px-3 py-2.5 text-callout transition-fast ${
                       pathname === link.href
                         ? "text-foreground bg-accent"
                         : "text-muted-foreground hover:text-foreground hover:bg-accent/50"

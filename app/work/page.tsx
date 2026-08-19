@@ -92,7 +92,7 @@ export default function WorkPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6">All Projects</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6">All Projects</h2>
 
           {allTags.length > 0 && (
             <div className="mb-8">
@@ -113,9 +113,9 @@ export default function WorkPage() {
                 {selectedTags.length > 0 && (
                   <Button
                     variant="ghost"
-                    size="sm"
+                    size="lg"
                     onClick={() => setSelectedTags([])}
-                    className="text-xs"
+                    className="text-xs rounded-3xl border-0"
                   >
                     Clear Filters
                   </Button>

@@ -1,17 +1,18 @@
-"use client"
+"use client";
 import {
-  useState,
-  useRef,
-  useCallback,
-  useEffect,
+  ClipboardEvent,
   CSSProperties,
   FC,
-  KeyboardEvent,
-  ClipboardEvent,
   FocusEvent,
+  KeyboardEvent,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
 } from "react";
 
-// Types 
+// Types
 
 export interface HighlightRule {
   key: string;
@@ -31,7 +32,7 @@ interface ConfigEditorProps {
   onChange: (next: HighlightRule[]) => void;
 }
 
-// Constants 
+// Constants
 
 const DEFAULT_CONFIG: HighlightRule[] = [
   {
@@ -72,7 +73,7 @@ const BLANK_RULE: HighlightRule = {
   italics: false,
 };
 
-// Cursor helpers 
+// Cursor helpers
 
 function getCaretOffset(el: HTMLElement): number {
   const sel = window.getSelection();
@@ -117,7 +118,7 @@ function setCaretOffset(el: HTMLElement, offset: number): void {
   sel.addRange(range);
 }
 
-// HTML builder 
+// HTML builder
 
 function escapeHTML(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -164,7 +165,7 @@ function buildHTML(text: string, config: HighlightRule[]): string {
     .join("");
 }
 
-// HighlightedInput 
+// HighlightedInput
 
 const sharedInputStyle: CSSProperties = {
   fontFamily: "var(--font-sans)",
@@ -238,6 +239,15 @@ export const HighlightedInput: FC<HighlightedInputProps> = ({
     rerender(el.textContent ?? "", undefined);
   }, [config, rerender]);
 
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    rerender(
+      "SELECT * FROM users WHERE name='Ankit' and age NOT IN (21,22,23)",
+      undefined,
+    );
+  }, []);
+
   return (
     <div style={{ position: "relative", width: "100%" }}>
       {empty && (
@@ -285,7 +295,7 @@ export const HighlightedInput: FC<HighlightedInputProps> = ({
   );
 };
 
-// Config editor 
+// Config editor
 
 const cellStyle: CSSProperties = {
   padding: "5px 8px",
@@ -333,11 +343,12 @@ const ConfigEditor: FC<ConfigEditorProps> = ({ config, onChange }) => {
   return (
     <div
       style={{
-        border: "0.5px solid var(--color-border-tertiary)",
+        border: "0.5px solid",
         borderRadius: "var(--border-radius-lg)",
         padding: "16px",
         background: "var(--color-background-secondary)",
         marginBottom: "20px",
+        marginTop: "20px",
       }}
     >
       <div
@@ -355,9 +366,9 @@ const ConfigEditor: FC<ConfigEditorProps> = ({ config, onChange }) => {
             color: "var(--color-text-secondary)",
           }}
         >
-          highlight config
+          Config
         </span>
-        <button
+        {/* <button
           onClick={() => setJsonMode((m) => !m)}
           style={{
             fontSize: "12px",
@@ -370,7 +381,8 @@ const ConfigEditor: FC<ConfigEditorProps> = ({ config, onChange }) => {
           }}
         >
           {jsonMode ? "visual" : "JSON"}
-        </button>
+        </button> */}
+        <ModeToggle jsonMode={jsonMode} setJsonMode={setJsonMode} />
       </div>
 
       {jsonMode ? (
@@ -385,7 +397,7 @@ const ConfigEditor: FC<ConfigEditorProps> = ({ config, onChange }) => {
               fontFamily: "var(--font-mono)",
               fontSize: "12px",
               padding: "10px",
-              border: "0.5px solid var(--color-border-secondary)",
+              border: "0.5px solid",
               borderRadius: "var(--border-radius-md)",
               background: "var(--color-background-primary)",
               color: "var(--color-text-primary)",
@@ -409,7 +421,7 @@ const ConfigEditor: FC<ConfigEditorProps> = ({ config, onChange }) => {
               marginBottom: "6px",
             }}
           >
-            {(["keyword", "case", "color", "bold", "italic", ""] as const).map(
+            {(["Keyword", "Case", "Color", "Bold", "Italic", ""] as const).map(
               (h) => (
                 <span
                   key={h}
@@ -570,7 +582,7 @@ const ConfigEditor: FC<ConfigEditorProps> = ({ config, onChange }) => {
   );
 };
 
-// HighlightedInputDemo 
+// HighlightedInputDemo
 
 const HighlightedInputDemo: FC = () => {
   const [config, setConfig] = useState<HighlightRule[]>(DEFAULT_CONFIG);
@@ -584,7 +596,6 @@ const HighlightedInputDemo: FC = () => {
         fontFamily: "var(--font-sans)",
       }}
     >
-      <ConfigEditor config={config} onChange={setConfig} />
       <p
         style={{
           fontSize: "13px",
@@ -592,11 +603,11 @@ const HighlightedInputDemo: FC = () => {
           margin: "0 0 8px",
         }}
       >
-        highlighted input
+        Highlighted input demo
       </p>
       <HighlightedInput
         config={config}
-        placeholder="Try: SELECT * WHERE name AND age NOT IN list OR other"
+        placeholder="Try: SELECT * FROM users WHERE name='Ankit' and age NOT IN (21,22,23)"
       />
       <div
         style={{
@@ -626,8 +637,84 @@ const HighlightedInputDemo: FC = () => {
             </span>
           ))}
       </div>
+      <ConfigEditor config={config} onChange={setConfig} />
     </div>
   );
 };
 
 export default HighlightedInputDemo;
+
+function ModeToggle({
+  jsonMode,
+  setJsonMode,
+}: {
+  jsonMode: boolean;
+  setJsonMode: SetStateAction<boolean>;
+}) {
+  return (
+    <div
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "8px",
+        fontSize: "13px",
+        fontFamily: "system-ui, sans-serif",
+        userSelect: "none",
+      }}
+    >
+      <span
+        style={{
+          color: !jsonMode
+            ? "var(--color-text-primary, #111)"
+            : "var(--color-text-secondary, #888)",
+          fontWeight: !jsonMode ? 600 : 400,
+        }}
+      >
+        Visual
+      </span>
+
+      <button
+        onClick={() => setJsonMode((m) => !m)}
+        aria-label="Toggle between Visual and JSON"
+        style={{
+          position: "relative",
+          width: "36px",
+          height: "20px",
+          borderRadius: "999px",
+          border: "0.5px solid var(--color-border-secondary, #ccc)",
+          background: jsonMode
+            ? "var(--color-accent, #4f46e5)"
+            : "var(--color-background-secondary, #e5e5e5)",
+          cursor: "pointer",
+          padding: 0,
+          transition: "background 0.2s ease",
+        }}
+      >
+        <span
+          style={{
+            position: "absolute",
+            top: "2px",
+            left: jsonMode ? "18px" : "2px",
+            width: "14px",
+            height: "14px",
+            borderRadius: "50%",
+            background: "white",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
+            transition: "left 0.2s ease",
+          }}
+        />
+      </button>
+
+      <span
+        style={{
+          color: jsonMode
+            ? "var(--color-text-primary, #111)"
+            : "var(--color-text-secondary, #888)",
+          fontWeight: jsonMode ? 600 : 400,
+        }}
+      >
+        JSON
+      </span>
+    </div>
+  );
+}

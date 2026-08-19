@@ -1,31 +1,32 @@
 "use client";
 
+import { Container } from "@/components/container";
 import {
   AlhansatSolutionsTooltipContent,
   DefaultTooltipContent,
   IssStoxxTooltipContent,
 } from "@/components/experience-tooltip-content";
-import { Container } from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tooltip } from "@/components/ui/tooltip-card";
+import { skillCategories } from "@/data/skills";
 import { formatDateRange, formatDuration } from "@/lib/utils";
-import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import {
   Award01Icon,
   Briefcase01Icon,
   Calendar01Icon,
+  ChevronsLeftRightIcon,
+  ChevronsRightLeftIcon,
+  ComputerTerminal01Icon,
   GraduationCapIcon,
   Location08Icon,
   Medal01Icon,
-  ComputerTerminal01Icon,
-  ChevronDownIcon,
 } from "@hugeicons/core-free-icons";
-import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
-import Image from "next/image";
-import { skillCategories } from "@/data/skills";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTheme } from "next-themes";
+import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 type TimelineItem =
@@ -36,6 +37,7 @@ type TimelineItem =
       startYear?: string | number;
       endYear?: string | number;
       logo?: string;
+      misc?: string;
     }
   | {
       title: string;
@@ -49,6 +51,7 @@ const educationItems: TimelineItem[] = [
   {
     name: "B. Tech in Computer Engineering",
     degree: "Sardar Patel Institute of Technology, Mumbai",
+    misc: "Coursework : Database Management Systems, Operating Systems, Computer Networks ",
     startYear: 2021,
     endYear: 2025,
     logo: "/images/education/SPIT_logo.png",
@@ -59,6 +62,7 @@ const educationItems: TimelineItem[] = [
     startYear: 2021,
     endYear: 2025,
     logo: "/images/education/spjimr.png",
+    misc: "Coursework : Accounting & Finance, Supply Chain, IT for Management, Marketing",
   },
 ];
 
@@ -82,27 +86,44 @@ const experience = [
     id: "iss-stoxx",
     title: "Software Engineer",
     company: "ISS-Stoxx",
-    startDate: new Date("2025-01-01"),
+    startDate: new Date("2025-07-02"),
     endDate: null,
     location: "Mumbai",
     description: [
-      "UI development using React, Spring Boot and SQL Server",
-      "Data Pipeline development in Python",
-      "Focus on best code practices and DevOps exploration with Docker",
-      "Contributed to scalable systems and innovative solutions.",
+      "Automated more and more ETL processes",
+      "Created Automated Reports using Microsoft SSRS",
+      "Added more features to Internal Reporting UI and Backend Modules",
+      "Created a common validation framework to be used across different ETL pipelines",
     ],
-    tags: ["React", "SQL Server", "Python", "Docker"],
+    tags: ["Python", "SQL Server", "Redis", "Gitlab Actions", "Docker/Podman"],
     logo: "/images/experience/iss-mi.png",
     current: true,
     TooltipComponent: IssStoxxTooltipContent,
   },
   {
+    id: "iss-stoxx-intern",
+    title: "Software Engineer Intern",
+    company: "ISS-Stoxx",
+    startDate: new Date("2025-01-02"),
+    endDate: new Date("2025-07-01"),
+    location: "Mumbai",
+    description: [
+      "Automated processes for Business in existing WebApplcation",
+      "Worked on ETL of MF/ETF data",
+      "Migrated internal deprecated UI library to Semantic UI",
+      "Contributed to good documentation and implemented good practices",
+    ],
+    tags: ["React", "Spring Boot", "SQL Server", "Python"],
+    logo: "/images/experience/iss-mi.png",
+    TooltipComponent: IssStoxxTooltipContent,
+  },
+  {
     id: "alhansat-solutions",
-    title: "Web Development Intern (Remote)",
+    title: "Web Development Intern",
     company: "Alhansat Solutions",
     startDate: new Date("2023-09-01"),
     endDate: new Date("2023-11-30"),
-    location: "Remote",
+    location: "Mumbai (Remote)",
     tags: ["SvelteKit", "PDF Js", "Tailwind"],
     description: [
       "Created a dynamic business card generator module and integrated it with Developerstar",
@@ -138,361 +159,415 @@ export default function AboutPage() {
 
   return (
     <Container size="narrow" className="py-12 md:py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-display text-foreground mb-4">About Me</h1>
-          <p className="text-body text-muted-foreground max-w-2xl mx-auto text-center">
-            Passionate software engineer with expertise in full-stack
-            development, dedicated to building innovative solutions that make a
-            difference.
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="text-center mb-16"
+      >
+        <h1 className="text-display text-foreground mb-4">About Me</h1>
+        <div className="space-y-4 text-body text-muted-foreground mt-4 max-w-xl mx-auto text-justify">
+          <p>
+            I&apos;m a{" "}
+            <span className="font-bold"> Full Stack Software Engineer </span>
+            at <span className="font-semibold">ISS-Stoxx.</span> I am passionate
+            in developing clean, scalable coding solutions to complex problems
+            that make a difference. My primary Tech stack includes{" "}
+            <span className="font-bold">React, Python and SQL Server.</span> And
+            my Interests? Music 🎧. Humor 😂. Code. 💻
           </p>
-        </motion.div>
+        </div>
+      </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-20"
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-20"
+      >
+        <h2
+          id="experience"
+          className="text-xl sm:text-xl font-bold mb-6 flex items-center gap-3 scroll-mt-28"
         >
-          <h2
-            id="experience"
-            className="text-xl sm:text-xl font-bold mb-6 flex items-center gap-3 scroll-mt-28"
-          >
-            <HugeiconsIcon icon={Briefcase01Icon} className="text-primary" />
-            Experience
-          </h2>
-          <div className="space-y-4">
-            {experience.map((exp, index) => (
-              <motion.div
-                key={exp.id}
-                id={exp.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="scroll-mt-28"
-              >
-                <Card className="group p-6 relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/20 rounded-md">
-                  <div className="flex flex-col gap-3.5">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex items-center gap-1 flex-wrap">
-                        <h3 className="text-lg font-semibold">{exp.title}</h3>
-                        <span className="text-muted-foreground">@</span>
-                        <Tooltip
-                          content={(() => {
-                            const Component =
-                              exp.TooltipComponent || DefaultTooltipContent;
-                            return <Component {...exp} />;
-                          })()}
-                          containerClassName="inline-block"
-                        >
-                          <span className="font-medium text-primary underline cursor-pointer transition-colors p-4 -m-4">
-                            {exp.company}
-                          </span>
-                        </Tooltip>
-                        {exp.current && (
-                          <span className="relative flex h-2.5 w-2.5 shrink-0 mt-0.5">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="text-xs px-2.5 py-1 rounded-md bg-primary/5 border border-primary/10 text-primary font-medium whitespace-nowrap shrink-0">
-                        {formatDuration(exp.startDate, exp.endDate)}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1.5">
-                        <HugeiconsIcon
-                          icon={Calendar01Icon}
-                          className="w-3.5 h-3.5"
-                        />
-                        <span>
-                          {formatDateRange(exp.startDate, exp.endDate)}
+          <HugeiconsIcon icon={Briefcase01Icon} className="text-primary" />
+          Experience
+        </h2>
+        <div className="space-y-4">
+          {experience.map((exp, index) => (
+            <motion.div
+              key={exp.id}
+              id={exp.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="scroll-mt-28"
+            >
+              <Card className="group p-6 relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/20 rounded-md">
+                <div className="flex flex-col gap-3.5">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-1 flex-wrap">
+                      <h3 className="text-lg font-semibold">{exp.title}</h3>
+                      <span className="text-muted-foreground">@</span>
+                      <Tooltip
+                        content={(() => {
+                          const Component =
+                            exp.TooltipComponent || DefaultTooltipContent;
+                          return <Component {...exp} />;
+                        })()}
+                        containerClassName="inline-block"
+                      >
+                        <span className="font-medium text-primary underline cursor-pointer transition-colors p-4 -m-4">
+                          {exp.company}
                         </span>
-                      </div>
-                      <span className="text-muted-foreground/50">•</span>
-                      <div className="flex items-center gap-1.5">
-                        <HugeiconsIcon
-                          icon={Location08Icon}
-                          className="w-3.5 h-3.5"
-                        />
-                        <span>{exp.location}</span>
-                      </div>
+                      </Tooltip>
+                      {exp.current && (
+                        <span className="relative flex h-2.5 w-2.5 shrink-0 mt-0.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                        </span>
+                      )}
                     </div>
 
-                    {exp.tags?.length && (
-                      <div className="flex flex-wrap gap-2">
-                        {exp.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2.5 py-1 text-xs font-medium rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors border border-primary/10"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    <ul className="space-y-2 text-sm text-muted-foreground">
-                      {exp.description.map((item, i) => (
-                        <li
-                          key={i}
-                          className="flex gap-2 items-center group-hover:text-foreground transition-colors"
-                        >
-                          <span className="text-primary mt-0.5 shrink-0">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                              className="w-3.5 h-3.5"
-                            >
-                              <circle cx="12" cy="12" r="5" />
-                            </svg>
-                          </span>
-                          <span className="leading-relaxed">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="text-xs px-2.5 py-1 rounded-md bg-primary/5 border border-primary/10 text-primary font-medium whitespace-nowrap shrink-0">
+                      {formatDuration(exp.startDate, exp.endDate)}
+                    </div>
                   </div>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-20"
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1.5">
+                      <HugeiconsIcon
+                        icon={Calendar01Icon}
+                        className="w-3.5 h-3.5"
+                      />
+                      <span>{formatDateRange(exp.startDate, exp.endDate)}</span>
+                    </div>
+                    <span className="text-muted-foreground/50">•</span>
+                    <div className="flex items-center gap-1.5">
+                      <HugeiconsIcon
+                        icon={Location08Icon}
+                        className="w-3.5 h-3.5"
+                      />
+                      <span>{exp.location}</span>
+                    </div>
+                  </div>
+
+                  {exp.tags?.length && (
+                    <div className="flex flex-wrap gap-2">
+                      {exp.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-1 text-xs font-medium rounded-md bg-primary/10 text-primary hover:bg-primary/20 transition-colors border border-primary/10"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    {exp.description.map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex gap-2 items-center group-hover:text-foreground transition-colors"
+                      >
+                        <span className="text-primary mt-0.5 shrink-0">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="w-3.5 h-3.5"
+                          >
+                            <circle cx="12" cy="12" r="5" />
+                          </svg>
+                        </span>
+                        <span className="leading-relaxed">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-20"
+      >
+        <div
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 scroll-mt-28 gap-3"
+          id="skills"
         >
-          <div
-            className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 scroll-mt-28 gap-3"
-            id="skills"
-          >
-            <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
-              <HugeiconsIcon
-                icon={ComputerTerminal01Icon}
-                className="text-primary"
-              />
-              Skills & Technologies
-            </h2>
-            <div className="self-start sm:self-auto">
-              <button
-                aria-expanded={showAllSkills}
-                onClick={() => setShowAllSkills((s) => !s)}
-                className="inline-flex items-center gap-2 text-sm text-primary font-medium hover:underline"
-              >
-                <span>{showAllSkills ? "Showing all" : "Show all"}</span>
+          <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
+            <HugeiconsIcon
+              icon={ComputerTerminal01Icon}
+              className="text-primary"
+            />
+            Skills & Technologies
+          </h2>
+          <div className="self-start sm:self-auto">
+            <button
+              aria-expanded={showAllSkills}
+              onClick={() => setShowAllSkills((s) => !s)}
+              className="inline-flex items-center gap-2 text-sm text-primary font-medium hover:underline"
+            >
+              {/* <span>{showAllSkills ? "Show less" : "Show more"}</span>
+              {showAllSkills ? (
                 <HugeiconsIcon
-                  icon={ChevronDownIcon}
+                  icon={ChevronsRightLeftIcon}
                   size={14}
-                  className={`transform transition-transform ${showAllSkills ? "rotate-180" : ""}`}
+                  // className={`transform transition-transform ${showAllSkills ? "rotate-180" : ""}`}
+                  className={`transform transition-transform rotate-90`}
                 />
-              </button>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            {skillCategories.map((cat) => {
-              const visible = cat.skills.filter(
-                (s: any) => showAllSkills || s.featured,
-              );
-              return (
-                <SkillCategoryRow
-                  key={cat.label}
-                  cat={cat}
-                  visible={visible}
-                  mounted={mounted}
-                  currentTheme={currentTheme ?? null}
-                  isSmall={isSmall}
+              ) : (
+                <HugeiconsIcon
+                  icon={ChevronsLeftRightIcon}
+                  size={14}
+                  // className={`transform transition-transform ${showAllSkills ? "rotate-180" : ""}`}
+                  className={`transform transition-transform rotate-90`}
                 />
-              );
-            })}
+              )} */}
+              <span className="inline-flex items-center gap-1.5">
+                {showAllSkills ? "Show Less " : "Show More"}
+
+                <span className="relative size-3.5">
+                  {/* Icon when expanded (Show less) */}
+                  <HugeiconsIcon
+                    icon={ChevronsRightLeftIcon}
+                    size={14}
+                    className={`
+                        absolute inset-0
+                        transform transition-all duration-300 ease-in-out
+                        ${
+                          showAllSkills
+                            ? "opacity-100 rotate-90 scale-100"
+                            : "opacity-0 -rotate-90 scale-75 blur-sm"
+                        }
+                    `}
+                  />
+
+                  {/* Icon when collapsed (Show more) */}
+                  <HugeiconsIcon
+                    icon={ChevronsLeftRightIcon}
+                    size={14}
+                    className={`
+        absolute inset-0
+        transform transition-all duration-300 ease-in-out
+        ${
+          showAllSkills
+            ? "opacity-0 rotate-180 scale-75 blur-sm"
+            : "opacity-100 rotate-90 scale-100 "
+        }
+      `}
+                  />
+                </span>
+              </span>
+            </button>
           </div>
-        </motion.div>
-
-        <div className="space-y-24 mb-32">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            id="background"
-            className="scroll-mt-28"
-          >
-            <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
-              <HugeiconsIcon icon={Award01Icon} className="text-primary" />
-              Background
-            </h2>
-            <div className="space-y-4 text-muted-foreground">
-              <p>
-                I&apos;m a Software Engineer at ISS-Stoxx, crafting slick
-                full-stack solutions with React, Python and Spring Boot.
-              </p>
-              <p>
-                I live for clean, scalable code and turning complex problems
-                into elegant wins.
-              </p>
-              <p>
-                Obsessed with DevOps and Machine Learning, I&apos;m always
-                pushing what&apos;s possible.
-              </p>
-              <p>Music 🎧. Humor 😂. Code. 💻</p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            id="education"
-            className="scroll-mt-28"
-          >
-            <div className="mb-8">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
-                  <HugeiconsIcon
-                    icon={GraduationCapIcon}
-                    className="text-primary"
-                    size={22}
-                  />
-                  Education
-                </h3>
-              </div>
-
-              <ul className="mt-4 space-y-6">
-                {educationItems.map((item, i) => (
-                  <li
-                    key={i}
-                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full border border-border/80 ring-2 ring-border flex items-center justify-center overflow-hidden relative shrink-0 bg-white p-0.5">
-                        {item.logo ? (
-                          <Image
-                            src={item.logo}
-                            alt={(item as any).name}
-                            width={48}
-                            height={48}
-                          />
-                        ) : (
-                          <HugeiconsIcon icon={GraduationCapIcon} size={18} />
-                        )}
-                      </div>
-
-                      <div className="leading-tight">
-                        <div className="font-semibold text-foreground">
-                          {(item as any).name}
-                        </div>
-                        {(item as any).degree && (
-                          <div className="text-sm text-muted-foreground">
-                            {(item as any).degree}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="hidden sm:block text-right text-sm text-muted-foreground sm:ml-4">
-                      {(item as any).startYear || (item as any).endYear ? (
-                        <div className="whitespace-nowrap sm:whitespace-normal">
-                          {(item as any).startYear ?? ""} —{" "}
-                          {(item as any).endYear ?? ""}
-                        </div>
-                      ) : null}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            id="achievements"
-            className="scroll-mt-28"
-          >
-            <div className="mb-8">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
-                  <HugeiconsIcon
-                    icon={Medal01Icon}
-                    className="text-primary"
-                    size={22}
-                  />
-                  Achievements
-                </h3>
-              </div>
-
-              <ul className="mt-4 space-y-6">
-                {achievementItems.map((item, i) => (
-                  <li key={i} className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-background border border-border flex items-center justify-center">
-                        <HugeiconsIcon icon={Medal01Icon} size={18} />
-                      </div>
-
-                      <div className="leading-tight">
-                        <div className="font-semibold text-foreground">
-                          {(item as any).title}
-                        </div>
-                        {(item as any).subtitle ? (
-                          <div className="text-sm text-muted-foreground">
-                            {(item as any).subtitle}
-                          </div>
-                        ) : null}
-                      </div>
-                    </div>
-
-                    <div className="hidden sm:block text-right text-sm text-muted-foreground">
-                      {(item as any).startYear || (item as any).endYear ? (
-                        <div>
-                          {(item as any).startYear ?? ""} —{" "}
-                          {(item as any).endYear ?? ""}
-                        </div>
-                      ) : null}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+        <div className="space-y-3">
+          {skillCategories.map((cat) => {
+            const visible = cat.skills.filter(
+              (s: any) => showAllSkills || s.featured,
+            );
+            return (
+              <SkillCategoryRow
+                key={cat.label}
+                cat={cat}
+                visible={visible}
+                mounted={mounted}
+                currentTheme={currentTheme ?? null}
+                isSmall={isSmall}
+              />
+            );
+          })}
+        </div>
+      </motion.div>
+
+      <div className="space-y-24 mb-32">
+        {/* <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center"
+          id="background"
+          className="scroll-mt-28"
         >
-          <h2 className="text-2xl font-bold mb-4">Let&apos;s Work Together</h2>
-          <p className="text-muted-foreground mb-6">
-            Interested in collaborating or have a question? Feel free to reach
-            out.
-          </p>
-          <div className="flex gap-4 justify-center">
-            <Button asChild>
-              <Link href="/contact">Contact Me</Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/work">View My Work</Link>
-            </Button>
+          <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
+            <HugeiconsIcon icon={Award01Icon} className="text-primary" />
+            Background
+          </h2>
+          <div className="space-y-4 text-muted-foreground mt-4">
+            <p>
+              I&apos;m a Software Engineer at ISS-Stoxx, crafting slick
+              full-stack solutions with React, Python and Spring Boot.
+            </p>
+            <p>
+              I live for clean, scalable code and turning complex problems into
+              elegant wins.
+            </p>
+            <p>
+              Obsessed with DevOps and Machine Learning, I&apos;m always pushing
+              what&apos;s possible.
+            </p>
+            <p>Music 🎧. Humor 😂. Code. 💻</p>
+          </div>
+        </motion.div> */}
+
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          id="education"
+          className="scroll-mt-28"
+        >
+          <div className="mb-8">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
+                <HugeiconsIcon
+                  icon={GraduationCapIcon}
+                  className="text-primary"
+                  size={22}
+                />
+                Education
+              </h3>
+            </div>
+
+            <ul className="mt-4 space-y-6">
+              {educationItems.map((item, i) => (
+                <li
+                  key={i}
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full border border-border/80 ring-2 ring-border flex items-center justify-center overflow-hidden relative shrink-0 bg-white p-0.5">
+                      {item.logo ? (
+                        <Image
+                          src={item.logo}
+                          alt={(item as any).name}
+                          width={48}
+                          height={48}
+                        />
+                      ) : (
+                        <HugeiconsIcon icon={GraduationCapIcon} size={18} />
+                      )}
+                    </div>
+
+                    <div className="leading-tight flex flex-col gap-px">
+                      <div className="font-semibold text-foreground text-base">
+                        {(item as any).name}
+                      </div>
+                      {(item as any).degree && (
+                        <div className="text-sm text-foreground/80">
+                          {(item as any).degree}
+                        </div>
+                      )}
+                      {(item as any).misc && (
+                        <div className="text-xs text-foreground/60 wrap-break-word max-w-md">
+                          {(item as any).misc}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="hidden sm:block text-right text-sm text-muted-foreground sm:ml-4">
+                    {(item as any).startYear || (item as any).endYear ? (
+                      <div className="whitespace-nowrap sm:whitespace-normal">
+                        {(item as any).startYear ?? ""} —{" "}
+                        {(item as any).endYear ?? ""}
+                      </div>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          id="achievements"
+          className="scroll-mt-28"
+        >
+          <div className="mb-8">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
+                <HugeiconsIcon
+                  icon={Medal01Icon}
+                  className="text-primary"
+                  size={22}
+                />
+                Achievements
+              </h3>
+            </div>
+
+            <ul className="mt-4 space-y-6">
+              {achievementItems.map((item, i) => (
+                <li key={i} className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-background border border-border flex items-center justify-center">
+                      <HugeiconsIcon icon={Medal01Icon} size={18} />
+                    </div>
+
+                    <div className="leading-tight">
+                      <div className="font-semibold text-foreground">
+                        {(item as any).title}
+                      </div>
+                      {(item as any).subtitle ? (
+                        <div className="text-sm text-muted-foreground">
+                          {(item as any).subtitle}
+                        </div>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <div className="hidden sm:block text-right text-sm text-muted-foreground">
+                    {(item as any).startYear || (item as any).endYear ? (
+                      <div>
+                        {(item as any).startYear ?? ""} —{" "}
+                        {(item as any).endYear ?? ""}
+                      </div>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </motion.div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="text-center"
+      >
+        <h2 className="text-2xl font-bold mb-4">Let&apos;s Work Together</h2>
+        <p className="text-muted-foreground mb-6">
+          Interested in collaborating or have a question? Feel free to reach
+          out.
+        </p>
+        <div className="flex gap-4 justify-center">
+          <Button asChild>
+            <Link href="/contact">Contact Me</Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/work">View My Work</Link>
+          </Button>
+        </div>
+      </motion.div>
     </Container>
   );
 }

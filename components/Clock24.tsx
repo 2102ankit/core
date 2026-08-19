@@ -3,84 +3,84 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 
-type DigitFlipProps = { value: string };
+type DigitFlipProps = {
+  value: string;
+};
 
 const DigitFlip: React.FC<DigitFlipProps> = ({ value }) => {
-  const [displayed, setDisplayed] = useState(value);
-  const [isFlipping, setIsFlipping] = useState(false);
-
-  useEffect(() => {
-    if (value !== displayed) {
-      setIsFlipping(true);
-
-      // Small delay so the flip out starts visibly
-      const timeout = setTimeout(() => {
-        setDisplayed(value);
-        setIsFlipping(false);
-      }, 100); // Half of total animation time
-
-      return () => clearTimeout(timeout);
-    }
-  }, [value, displayed]);
-
   return (
-    <div className="relative inline-block w-[1ch] h-[1.4em] perspective-distant">
-      <AnimatePresence mode="wait" initial={false}>
+    <div className="relative inline-block w-[0.95ch] h-[1.35em] perspective-[300px]">
+      <AnimatePresence mode="popLayout" initial={false}>
         <motion.span
-          key={displayed}
-          initial={{ rotateX: isFlipping ? 0 : 90 }}
-          animate={{ rotateX: 0 }}
-          exit={{ rotateX: -90 }}
-          transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="absolute inset-0 flex items-center justify-center origin-center"
-          style={{ backfaceVisibility: "hidden" }}
+          key={value}
+          initial={{ rotateX: 80, opacity: 0 }}
+          animate={{ rotateX: 0, opacity: 1 }}
+          exit={{ rotateX: -80, opacity: 0 }}
+          transition={{
+            duration: 0.35,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="absolute inset-0 flex items-center justify-center origin-center tabular-nums"
+          style={{
+            backfaceVisibility: "hidden",
+            transformStyle: "preserve-3d",
+          }}
         >
-          {displayed}
+          {value}
         </motion.span>
       </AnimatePresence>
     </div>
   );
 };
 
+const Separator = () => (
+  <span className="mx-[3px] opacity-40 select-none">:</span>
+);
+
 const Clock24: React.FC = () => {
-  const [timeStr, setTimeStr] = useState("000000");
+  const [timeStr, setTimeStr] = useState<string | null>(null);
 
   useEffect(() => {
     const update = () => {
       const now = new Date();
-      const newTime =
-        String(now.getHours()).padStart(2, "0") +
-        String(now.getMinutes()).padStart(2, "0") +
-        String(now.getSeconds()).padStart(2, "0");
-
-      setTimeStr(newTime);
+      const hh = String(now.getHours()).padStart(2, "0");
+      const mm = String(now.getMinutes()).padStart(2, "0");
+      // Uncomment the next line if you want seconds in the header
+      const ss = String(now.getSeconds()).padStart(2, "0");
+      setTimeStr(hh + mm + ss);
     };
 
-    update(); // immediate first render
+    update();
     const interval = setInterval(update, 1000);
-
     return () => clearInterval(interval);
   }, []);
 
+  if (!timeStr) return null;
+
   const digits = timeStr.split("");
 
-  if (timeStr === "00000") return;
-
   return (
-    <>
-      {timeStr === "000000" ? null : (
-        <div className="flex items-center text-blue-600 dark:text-yellow-300 gap-px tracking-tighter">
-          <DigitFlip value={digits[0]} />
-          <DigitFlip value={digits[1]} />
-          <span className="opacity-60 font-bold">:</span>
-          <DigitFlip value={digits[2]} />
-          <DigitFlip value={digits[3]} />
-          {/* <span className="opacity-60 font-bold">:</span>
-          <DigitFlip value={digits[4]} />
-          <DigitFlip value={digits[5]} /> */}
-        </div>
-      )}
-    </>
+    <div
+      className="
+        inline-flex items-center
+        text-[13px] leading-none
+        text-muted-foreground
+        tabular-nums
+        tracking-tight
+        select-none
+      "
+      aria-label="Current time"
+    >
+      <DigitFlip value={digits[0]} />
+      <DigitFlip value={digits[1]} />
+      <Separator />
+      <DigitFlip value={digits[2]} />
+      <DigitFlip value={digits[3]} />
+      {/* Uncomment if you want seconds: */}
+      <Separator />
+      <DigitFlip value={digits[4]} />
+      <DigitFlip value={digits[5]} />
+    </div>
   );
 };
 

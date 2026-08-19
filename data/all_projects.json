@@ -69,11 +69,9 @@
     "thumbnail": "Swift Reader",
     "tags": [
       "MERN",
-      "DistilBART",
       "HuggingFace Transformers",
       "BeautifulSoup",
-      "Web Scraping",
-      "Bing News API"
+      "Web Scraping"
     ],
     "filter_tags": ["MERN", "Web Scraping"],
     "github_url": "https://github.com/2102ankit/Swift-Reader",

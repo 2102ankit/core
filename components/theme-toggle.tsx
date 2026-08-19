@@ -53,7 +53,7 @@ export function ThemeToggle() {
   }, [mounted, theme, systemTheme, setTheme]);
 
   if (!mounted) {
-    return <div className="size-9 rounded-lg bg-muted" />;
+    return <div className="size-8 rounded-full bg-muted" />;
   }
 
   const currentTheme = theme === "system" ? systemTheme : theme;
@@ -61,13 +61,13 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="size-9 rounded-lg bg-muted flex items-center justify-center hover:bg-accent transition-fast"
+      className="size-8 rounded-full bg-muted flex items-center justify-center hover:bg-accent transition-fast"
       aria-label="Toggle theme (or press 'd')"
     >
       {currentTheme === "dark" ? (
         <HugeiconsIcon icon={Sun03Icon} className="size-4 text-foreground" />
       ) : (
-        <HugeiconsIcon icon={Moon02Icon} className="size-4 text-foreground" />
+        <HugeiconsIcon icon={Moon02Icon} className="size-4 text-foreground  ml-0.5" />
       )}
     </button>
   );
