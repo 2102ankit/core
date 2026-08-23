@@ -12,7 +12,6 @@ import { Tooltip } from "@/components/ui/tooltip-card";
 import { skillCategories } from "@/data/skills";
 import { formatDateRange, formatDuration } from "@/lib/utils";
 import {
-  Award01Icon,
   Briefcase01Icon,
   Calendar01Icon,
   ChevronsLeftRightIcon,
@@ -317,27 +316,10 @@ export default function AboutPage() {
               onClick={() => setShowAllSkills((s) => !s)}
               className="inline-flex items-center gap-2 text-sm text-primary font-medium hover:underline"
             >
-              {/* <span>{showAllSkills ? "Show less" : "Show more"}</span>
-              {showAllSkills ? (
-                <HugeiconsIcon
-                  icon={ChevronsRightLeftIcon}
-                  size={14}
-                  // className={`transform transition-transform ${showAllSkills ? "rotate-180" : ""}`}
-                  className={`transform transition-transform rotate-90`}
-                />
-              ) : (
-                <HugeiconsIcon
-                  icon={ChevronsLeftRightIcon}
-                  size={14}
-                  // className={`transform transition-transform ${showAllSkills ? "rotate-180" : ""}`}
-                  className={`transform transition-transform rotate-90`}
-                />
-              )} */}
               <span className="inline-flex items-center gap-1.5">
                 {showAllSkills ? "Show Less " : "Show More"}
 
                 <span className="relative size-3.5">
-                  {/* Icon when expanded (Show less) */}
                   <HugeiconsIcon
                     icon={ChevronsRightLeftIcon}
                     size={14}
@@ -352,7 +334,6 @@ export default function AboutPage() {
                     `}
                   />
 
-                  {/* Icon when collapsed (Show more) */}
                   <HugeiconsIcon
                     icon={ChevronsLeftRightIcon}
                     size={14}
@@ -392,35 +373,6 @@ export default function AboutPage() {
       </motion.div>
 
       <div className="space-y-24 mb-32">
-        {/* <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          id="background"
-          className="scroll-mt-28"
-        >
-          <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-3">
-            <HugeiconsIcon icon={Award01Icon} className="text-primary" />
-            Background
-          </h2>
-          <div className="space-y-4 text-muted-foreground mt-4">
-            <p>
-              I&apos;m a Software Engineer at ISS-Stoxx, crafting slick
-              full-stack solutions with React, Python and Spring Boot.
-            </p>
-            <p>
-              I live for clean, scalable code and turning complex problems into
-              elegant wins.
-            </p>
-            <p>
-              Obsessed with DevOps and Machine Learning, I&apos;m always pushing
-              what&apos;s possible.
-            </p>
-            <p>Music 🎧. Humor 😂. Code. 💻</p>
-          </div>
-        </motion.div> */}
-
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}

@@ -11,14 +11,16 @@ import {
   ArrowRight01Icon,
   BookOpen01Icon,
   Briefcase01Icon,
-  Copy01Icon,
   File01Icon,
   GithubIcon,
   Home01Icon,
   LaptopIcon,
   Link01Icon,
+  Linkedin01Icon,
+  Mail01Icon,
   Moon02Icon,
   News01Icon,
+  NewTwitterIcon,
   SparklesIcon,
   Sun03Icon,
   UserIcon,
@@ -202,15 +204,18 @@ export default function CommandBar(props: AppCommandBarProps) {
         : null,
       commandBarConfig.includeActions.copyEmail
         ? {
-            id: "copy-email",
-            title: "Copy Email",
-            subtitle: "Copy contact details to the clipboard",
+            id: "send-email",
+            title: "Send Email",
+            subtitle: "Compose a message in your mail client",
             section: "Quick Actions",
-            keywords: ["mail", "clipboard", "copy"],
+            keywords: ["mail", "email", "send", "compose", "contact", "hire"],
             // shortcut: "mod+shift+c",
-            icon: Copy01Icon,
+            icon: Mail01Icon,
             kind: "action" as const,
-            run: () => navigator.clipboard.writeText("2102ankitm@gmail.com"),
+            run: () => {
+              window.location.href =
+                "mailto:2102ankitm@gmail.com?subject=Hello%20Ankit";
+            },
           }
         : null,
       commandBarConfig.includeActions.scrollTop
@@ -238,6 +243,27 @@ export default function CommandBar(props: AppCommandBarProps) {
               window.open("https://github.com/2102ankit", "_blank", "noopener"),
           }
         : null,
+      {
+        id: "open-linkedin",
+        title: "Open LinkedIn",
+        subtitle: "Launch the professional profile in a new tab",
+        section: "Links",
+        keywords: ["linkedin", "network", "resume", "career", "profile"],
+        icon: Linkedin01Icon,
+        kind: "action" as const,
+        run: () =>
+          window.open("https://linkedin.com/in/2102ankit", "_blank", "noopener"),
+      },
+      {
+        id: "open-x",
+        title: "Open X (Twitter)",
+        subtitle: "Launch the social profile in a new tab",
+        section: "Links",
+        keywords: ["twitter", "x", "social", "tweets"],
+        icon: NewTwitterIcon,
+        kind: "action" as const,
+        run: () => window.open("https://x.com/2102ankit", "_blank", "noopener"),
+      },
     ];
     const filteredActionCommands = actionCommands.filter(
       (command): command is CommandPaletteItem => Boolean(command),

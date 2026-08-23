@@ -1,34 +1,62 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  DiceFaces06Icon,
+  ImageDownload02Icon,
+} from "@hugeicons/core-free-icons";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+
+type KaleidoConfig = {
+  segments: number;
+  layer1Speed: number;
+  layer2Speed: number;
+  layer3Speed: number;
+  pulseSpeed: number;
+  pulseAmount: number;
+  zoom: number;
+  chromaticAberration: number;
+  refractiveIndex: number;
+  dispersion: number;
+  leadThickness: number;
+  glassOpacity: number;
+  voronoiCells: number;
+  lightIntensity: number;
+  parallaxStrength: number;
+};
+
+const DEFAULT_CONFIG: KaleidoConfig = {
+  segments: 12,
+  layer1Speed: 0.3,
+  layer2Speed: -0.5,
+  layer3Speed: 0.7,
+  pulseSpeed: 0.5,
+  pulseAmount: 0.05,
+  zoom: 4,
+  chromaticAberration: 0.008,
+  refractiveIndex: 1.5,
+  dispersion: 0.02,
+  leadThickness: 0.015,
+  glassOpacity: 0.85,
+  voronoiCells: 50,
+  lightIntensity: 1.15,
+  parallaxStrength: 0.5,
+};
 
 // Web Worker for offloading computations
 const createWorker = () => {
   const workerCode = `
     self.onmessage = function(e) {
       const { type, data } = e.data;
-      
-      if (type === 'processAudio') {
-        const { audioData } = data;
-        const average = audioData.reduce((a, b) => a + b, 0) / audioData.length;
-        const bass = audioData.slice(0, audioData.length / 4).reduce((a, b) => a + b, 0) / (audioData.length / 4);
-        const treble = audioData.slice(audioData.length * 3 / 4).reduce((a, b) => a + b, 0) / (audioData.length / 4);
-        
-        self.postMessage({
-          type: 'audioProcessed',
-          data: { average: average / 255, bass: bass / 255, treble: treble / 255 }
-        });
-      }
-      
+
       if (type === 'computePatternOffsets') {
-        const { time, speeds, pulseSpeed, pulseAmount } = data;
-        const pulse = Math.sin(time * pulseSpeed) * pulseAmount + 1.0;
+        const { time, speeds } = data;
         const rotations = speeds.map(speed => time * speed * 0.01);
-        
         self.postMessage({
           type: 'patternOffsetsComputed',
-          data: { pulse, rotations }
+          data: { rotations }
         });
       }
     };
@@ -37,6 +65,55 @@ const createWorker = () => {
   const blob = new Blob([workerCode], { type: "application/javascript" });
   return new Worker(URL.createObjectURL(blob));
 };
+
+function ControlSlider({
+  label,
+  value,
+  min,
+  max,
+  step,
+  format,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  format?: (v: number) => string;
+  onChange: (v: number) => void;
+}) {
+  return (
+    <div>
+      <div className="flex items-baseline justify-between mb-1.5">
+        <label className="text-caption text-muted-foreground">{label}</label>
+        <span className="text-caption font-medium tabular-nums text-foreground">
+          {format ? format(value) : value}
+        </span>
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        className="w-full accent-foreground"
+      />
+    </div>
+  );
+}
+
+function ControlSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="border-t border-border pt-4 space-y-3.5 first:border-t-0 first:pt-0">
+      <h3 className="text-caption font-semibold uppercase tracking-widest text-muted-foreground">
+        {title}
+      </h3>
+      {children}
+    </div>
+  );
+}
 
 export default function KaleidoscopeViewer() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -48,24 +125,12 @@ export default function KaleidoscopeViewer() {
   const layer1RotRef = useRef<number>(0);
   const layer2RotRef = useRef<number>(0);
   const layer3RotRef = useRef<number>(0);
-  const [config, setConfig] = useState({
-    segments: 12,
-    layer1Speed: 0.3,
-    layer2Speed: -0.5,
-    layer3Speed: 0.7,
-    pulseSpeed: 0.5,
-    pulseAmount: 0.05,
-    zoom: 4,
-    chromaticAberration: 0.015,
-    refractiveIndex: 1.5,
-    dispersion: 0.03,
-    leadThickness: 0.015,
-    glassOpacity: 0.85,
-    voronoiCells: 50,
-    lightIntensity: 1.5,
-    audioReactive: false,
-    parallaxStrength: 0.5,
-  });
+  const [config, setConfig] = useState<KaleidoConfig>(DEFAULT_CONFIG);
+
+  // Keep latest config available inside the one-time animation loop
+  // without tearing down the WebGL context on every slider tick.
+  const configRef = useRef(config);
+  configRef.current = config;
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -85,7 +150,7 @@ export default function KaleidoscopeViewer() {
       powerPreference: "high-performance",
     });
     rendererRef.current = renderer;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 8));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     sceneRef.current = scene;
     cameraRef.current = camera;
@@ -95,24 +160,23 @@ export default function KaleidoscopeViewer() {
       uniforms: {
         time: { value: 0 },
         resolution: {
-          value: new THREE.Vector2(window.innerHeight, window.innerHeight),
+          value: new THREE.Vector2(1, 1),
         },
-        segments: { value: config.segments },
+        segments: { value: DEFAULT_CONFIG.segments },
         layer1Rotation: { value: 0 },
         layer2Rotation: { value: 0 },
         layer3Rotation: { value: 0 },
-        pulseAmount: { value: config.pulseAmount },
-        zoom: { value: config.zoom },
-        chromaticAberration: { value: config.chromaticAberration },
-        refractiveIndex: { value: config.refractiveIndex },
-        dispersion: { value: config.dispersion },
-        leadThickness: { value: config.leadThickness },
-        glassOpacity: { value: config.glassOpacity },
-        voronoiCells: { value: config.voronoiCells },
-        lightIntensity: { value: config.lightIntensity },
+        pulseAmount: { value: DEFAULT_CONFIG.pulseAmount },
+        zoom: { value: DEFAULT_CONFIG.zoom },
+        chromaticAberration: { value: DEFAULT_CONFIG.chromaticAberration },
+        refractiveIndex: { value: DEFAULT_CONFIG.refractiveIndex },
+        dispersion: { value: DEFAULT_CONFIG.dispersion },
+        leadThickness: { value: DEFAULT_CONFIG.leadThickness },
+        glassOpacity: { value: DEFAULT_CONFIG.glassOpacity },
+        voronoiCells: { value: DEFAULT_CONFIG.voronoiCells },
+        lightIntensity: { value: DEFAULT_CONFIG.lightIntensity },
         mousePos: { value: new THREE.Vector2(0.5, 0.5) },
-        parallaxStrength: { value: config.parallaxStrength },
-        audioLevel: { value: 0 },
+        parallaxStrength: { value: DEFAULT_CONFIG.parallaxStrength },
       },
       vertexShader: `
         varying vec2 vUv;
@@ -139,7 +203,6 @@ export default function KaleidoscopeViewer() {
         uniform float lightIntensity;
         uniform vec2 mousePos;
         uniform float parallaxStrength;
-        uniform float audioLevel;
         
         varying vec2 vUv;
         
@@ -208,25 +271,16 @@ export default function KaleidoscopeViewer() {
           return vec2(cos(angle), sin(angle)) * radius;
         }
         
-        // Chromatic dispersion (rainbow edges)
-        vec3 chromaticDispersion(vec2 uv, vec3 vorInfo, float strength) {
-          float edgeDist = vorInfo.y - vorInfo.x;
-          float edge = smoothstep(0.0, 0.05, edgeDist);
-          
-          vec3 color;
-          color.r = vorInfo.z;
-          color.g = hash(vec2(vorInfo.z * 7.13, 0.0));
-          color.b = hash(vec2(vorInfo.z * 13.71, 0.0));
-          
-          // Add prismatic dispersion at edges
-          if(edge < 0.5) {
-            float prism = (1.0 - edge * 2.0) * strength;
-            color.r += prism * 0.3;
-            color.g += prism * 0.1;
-            color.b += prism * 0.5;
-          }
-          
-          return color;
+        // Curated stained-glass palette — jewel tones instead of raw noise
+        vec3 paletteColor(float t) {
+          vec3 c;
+          if (t < 0.18) c = vec3(0.686, 0.173, 0.204);     // ruby
+          else if (t < 0.36) c = vec3(0.902, 0.557, 0.161); // amber
+          else if (t < 0.54) c = vec3(0.125, 0.427, 0.373); // viridian
+          else if (t < 0.72) c = vec3(0.180, 0.278, 0.512); // cobalt
+          else if (t < 0.88) c = vec3(0.447, 0.212, 0.443); // amethyst
+          else c = vec3(0.867, 0.808, 0.639);               // cream
+          return c;
         }
         
         // Refraction effect
@@ -238,37 +292,6 @@ export default function KaleidoscopeViewer() {
           return uv + normal * angle * 0.1;
         }
         
-        // Caustic light patterns
-        float caustics(vec2 uv, float t) {
-          vec2 p = uv * 3.0;
-          float c = 0.0;
-          
-          for(float i = 0.0; i < 4.0; i++) {
-            float angle = t * 0.3 + i * 1.5;
-            vec2 offset = vec2(cos(angle), sin(angle)) * 0.5;
-            float d = length(p - offset);
-            c += sin(d * 8.0 - t * 2.0) * 0.5 + 0.5;
-          }
-          
-          return c / 4.0;
-        }
-        
-        // Volumetric light shafts
-        float volumetricLight(vec2 uv, float t) {
-          float rays = 0.0;
-          vec2 center = vec2(0.0);
-          vec2 dir = normalize(uv - center);
-          
-          for(float i = 0.0; i < 8.0; i++) {
-            float dist = i * 0.1;
-            vec2 pos = center + dir * dist;
-            float intensity = 1.0 - dist;
-            rays += sin(length(pos) * 10.0 - t * 3.0) * intensity;
-          }
-          
-          return rays * 0.125;
-        }
-        
         void main() {
           vec2 uv = (vUv - 0.5) * 2.0;
           uv.x *= resolution.x / resolution.y;
@@ -276,7 +299,7 @@ export default function KaleidoscopeViewer() {
           // Apply zoom
           uv /= zoom;
           
-          // Parallax rotation based on mouse
+          // Parallax rotation based on pointer
           vec2 mouseOffset = (mousePos - 0.5) * parallaxStrength;
           uv = rotate(uv, mouseOffset.x * 0.5);
           
@@ -302,14 +325,18 @@ export default function KaleidoscopeViewer() {
           vec3 vor1Refracted = voronoi(refractedUV1, voronoiCells);
           vec3 vor2Refracted = voronoi(refractedUV2, voronoiCells * 0.7);
           
-          // Generate stained glass colors with chromatic dispersion
-          vec3 color1 = chromaticDispersion(uv1, vor1Refracted, dispersion);
-          vec3 color2 = chromaticDispersion(uv2, vor2Refracted, dispersion);
-          vec3 color3 = chromaticDispersion(uv3, vor3, dispersion * 0.5);
+          // Palette-driven glass colors with a whisper of edge prism
+          float shade1 = 0.84 + 0.22 * hash(vec2(vor1.z * 17.31, 3.7));
+          float shade2 = 0.84 + 0.22 * hash(vec2(vor2.z * 13.13, 7.1));
+          float shade3 = 0.88 + 0.16 * hash(vec2(vor3.z * 11.71, 1.9));
           
-          // Blend layers
-          vec3 finalColor = mix(color1, color2, 0.4);
-          finalColor = mix(finalColor, color3, 0.3);
+          vec3 color1 = paletteColor(vor1Refracted.z) * shade1;
+          vec3 color2 = paletteColor(vor2Refracted.z) * shade2;
+          vec3 color3 = paletteColor(vor3.z) * shade3;
+          
+          // Blend layers — base layer dominates so shards stay readable
+          vec3 finalColor = mix(color1, color2, 0.32);
+          finalColor = mix(finalColor, color3, 0.18);
           
           // Lead borders (metallic outlines)
           float edge1 = smoothstep(leadThickness, leadThickness * 2.0, vor1.y - vor1.x);
@@ -317,40 +344,33 @@ export default function KaleidoscopeViewer() {
           float edge3 = smoothstep(leadThickness, leadThickness * 2.0, vor3.y - vor3.x);
           float lead = min(min(edge1, edge2), edge3);
           
-          vec3 leadColor = vec3(0.15, 0.15, 0.2); // Dark metallic
+          vec3 leadColor = vec3(0.12, 0.12, 0.14); // Dark metallic
           finalColor = mix(leadColor, finalColor, lead);
           
-          // Add segment borders (thick lead lines between kaleidoscope segments)
-          // Use distance in pixel space for constant thickness
+          // Segment borders (thick lead lines between kaleidoscope segments)
           float segAngle = TAU / segments;
           float currentAngle = atan(kaleido.y, kaleido.x);
           currentAngle = mod(currentAngle, segAngle);
           
-          // Calculate distance to segment edge in UV space
           float radius = length(kaleido);
           float angleToEdge = min(currentAngle, segAngle - currentAngle);
-          float distToEdge = radius * angleToEdge; // Convert angle to linear distance
+          float distToEdge = radius * angleToEdge;
           
-          // Make border thickness constant in screen space
           float borderWidth = leadThickness * 0.03;
           float segmentBorder = smoothstep(borderWidth * 0.5, borderWidth * 1.5, distToEdge);
           finalColor = mix(leadColor, finalColor, segmentBorder);
           
-          // Chromatic aberration at edges
+          // Subtle chromatic aberration toward the rim
           float dist = length(uv);
           if(dist > 0.5) {
             vec2 offset = normalize(uv) * chromaticAberration * (dist - 0.5);
             float r = voronoi(refract2D(uv1 + offset, vor1, refractiveIndex), voronoiCells).z;
             float b = voronoi(refract2D(uv1 - offset, vor1, refractiveIndex), voronoiCells).z;
-            finalColor.r = mix(finalColor.r, r, 0.3);
-            finalColor.b = mix(finalColor.b, b, 0.3);
+            vec3 rimR = paletteColor(r);
+            vec3 rimB = paletteColor(b);
+            finalColor.r = mix(finalColor.r, rimR.r, 0.25);
+            finalColor.b = mix(finalColor.b, rimB.b, 0.25);
           }
-          
-          // Enhance saturation and vibrancy (stained glass effect)
-          vec3 hsv = vec3(atan(finalColor.b, finalColor.r), 
-                          sqrt(finalColor.r * finalColor.r + finalColor.b * finalColor.b),
-                          finalColor.g);
-          hsv.y *= 1.3; // Increase saturation
           
           // Add glass translucency
           finalColor = mix(finalColor, vec3(1.0), (1.0 - glassOpacity) * 0.3);
@@ -373,10 +393,13 @@ export default function KaleidoscopeViewer() {
     // Set initial size based on canvas displayed dimensions
     const initialRect = canvasRef.current.getBoundingClientRect();
     renderer.setSize(initialRect.width, initialRect.height, false);
-    material.uniforms.resolution.value.set(initialRect.width, initialRect.height);
+    material.uniforms.resolution.value.set(
+      initialRect.width,
+      initialRect.height,
+    );
 
-    // Mouse tracking
-    const handleMouseMove = (e: MouseEvent) => {
+    // Pointer tracking (mouse + touch)
+    const handlePointerMove = (e: PointerEvent) => {
       if (!canvasRef.current) return;
       const rect = canvasRef.current.getBoundingClientRect();
       material.uniforms.mousePos.value.set(
@@ -385,15 +408,11 @@ export default function KaleidoscopeViewer() {
       );
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("pointermove", handlePointerMove);
 
     // Web Worker message handler
     worker.onmessage = (e) => {
       const { type, data } = e.data;
-
-      if (type === "audioProcessed") {
-        material.uniforms.audioLevel.value = data.average;
-      }
 
       if (type === "patternOffsetsComputed") {
         layer1RotRef.current = data.rotations[0];
@@ -409,6 +428,7 @@ export default function KaleidoscopeViewer() {
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
+      const cfg = configRef.current;
       const time = performance.now() * 0.001;
       material.uniforms.time.value = time;
 
@@ -418,20 +438,14 @@ export default function KaleidoscopeViewer() {
           type: "computePatternOffsets",
           data: {
             time,
-            speeds: [
-              config.layer1Speed,
-              config.layer2Speed,
-              config.layer3Speed,
-            ],
-            pulseSpeed: config.pulseSpeed,
-            pulseAmount: config.pulseAmount,
+            speeds: [cfg.layer1Speed, cfg.layer2Speed, cfg.layer3Speed],
           },
         });
       } else {
         // Lightweight local update between worker calls
-        layer1RotRef.current += config.layer1Speed * 0.01;
-        layer2RotRef.current += config.layer2Speed * 0.01;
-        layer3RotRef.current += config.layer3Speed * 0.01;
+        layer1RotRef.current += cfg.layer1Speed * 0.01;
+        layer2RotRef.current += cfg.layer2Speed * 0.01;
+        layer3RotRef.current += cfg.layer3Speed * 0.01;
       }
 
       material.uniforms.layer1Rotation.value = layer1RotRef.current;
@@ -449,7 +463,6 @@ export default function KaleidoscopeViewer() {
     const handleResize = () => {
       if (!canvasRef.current) return;
       const rect = canvasRef.current.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio, 4);
       const width = rect.width;
       const height = rect.height;
       renderer.setSize(width, height, false);
@@ -461,15 +474,15 @@ export default function KaleidoscopeViewer() {
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("pointermove", handlePointerMove);
       if (workerRef.current) workerRef.current.terminate();
       renderer.dispose();
       geometry.dispose();
       material.dispose();
     };
-  }, [config]);
+  }, []);
 
-  const updateConfig = (key: string, value: number | boolean) => {
+  const updateConfig = (key: keyof KaleidoConfig, value: number) => {
     setConfig((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -505,371 +518,185 @@ export default function KaleidoscopeViewer() {
 
   const exportImage = () => {
     if (!canvasRef.current || !materialRef.current || !rendererRef.current || !sceneRef.current || !cameraRef.current) return;
-    
+
     // Store original resolution
     const originalWidth = rendererRef.current.domElement.width;
     const originalHeight = rendererRef.current.domElement.height;
     const originalResolution = materialRef.current.uniforms.resolution.value.clone();
-    
+
     // Set high resolution for export (2x pixel ratio for better quality)
     const exportScale = 2;
     const rect = canvasRef.current.getBoundingClientRect();
     const highResWidth = rect.width * exportScale;
     const highResHeight = rect.height * exportScale;
-    
+
     rendererRef.current.setSize(highResWidth, highResHeight, false);
     materialRef.current.uniforms.resolution.value.set(highResWidth, highResHeight);
-    
+
     // Render one frame at high resolution
     rendererRef.current.render(sceneRef.current, cameraRef.current);
-    
+
     // Export the high-res image
     const link = document.createElement("a");
     link.download = `kaleidoscope-${Date.now()}.png`;
     link.href = canvasRef.current.toDataURL("image/png", 1.0);
     link.click();
-    
+
     // Restore original resolution
     rendererRef.current.setSize(originalWidth, originalHeight, false);
     materialRef.current.uniforms.resolution.value.copy(originalResolution);
-    
+
     // Render to update display
     rendererRef.current.render(sceneRef.current, cameraRef.current);
   };
 
-  const enableAudio = async () => {
-    const newState = !config.audioReactive;
-    setConfig((prev) => ({ ...prev, audioReactive: newState }));
-
-    // This will trigger the effect that sets up audio when audioReactive changes
-  };
-
-  // Separate effect for audio setup when audioReactive changes
-  useEffect(() => {
-    let audioContext: AudioContext | null = null;
-    let analyser: AnalyserNode | null = null;
-    let dataArray: Uint8Array | null = null;
-    let animationId: number | null = null;
-
-    const setupAudio = async () => {
-      if (!config.audioReactive) return;
-
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
-        audioContext = new AudioContext();
-        analyser = audioContext.createAnalyser();
-        const source = audioContext.createMediaStreamSource(stream);
-        source.connect(analyser);
-        analyser.fftSize = 256;
-        dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-        // Process audio in loop
-        const processAudio = () => {
-          if (!analyser || !dataArray || !workerRef.current) return;
-
-          analyser.getByteFrequencyData(dataArray as Uint8Array<ArrayBuffer>);
-          workerRef.current.postMessage({
-            type: "processAudio",
-            data: { audioData: Array.from(dataArray) },
-          });
-
-          animationId = requestAnimationFrame(processAudio);
-        };
-
-        processAudio();
-      } catch (err) {
-        console.log("Audio not available:", err);
-        setConfig((prev) => ({ ...prev, audioReactive: false }));
-      }
-    };
-
-    setupAudio();
-
-    return () => {
-      if (animationId) cancelAnimationFrame(animationId);
-      if (audioContext) audioContext.close();
-    };
-  }, [config.audioReactive]);
-
   return (
-    <div className="w-full h-full grid grid-cols-3 grid-rows-1">
-      <canvas ref={canvasRef} className="aspect-square m-auto max-h-full p-0 col-span-2" />
-      <div className="bg-black/80 backdrop-blur-md p-6 max-h-full overflow-y-auto w-80 text-white mx-auto">
-        <h2 className="text-xl font-bold mb-4 bg-clip-text bg-white">
-          Kaleidoscope Controls
-        </h2>
-
-        <div className="space-y-4 text-sm">
-          <div className="border-b border-gray-700 pb-3 space-y-2">
-            <button
-              onClick={shufflePattern}
-              className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 rounded transition-colors"
-            >
-              🎲 Shuffle Pattern
-            </button>
-            {/* <button
-              onClick={enableAudio}
-              className={`w-full py-2 px-4 rounded ${
-                config.audioReactive
-                  ? "bg-green-600 hover:bg-green-700"
-                  : "bg-gray-600 hover:bg-gray-700"
-              } transition-colors`}
-            >
-              {config.audioReactive ? "🎵 Audio Active" : "🎵 Enable Audio"}
-            </button> */}
-
-            <button
-              onClick={exportImage}
-              className="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 rounded transition-colors"
-            >
-            📸 Export Artwork
-            </button>
-          </div>
-          <div>
-            <label className="block mb-1">
-              Zoom: {config.zoom.toFixed(2)}x
-            </label>
-            <input
-              type="range"
-              min="1"
-              max="5.0" 
-              step="0.01"
-              value={config.zoom}
-              onChange={(e) => updateConfig("zoom", parseFloat(e.target.value))}
-              className="w-full"
-            />
-          </div>
-
-          <div>
-            <label className="block mb-1">Segments: {config.segments}</label>
-            <input
-              type="range"
-              min="3"
-              max="16"
-              value={config.segments}
-              onChange={(e) =>
-                updateConfig("segments", parseInt(e.target.value))
-              }
-              className="w-full"
-            />
-          </div>
-
-          <div className="border-t border-gray-700 pt-3">
-            <h3 className="font-semibold mb-2 text-purple-300">
-              Layer Rotation
-            </h3>
-
-            <div>
-              <label className="block mb-1">
-                Layer 1: {config.layer1Speed.toFixed(2)}
-              </label>
-              <input
-                type="range"
-                min="-2"
-                max="2"
-                step="0.1"
-                value={config.layer1Speed}
-                onChange={(e) =>
-                  updateConfig("layer1Speed", parseFloat(e.target.value))
-                }
-                className="w-full"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1">
-                Layer 2: {config.layer2Speed.toFixed(2)}
-              </label>
-              <input
-                type="range"
-                min="-2"
-                max="2"
-                step="0.1"
-                value={config.layer2Speed}
-                onChange={(e) =>
-                  updateConfig("layer2Speed", parseFloat(e.target.value))
-                }
-                className="w-full"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1">
-                Layer 3: {config.layer3Speed.toFixed(2)}
-              </label>
-              <input
-                type="range"
-                min="-2"
-                max="2"
-                step="0.1"
-                value={config.layer3Speed}
-                onChange={(e) =>
-                  updateConfig("layer3Speed", parseFloat(e.target.value))
-                }
-                className="w-full"
-              />
-            </div>
-          </div>
-
-          <div className="border-t border-gray-700 pt-3">
-            <h3 className="font-semibold mb-2 text-purple-300">Animation</h3>
-
-            <div>
-              <label className="block mb-1">
-                Parallax: {config.parallaxStrength.toFixed(2)}
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="2"
-                step="0.1"
-                value={config.parallaxStrength}
-                onChange={(e) =>
-                  updateConfig("parallaxStrength", parseFloat(e.target.value))
-                }
-                className="w-full"
-              />
-            </div>
-          </div>
-
-          <div className="border-t border-gray-700 pt-3">
-            <h3 className="font-semibold mb-2 text-purple-300">
-              Glass Effects
-            </h3>
-
-            <div>
-              <label className="block mb-1">
-                Chromatic Aberration: {config.chromaticAberration.toFixed(3)}
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="0.05"
-                step="0.001"
-                value={config.chromaticAberration}
-                onChange={(e) =>
-                  updateConfig(
-                    "chromaticAberration",
-                    parseFloat(e.target.value),
-                  )
-                }
-                className="w-full"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1">
-                Refractive Index: {config.refractiveIndex.toFixed(2)}
-              </label>
-              <input
-                type="range"
-                min="1"
-                max="2.5"
-                step="0.1"
-                value={config.refractiveIndex}
-                onChange={(e) =>
-                  updateConfig("refractiveIndex", parseFloat(e.target.value))
-                }
-                className="w-full"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1">
-                Dispersion: {config.dispersion.toFixed(3)}
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="0.1"
-                step="0.01"
-                value={config.dispersion}
-                onChange={(e) =>
-                  updateConfig("dispersion", parseFloat(e.target.value))
-                }
-                className="w-full"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1">
-                Glass Opacity: {config.glassOpacity.toFixed(2)}
-              </label>
-              <input
-                type="range"
-                min="0.5"
-                max="1"
-                step="0.05"
-                value={config.glassOpacity}
-                onChange={(e) =>
-                  updateConfig("glassOpacity", parseFloat(e.target.value))
-                }
-                className="w-full"
-              />
-            </div>
-          </div>
-
-          <div className="border-t border-gray-700 pt-3">
-            <h3 className="font-semibold mb-2 text-purple-300">Pattern</h3>
-
-            <div>
-              <label className="block mb-1">
-                Voronoi Cells: {config.voronoiCells}
-              </label>
-              <input
-                type="range"
-                min="10"
-                max="100"
-                value={config.voronoiCells}
-                onChange={(e) =>
-                  updateConfig("voronoiCells", parseInt(e.target.value))
-                }
-                className="w-full"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1">
-                Lead Thickness: {config.leadThickness.toFixed(3)}
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="0.05"
-                step="0.005"
-                value={config.leadThickness}
-                onChange={(e) =>
-                  updateConfig("leadThickness", parseFloat(e.target.value))
-                }
-                className="w-full"
-              />
-            </div>
-          </div>
-
-          <div className="border-t border-gray-700 pt-3">
-            <h3 className="font-semibold mb-2 text-purple-300">Lighting</h3>
-
-            <div>
-              <label className="block mb-1">
-                Light Intensity: {config.lightIntensity.toFixed(2)}
-              </label>
-              <input
-                type="range"
-                min="0.5"
-                max="3"
-                step="0.1"
-                value={config.lightIntensity}
-                onChange={(e) =>
-                  updateConfig("lightIntensity", parseFloat(e.target.value))
-                }
-                className="w-full"
-              />
-            </div>
-          </div>
-        </div>
+    <div className="w-full max-w-5xl mx-auto flex flex-col lg:flex-row lg:items-center gap-4 sm:gap-5 px-4 py-6">
+      
+      <div className="relative w-full aspect-square self-center max-w-[min(100%,calc(100svh-10rem))] mx-auto lg:mx-0 lg:flex-1">
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 h-full w-full rounded-xl border border-border shadow-elevation-2"
+        />
       </div>
+
+      
+      <aside className="w-full lg:w-80 shrink-0 rounded-xl border border-border bg-card p-4 sm:p-5 lg:max-h-[calc(100vh-10rem)] overflow-y-auto space-y-5">
+        <div className="grid grid-cols-2 gap-2.5">
+          <Button onClick={shufflePattern} variant="default" size="sm">
+            <HugeiconsIcon icon={DiceFaces06Icon} className="size-4" />
+            Shuffle
+          </Button>
+          <Button onClick={exportImage} variant="outline" size="sm">
+            <HugeiconsIcon icon={ImageDownload02Icon} className="size-4" />
+            Export PNG
+          </Button>
+        </div>
+
+        <ControlSection title="Pattern">
+          <ControlSlider
+            label="Segments"
+            value={config.segments}
+            min={3}
+            max={16}
+            step={1}
+            onChange={(v) => updateConfig("segments", v)}
+          />
+          <ControlSlider
+            label="Voronoi cells"
+            value={config.voronoiCells}
+            min={10}
+            max={100}
+            step={1}
+            onChange={(v) => updateConfig("voronoiCells", v)}
+          />
+          <ControlSlider
+            label="Lead thickness"
+            value={config.leadThickness}
+            min={0}
+            max={0.05}
+            step={0.005}
+            format={(v) => v.toFixed(3)}
+            onChange={(v) => updateConfig("leadThickness", v)}
+          />
+        </ControlSection>
+
+        <ControlSection title="Motion">
+          <ControlSlider
+            label="Zoom"
+            value={config.zoom}
+            min={1}
+            max={5}
+            step={0.01}
+            format={(v) => `${v.toFixed(2)}x`}
+            onChange={(v) => updateConfig("zoom", v)}
+          />
+          <ControlSlider
+            label="Parallax"
+            value={config.parallaxStrength}
+            min={0}
+            max={2}
+            step={0.1}
+            format={(v) => v.toFixed(2)}
+            onChange={(v) => updateConfig("parallaxStrength", v)}
+          />
+          <ControlSlider
+            label="Layer 1 rotation"
+            value={config.layer1Speed}
+            min={-2}
+            max={2}
+            step={0.1}
+            format={(v) => v.toFixed(2)}
+            onChange={(v) => updateConfig("layer1Speed", v)}
+          />
+          <ControlSlider
+            label="Layer 2 rotation"
+            value={config.layer2Speed}
+            min={-2}
+            max={2}
+            step={0.1}
+            format={(v) => v.toFixed(2)}
+            onChange={(v) => updateConfig("layer2Speed", v)}
+          />
+          <ControlSlider
+            label="Layer 3 rotation"
+            value={config.layer3Speed}
+            min={-2}
+            max={2}
+            step={0.1}
+            format={(v) => v.toFixed(2)}
+            onChange={(v) => updateConfig("layer3Speed", v)}
+          />
+        </ControlSection>
+
+        <ControlSection title="Glass">
+          <ControlSlider
+            label="Dispersion"
+            value={config.dispersion}
+            min={0}
+            max={0.1}
+            step={0.01}
+            format={(v) => v.toFixed(3)}
+            onChange={(v) => updateConfig("dispersion", v)}
+          />
+          <ControlSlider
+            label="Chromatic aberration"
+            value={config.chromaticAberration}
+            min={0}
+            max={0.05}
+            step={0.001}
+            format={(v) => v.toFixed(3)}
+            onChange={(v) => updateConfig("chromaticAberration", v)}
+          />
+          <ControlSlider
+            label="Refractive index"
+            value={config.refractiveIndex}
+            min={1}
+            max={2.5}
+            step={0.1}
+            format={(v) => v.toFixed(2)}
+            onChange={(v) => updateConfig("refractiveIndex", v)}
+          />
+          <ControlSlider
+            label="Glass opacity"
+            value={config.glassOpacity}
+            min={0.5}
+            max={1}
+            step={0.05}
+            format={(v) => v.toFixed(2)}
+            onChange={(v) => updateConfig("glassOpacity", v)}
+          />
+          <ControlSlider
+            label="Light intensity"
+            value={config.lightIntensity}
+            min={0.5}
+            max={3}
+            step={0.1}
+            format={(v) => v.toFixed(2)}
+            onChange={(v) => updateConfig("lightIntensity", v)}
+          />
+        </ControlSection>
+      </aside>
     </div>
   );
 }

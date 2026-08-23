@@ -1,20 +1,30 @@
 import {
   BubbleSortInteractive,
+  Clock24Demo,
   CommandBarDemo,
+  GooeyThemeToggleDemo,
   HighlightedInputDemo,
   KaleidoscopeViewer,
   LeatherButtonFinal,
+  OutlineDemo,
+  SegmentedControlDemo,
 } from "@/components/demos/demo-exports";
+import { ComponentShell } from "@/components/component-shell";
 import { Container } from "@/components/container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { getAvailableLabDemos, getLabDemo } from "@/lib/labs-data";
+import {
+  getAvailableComponents,
+  getComponentDemo,
+} from "@/lib/components-data";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowLeft01Icon,
   ArrowUpRight01Icon,
   GithubIcon,
 } from "@hugeicons/core-free-icons";
+import { promises as fs } from "fs";
+import path from "path";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
@@ -25,21 +35,27 @@ const demoComponents: Record<string, () => ReactNode> = {
   kaleidoscope: () => <KaleidoscopeViewer />,
   "highlighted-input": () => <HighlightedInputDemo />,
   "command-bar": () => <CommandBarDemo inline defaultOpen />,
+  outline: () => <OutlineDemo />,
+  "24h-clock": () => <Clock24Demo />,
+  "theme-toggle": () => <GooeyThemeToggleDemo />,
+  "segmented-control": () => <SegmentedControlDemo />,
 };
 
-type LabDemoPageProps = {
+type ComponentDemoPageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export function generateStaticParams() {
-  return getAvailableLabDemos().map((demo) => ({
+  return getAvailableComponents().map((demo) => ({
     slug: demo.id,
   }));
 }
 
-export default async function LabDemoPage({ params }: LabDemoPageProps) {
+export default async function ComponentDemoPage({
+  params,
+}: ComponentDemoPageProps) {
   const { slug } = await params;
-  const demo = getLabDemo(slug);
+  const demo = getComponentDemo(slug);
 
   if (!demo || demo.comingSoon) {
     notFound();
@@ -51,15 +67,28 @@ export default async function LabDemoPage({ params }: LabDemoPageProps) {
     notFound();
   }
 
+  // Read the component source at build time for the Source tab
+  let source = "";
+  if (demo.source) {
+    try {
+      source = await fs.readFile(
+        path.join(process.cwd(), demo.source),
+        "utf8",
+      );
+    } catch {
+      source = `// Source file not found: ${demo.source}`;
+    }
+  }
+
   return (
     <div className="min-h-[calc(100vh-4rem)] flex flex-col">
       <Container size="wide" className="py-6">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
           <div className="space-y-2">
             <Button variant="ghost" size="sm" asChild className="-ml-2">
-              <Link href="/labs">
+              <Link href="/components">
                 <HugeiconsIcon icon={ArrowLeft01Icon} size={16} />
-                Labs
+                Components
               </Link>
             </Button>
             <h1 className="text-title-1 text-foreground">{demo.title}</h1>
@@ -88,16 +117,16 @@ export default async function LabDemoPage({ params }: LabDemoPageProps) {
             </Button>
           )}
         </div>
-      </Container>
 
-      <div className="flex-1 border-t border-border/60 bg-muted/20">
-        <Container
-          size="wide"
-          className="py-8 min-h-[60vh] flex items-center justify-center"
+        <ComponentShell
+          source={source}
+          sourcePath={demo.source}
+          docs={demo.docs}
         >
-          <div className="w-full">{renderDemo()}</div>
-        </Container>
-      </div>
+          {renderDemo()}
+        </ComponentShell>
+      </Container>
+      <div className="flex-1" />
     </div>
   );
 }

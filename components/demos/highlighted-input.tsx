@@ -4,7 +4,6 @@ import {
   CSSProperties,
   Dispatch,
   FC,
-  FocusEvent,
   KeyboardEvent,
   SetStateAction,
   useCallback,
@@ -12,6 +11,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Delete02Icon } from "@hugeicons/core-free-icons";
+
 // Types
 
 export interface HighlightRule {
@@ -165,20 +167,19 @@ function buildHTML(text: string, config: HighlightRule[]): string {
     .join("");
 }
 
-// HighlightedInput
+// Shared input classes — theme-aware via tokens, sized to avoid iOS zoom-on-focus
+const sharedInputClasses =
+  "font-sans text-base sm:text-sm bg-background text-foreground caret-foreground placeholder:text-muted-foreground border border-border rounded-md outline-none focus:border-ring/60 focus:ring-2 focus:ring-ring/25 transition-[border-color,box-shadow] duration-150 cursor-text";
 
 const sharedInputStyle: CSSProperties = {
-  fontFamily: "var(--font-sans)",
-  fontSize: "14px",
-  lineHeight: "1.6",
+  lineHeight: 1.6,
   padding: "8px 12px",
   whiteSpace: "pre",
   overflowX: "auto",
   overflowY: "hidden",
-  minHeight: "38px",
+  minHeight: "42px",
   boxSizing: "border-box",
   width: "100%",
-  borderRadius: "var(--border-radius-md, 6px)" as string,
 };
 
 export const HighlightedInput: FC<HighlightedInputProps> = ({
@@ -224,15 +225,6 @@ export const HighlightedInput: FC<HighlightedInputProps> = ({
     [],
   );
 
-  const handleFocus = useCallback((e: FocusEvent<HTMLDivElement>): void => {
-    e.currentTarget.style.boxShadow =
-      "0 0 0 2px var(--color-border-info, #3182ce66)";
-  }, []);
-
-  const handleBlur = useCallback((e: FocusEvent<HTMLDivElement>): void => {
-    e.currentTarget.style.boxShadow = "none";
-  }, []);
-
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -249,20 +241,12 @@ export const HighlightedInput: FC<HighlightedInputProps> = ({
   }, []);
 
   return (
-    <div style={{ position: "relative", width: "100%" }}>
+    <div className="relative w-full">
       {empty && (
         <span
           aria-hidden="true"
-          style={{
-            ...sharedInputStyle,
-            position: "absolute",
-            inset: 0,
-            display: "block",
-            pointerEvents: "none",
-            color: "var(--color-text-tertiary, #aaa)",
-            border: "1px solid transparent",
-            userSelect: "none",
-          }}
+          className={`absolute inset-0 block pointer-events-none select-none border-transparent ${sharedInputClasses}`}
+          style={sharedInputStyle}
         >
           {placeholder}
         </span>
@@ -278,18 +262,8 @@ export const HighlightedInput: FC<HighlightedInputProps> = ({
         onInput={handleInput}
         onPaste={handlePaste}
         onKeyDown={handleKeyDown}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        style={{
-          ...sharedInputStyle,
-          display: "block",
-          outline: "none",
-          border: "1px solid var(--color-border-secondary, #ccc)",
-          background: "var(--color-background-primary, #fff)",
-          color: "var(--color-text-primary, #111)",
-          caretColor: "var(--color-text-primary, #111)",
-          cursor: "text",
-        }}
+        className={`block ${sharedInputClasses}`}
+        style={sharedInputStyle}
       />
     </div>
   );
@@ -297,16 +271,81 @@ export const HighlightedInput: FC<HighlightedInputProps> = ({
 
 // Config editor
 
-const cellStyle: CSSProperties = {
-  padding: "5px 8px",
-  fontSize: "13px",
-  border: "0.5px solid var(--color-border-secondary)",
-  borderRadius: "var(--border-radius-md, 6px)" as string,
-  background: "var(--color-background-primary)",
-  color: "var(--color-text-primary)",
-  boxSizing: "border-box",
-  width: "100%",
-};
+// One grid on sm+: keyword | case | color | bold | italic | delete.
+// Below sm+ everything lives in a labelled rule card; the controls share
+// one flex row so keyword/case/color/B/I/delete all read at equal weight.
+
+const fieldClasses =
+  "h-9 w-full min-w-0 rounded-md border border-border bg-background px-2.5 text-callout text-foreground placeholder:text-muted-foreground outline-none focus:border-ring/60 focus:ring-2 focus:ring-ring/25 transition-[border-color,box-shadow] duration-150";
+
+function CaseSegmented({
+  value,
+  onChange,
+}: {
+  value: boolean; // true = exact (case sensitive)
+  onChange: (v: boolean) => void;
+}) {
+  return (
+    <div
+      role="group"
+      aria-label="Case sensitivity"
+      className="flex h-9 w-full sm:w-auto min-w-0 items-stretch rounded-md border border-border bg-muted/50 p-[3px] gap-px sm:gap-[3px]"
+    >
+      {(
+        [
+          { label: "Exact", val: true, title: "Case sensitive" },
+          { label: "Ignore", val: false, title: "Ignore case" },
+        ] as const
+      ).map((opt) => {
+        const active = value === opt.val;
+        return (
+          <button
+            key={opt.label}
+            type="button"
+            title={opt.title}
+            aria-pressed={active}
+            onClick={() => onChange(opt.val)}
+            className={`flex-1 sm:flex-none sm:min-w-[60px] px-2 rounded-sm text-caption font-medium transition-fast cursor-pointer ${
+              active
+                ? "bg-background text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {opt.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function StyleToggle({
+  active,
+  label,
+  onClick,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      aria-label={label}
+      className={`size-8 shrink-0 flex items-center justify-center rounded-md border text-headline leading-none transition-fast cursor-pointer ${
+        active
+          ? "bg-foreground text-background border-transparent"
+          : "border-border text-muted-foreground hover:text-foreground hover:bg-accent/60"
+      }`}
+    >
+      <span className={label === "Italic" ? "italic" : "font-bold"}>
+        {label === "Italic" ? "I" : "B"}
+      </span>
+    </button>
+  );
+}
 
 const ConfigEditor: FC<ConfigEditorProps> = ({ config, onChange }) => {
   const [jsonMode, setJsonMode] = useState<boolean>(false);
@@ -341,31 +380,9 @@ const ConfigEditor: FC<ConfigEditorProps> = ({ config, onChange }) => {
   };
 
   return (
-    <div
-      style={{
-        border: "0.5px solid",
-        borderRadius: "var(--border-radius-lg)",
-        padding: "16px",
-        background: "var(--color-background-secondary)",
-        marginBottom: "20px",
-        marginTop: "20px",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "12px",
-        }}
-      >
-        <span
-          style={{
-            fontSize: "13px",
-            fontWeight: 500,
-            color: "var(--color-text-secondary)",
-          }}
-        >
+    <div className="rounded-lg border border-border bg-muted/40 p-4 mt-6 mb-2">
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-callout font-medium text-muted-foreground">
           Config
         </span>
         <ModeToggle jsonMode={jsonMode} setJsonMode={setJsonMode} />
@@ -377,188 +394,90 @@ const ConfigEditor: FC<ConfigEditorProps> = ({ config, onChange }) => {
             value={jsonText}
             onChange={(e) => applyJson(e.target.value)}
             spellCheck={false}
-            style={{
-              width: "100%",
-              minHeight: "160px",
-              fontFamily: "var(--font-mono)",
-              fontSize: "12px",
-              padding: "10px",
-              border: "0.5px solid",
-              borderRadius: "var(--border-radius-md)",
-              background: "var(--color-background-primary)",
-              color: "var(--color-text-primary)",
-              resize: "vertical",
-              boxSizing: "border-box",
-            }}
+            className="block w-full min-h-40 p-2.5 rounded-md border border-border bg-background text-foreground font-mono text-xs resize-y outline-none focus:border-ring/60 focus:ring-2 focus:ring-ring/25 transition-[border-color,box-shadow] duration-150"
           />
           {jsonError && (
-            <p style={{ fontSize: "12px", color: "#e53e3e", marginTop: "4px" }}>
-              {jsonError}
-            </p>
+            <p className="text-caption text-destructive mt-1.5">{jsonError}</p>
           )}
         </div>
       ) : (
         <div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 90px 130px 52px 52px 28px",
-              gap: "6px",
-              marginBottom: "6px",
-            }}
-          >
-            {(["Keyword", "Case", "Color", "Bold", "Italic", ""] as const).map(
-              (h) => (
-                <span
-                  key={h}
-                  style={{
-                    fontSize: "11px",
-                    color: "var(--color-text-tertiary)",
-                    fontWeight: 500,
-                  }}
-                >
-                  {h}
-                </span>
-              ),
-            )}
-          </div>
-
           {config.map((row, i) => (
             <div
               key={i}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 90px 130px 52px 52px 28px",
-                gap: "6px",
-                marginBottom: "6px",
-                alignItems: "center",
-              }}
+              className={`rounded-lg sm:rounded-none ${
+                i > 0
+                  ? "mt-2.5 pt-2.5 border-t border-border sm:mt-2 sm:pt-2 sm:border-t-0"
+                  : ""
+              }`}
             >
-              <input
-                value={row.key}
-                onChange={(e) => update(i, "key", e.target.value)}
-                placeholder="keyword"
-                style={cellStyle}
-              />
-              <select
-                value={row.case_sensitive === false ? "false" : "true"}
-                onChange={(e) =>
-                  update(i, "case_sensitive", e.target.value === "true")
-                }
-                style={{ ...cellStyle, padding: "5px 4px" }}
-              >
-                <option value="true">exact</option>
-                <option value="false">ignore</option>
-              </select>
-              <div
-                style={{ display: "flex", gap: "5px", alignItems: "center" }}
-              >
-                <input
-                  type="color"
-                  value={row.color ?? "#3182ce"}
-                  onChange={(e) => update(i, "color", e.target.value)}
-                  style={{
-                    width: "28px",
-                    height: "28px",
-                    padding: "1px",
-                    border: "0.5px solid var(--color-border-secondary)",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                    flexShrink: 0,
-                  }}
-                />
-                <input
-                  value={row.color ?? ""}
-                  onChange={(e) => update(i, "color", e.target.value)}
-                  style={{ ...cellStyle, fontSize: "12px" }}
-                />
+              
+              <div className="flex items-center justify-between mb-2 sm:hidden">
+                <span className="text-footnote font-semibold uppercase tracking-widest text-muted-foreground">
+                  Rule {i + 1}
+                </span>
               </div>
-              <label
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "4px",
-                  cursor: "pointer",
-                  userSelect: "none",
-                }}
-              >
+
+              
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_128px_36px_36px_36px_36px] sm:gap-x-1.5 sm:items-center">
                 <input
-                  type="checkbox"
-                  checked={!!row.bold}
-                  onChange={(e) => update(i, "bold", e.target.checked)}
-                  style={{ margin: 0 }}
+                  value={row.key}
+                  onChange={(e) => update(i, "key", e.target.value)}
+                  placeholder="keyword"
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  className={fieldClasses}
                 />
-                <span
-                  style={{
-                    fontWeight: 700,
-                    fontSize: "14px",
-                    color: "var(--color-text-primary)",
-                  }}
-                >
-                  B
-                </span>
-              </label>
-              <label
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "4px",
-                  cursor: "pointer",
-                  userSelect: "none",
-                }}
-              >
-                <input
-                  type="checkbox"
-                  checked={!!row.italics}
-                  onChange={(e) => update(i, "italics", e.target.checked)}
-                  style={{ margin: 0 }}
-                />
-                <span
-                  style={{
-                    fontStyle: "italic",
-                    fontSize: "14px",
-                    color: "var(--color-text-primary)",
-                  }}
-                >
-                  I
-                </span>
-              </label>
-              <button
-                onClick={() => push(config.filter((_, idx) => idx !== i))}
-                style={{
-                  width: "24px",
-                  height: "24px",
-                  border: "0.5px solid var(--color-border-secondary)",
-                  borderRadius: "4px",
-                  background: "transparent",
-                  cursor: "pointer",
-                  color: "var(--color-text-tertiary)",
-                  fontSize: "16px",
-                  lineHeight: 1,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                ×
-              </button>
+
+                
+                <div className="flex items-center justify-between gap-2 sm:contents">
+                  <CaseSegmented
+                    value={row.case_sensitive !== false}
+                    onChange={(v) => update(i, "case_sensitive", v)}
+                  />
+
+                  <div className="flex items-center gap-1.5">
+                    
+                    <input
+                      type="color"
+                      value={row.color ?? "#3182ce"}
+                      onChange={(e) => update(i, "color", e.target.value)}
+                      title="Highlight color"
+                      aria-label={`Color for rule ${i + 1}`}
+                      className="size-8 shrink-0 rounded-full appearance-none border border-border bg-transparent p-0 cursor-pointer [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-full [&::-webkit-color-swatch]:border-none"
+                    />
+
+                    <StyleToggle
+                      active={!!row.bold}
+                      label="Bold"
+                      onClick={() => update(i, "bold", !row.bold)}
+                    />
+                    <StyleToggle
+                      active={!!row.italics}
+                      label="Italic"
+                      onClick={() => update(i, "italics", !row.italics)}
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => push(config.filter((_, idx) => idx !== i))}
+                      disabled={config.length <= 1}
+                      aria-label={`Remove rule ${i + 1}`}
+                      title="Remove rule"
+                      className="size-8 shrink-0 flex items-center justify-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-fast disabled:opacity-40 disabled:pointer-events-none cursor-pointer disabled:cursor-not-allowed"
+                    >
+                      <HugeiconsIcon icon={Delete02Icon} size={17} />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
 
           <button
             onClick={() => push([...config, { ...BLANK_RULE }])}
-            style={{
-              marginTop: "8px",
-              padding: "5px 14px",
-              fontSize: "12px",
-              border: "0.5px solid var(--color-border-secondary)",
-              borderRadius: "var(--border-radius-md)",
-              background: "var(--color-background-primary)",
-              cursor: "pointer",
-              color: "var(--color-text-secondary)",
-            }}
+            className="mt-3 px-3.5 py-1.5 text-caption font-medium rounded-md border border-border bg-background text-muted-foreground hover:text-foreground hover:bg-accent transition-fast cursor-pointer w-full sm:w-auto"
           >
             + add rule
           </button>
@@ -574,44 +493,19 @@ const HighlightedInputDemo: FC = () => {
   const [config, setConfig] = useState<HighlightRule[]>(DEFAULT_CONFIG);
 
   return (
-    <div
-      style={{
-        maxWidth: "680px",
-        margin: "0 auto",
-        padding: "2rem 1rem",
-        fontFamily: "var(--font-sans)",
-      }}
-    >
-      <p
-        style={{
-          fontSize: "13px",
-          color: "var(--color-text-tertiary)",
-          margin: "0 0 8px",
-        }}
-      >
-        Highlighted input demo
-      </p>
+    <div className="w-full max-w-[680px] mx-auto px-4 py-8 sm:py-10">
       <HighlightedInput
         config={config}
         placeholder="Try: SELECT * FROM users WHERE name='Ankit' and age NOT IN (21,22,23)"
       />
-      <div
-        style={{
-          marginTop: "12px",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "6px",
-        }}
-      >
+      <div className="mt-3 flex flex-wrap gap-1.5">
         {config
           .filter((c) => c.key.length > 0)
           .map((c, i) => (
             <span
               key={i}
+              className="text-caption px-2 py-0.5 rounded-full font-medium"
               style={{
-                fontSize: "12px",
-                padding: "2px 8px",
-                borderRadius: "999px",
                 background: `${c.color ?? "#90cdf4"}22`,
                 color: c.color ?? "#3182ce",
                 fontWeight: c.bold ? 700 : 400,
@@ -638,66 +532,40 @@ function ModeToggle({
   setJsonMode: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
-    <div
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "8px",
-        fontSize: "13px",
-        fontFamily: "system-ui, sans-serif",
-        userSelect: "none",
-      }}
-    >
+    <div className="inline-flex items-center gap-2 text-callout select-none">
       <span
-        style={{
-          color: !jsonMode
-            ? "var(--color-text-primary, #111)"
-            : "var(--color-text-secondary, #888)",
-          fontWeight: !jsonMode ? 600 : 400,
-        }}
+        className={
+          !jsonMode
+            ? "text-foreground font-semibold"
+            : "text-muted-foreground font-normal"
+        }
       >
         Visual
       </span>
 
       <button
         onClick={() => setJsonMode((m) => !m)}
+        role="switch"
+        aria-checked={jsonMode}
         aria-label="Toggle between Visual and JSON"
-        style={{
-          position: "relative",
-          width: "36px",
-          height: "20px",
-          borderRadius: "999px",
-          border: "0.5px solid var(--color-border-secondary, #ccc)",
-          background: jsonMode
-            ? "var(--color-accent, #4f46e5)"
-            : "var(--color-background-secondary, #e5e5e5)",
-          cursor: "pointer",
-          padding: 0,
-          transition: "background 0.2s ease",
-        }}
+        className={`relative w-9 h-5 rounded-full border transition-colors duration-200 cursor-pointer ${
+          jsonMode
+            ? "bg-primary border-primary"
+            : "bg-muted-foreground/20 border-border"
+        }`}
       >
         <span
-          style={{
-            position: "absolute",
-            top: "2px",
-            left: jsonMode ? "18px" : "2px",
-            width: "14px",
-            height: "14px",
-            borderRadius: "50%",
-            background: "white",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.2)",
-            transition: "left 0.2s ease",
-          }}
+          className="absolute top-1/2 -translate-y-1/2 size-3.5 rounded-full bg-white shadow-sm transition-[left] duration-200"
+          style={{ left: jsonMode ? "18px" : "2px" }}
         />
       </button>
 
       <span
-        style={{
-          color: jsonMode
-            ? "var(--color-text-primary, #111)"
-            : "var(--color-text-secondary, #888)",
-          fontWeight: jsonMode ? 600 : 400,
-        }}
+        className={
+          jsonMode
+            ? "text-foreground font-semibold"
+            : "text-muted-foreground font-normal"
+        }
       >
         JSON
       </span>

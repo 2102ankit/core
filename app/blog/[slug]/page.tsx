@@ -1,4 +1,4 @@
-import { Outline } from "@/components/outline";
+import { Outline, RegisterOutlineHeadings } from "@/components/outline";
 import { Container } from "@/components/container";
 import { getPostBySlug } from "@/lib/markdown";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -37,7 +37,10 @@ export default async function BlogPostPage({
 
   return (
     <Container size="narrow" className="py-16 md:py-20 page-transition">
-      <Outline headings={headings} />
+      <div className="hidden lg:block">
+        <Outline headings={headings} />
+      </div>
+      <RegisterOutlineHeadings headings={headings} />
       <article>
         <Link
           href="/blog"
@@ -80,7 +83,7 @@ export default async function BlogPostPage({
             </p>
           )}
 
-          {/* Featured image */}
+          
           {frontmatter.image && (
             <div className="mt-8 rounded-xl overflow-hidden">
               <Image
@@ -118,7 +121,7 @@ export default async function BlogPostPage({
           <div className="flex items-center gap-4">
             <Link
               href={`https://x.com/intent/tweet?text=${encodeURIComponent(
-                frontmatter.title ?? "Check this out!"
+                frontmatter.title ?? "Check this out!",
               )}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -133,16 +136,10 @@ export default async function BlogPostPage({
   );
 }
 
-/* Generate static params for every .md file (build-time) */
-// export async function generateStaticParams() {
-//   const slugs = getAllBlogPaths();
-//   return slugs.map((slug) => ({ slug }));
-// }
-
 export async function generateStaticParams() {
   // Pre-build only real markdown files
   const files = await import("fs").then((fs) =>
-    fs.promises.readdir(CONTENT_ROOT)
+    fs.promises.readdir(CONTENT_ROOT),
   );
   return files
     .filter((f) => f.endsWith(".md") || f.endsWith(".mdx"))

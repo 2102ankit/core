@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Container } from "@/components/container";
 import {
   Card,
@@ -9,28 +8,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { submitContactForm } from "@/lib/data";
-import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CallIcon,
   CodeIcon,
   GithubIcon,
   Linkedin01Icon,
-  Mail01Icon,
   Location08Icon,
+  Mail01Icon,
   NewTwitterIcon,
 } from "@hugeicons/core-free-icons";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
@@ -129,202 +118,102 @@ export default function ContactPage() {
 
   return (
     <Container size="default" className="py-12 md:py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-display text-foreground mb-4">Get in Touch</h1>
-          <p className="text-body text-muted-foreground max-w-2xl mx-auto">
-            Have a project in mind or want to collaborate? Feel free to reach
-            out!
-          </p>
-        </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="text-center mb-12"
+      >
+        <h1 className="text-display text-foreground mb-4">Get in Touch</h1>
+        <p className="text-body text-muted-foreground max-w-2xl mx-auto">
+          Have a project in mind or want to collaborate? Feel free to reach out!
+        </p>
+      </motion.div>
 
-        <div className="grid grid-cols-1 gap-8 mb-12 max-w-2xl mx-auto">
-          {/* <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Card className="h-full">
+      <div className="grid grid-cols-1 gap-8 mb-12 max-w-2xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="space-y-4"
+        >
+          <motion.div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
+            <Card>
               <CardHeader>
-                <CardTitle>Send Me a Message</CardTitle>
+                <CardTitle>Contact Information</CardTitle>
                 <CardDescription>
-                  Fill out the form below and I&apos;ll get back to you as soon
-                  as possible
+                  Reach out through any of these channels
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <Form {...form}>
-                  <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-6"
-                  >
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Your name" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+              <CardContent className="space-y-4">
+                {contactInfo.map((info) => (
+                  <div key={info.label} className="flex items-start gap-4">
+                    <div className="p-2 rounded-lg bg-muted">
+                      <HugeiconsIcon icon={info.icon} size={20} />
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">
+                        {info.label}
+                      </p>
+                      {info.href ? (
+                        <a
+                          href={info.href}
+                          className="font-medium hover:text-primary transition-colors"
+                        >
+                          {info.value}
+                        </a>
+                      ) : (
+                        <p className="font-medium">{info.value}</p>
                       )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="email"
-                              placeholder="your.email@example.com"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="subject"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Subject (Optional)</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="What's this about?"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="message"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Message</FormLabel>
-                          <FormControl>
-                            <Textarea
-                              placeholder="Tell me about your project or inquiry..."
-                              className="min-h-[150px] resize-none"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <Button
-                      type="submit"
-                      className="w-full"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? "Sending..." : "Send Message"}
-                    </Button>
-                  </form>
-                </Form>
+                    </div>
+                  </div>
+                ))}
               </CardContent>
             </Card>
-          </motion.div> */}
 
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-4"
-          >
-            <motion.div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Contact Information</CardTitle>
-                  <CardDescription>
-                    Reach out through any of these channels
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {contactInfo.map((info) => (
-                    <div key={info.label} className="flex items-start gap-4">
-                      <div className="p-2 rounded-lg bg-muted">
-                        <HugeiconsIcon icon={info.icon} size={20} />
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">
-                          {info.label}
-                        </p>
-                        {info.href ? (
-                          <a
-                            href={info.href}
-                            className="font-medium hover:text-primary transition-colors"
-                          >
-                            {info.value}
-                          </a>
-                        ) : (
-                          <p className="font-medium">{info.value}</p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Connect with Me</CardTitle>
-                  <CardDescription>Find me on these platforms</CardDescription>
-                </CardHeader>
-                <CardContent className="h-full">
-                  <div className="grid grid-cols-2 gap-3 h-full">
-                    {socialLinks.map((social) => (
-                      <Link
-                        key={social.label}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center p-3 rounded-lg border border-border hover:border-foreground hover:bg-accent transition-all group h-24 sm:h-full"
-                        aria-label={social.label}
-                        title={social.label}
-                      >
-                        <HugeiconsIcon
-                          icon={social.icon}
-                          size={24}
-                          className="group-hover:scale-110 transition-transform"
-                        />
-                      </Link>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <Card className="bg-muted/30">
+            <Card>
               <CardHeader>
-                <CardTitle>Response Time</CardTitle>
+                <CardTitle>Connect with Me</CardTitle>
+                <CardDescription>Find me on these platforms</CardDescription>
               </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  I typically respond within <u>24-48 hours</u> during weekdays.
-                  For urgent matters, feel free to reach out directly via phone
-                  or LinkedIn.
-                </p>
+              <CardContent className="h-full">
+                <div className="grid grid-cols-2 gap-3 h-full">
+                  {socialLinks.map((social) => (
+                    <Link
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center p-3 rounded-lg border border-border hover:border-foreground hover:bg-accent transition-all group h-24 sm:h-full"
+                      aria-label={social.label}
+                      title={social.label}
+                    >
+                      <HugeiconsIcon
+                        icon={social.icon}
+                        size={24}
+                        className="group-hover:scale-110 transition-transform"
+                      />
+                    </Link>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </motion.div>
-        </div>
+
+          <Card className="bg-muted/30">
+            <CardHeader>
+              <CardTitle>Response Time</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                I typically respond within <u>24-48 hours</u> during weekdays.
+                For urgent matters, feel free to reach out directly via phone or
+                LinkedIn.
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
     </Container>
   );
 }

@@ -31,7 +31,7 @@ const LeatherButtonFinal = () => {
         }}
         transition={{ duration: 0.15, ease: "easeOut" }}
       >
-        {/* Existing noise overlay (kept for extra realism) */}
+        
         <div
           className="absolute inset-0 opacity-20 pointer-events-none rounded-full"
           style={{
@@ -40,7 +40,7 @@ const LeatherButtonFinal = () => {
           }}
         />
 
-        {/* Highlight gradient */}
+        
         <div
           className="absolute inset-0 opacity-20 pointer-events-none rounded-full"
           style={{
@@ -49,7 +49,7 @@ const LeatherButtonFinal = () => {
           }}
         />
 
-        {/* Stitching */}
+        
         <div
           className="absolute rounded-full pointer-events-none"
           style={{
@@ -59,7 +59,7 @@ const LeatherButtonFinal = () => {
           }}
         />
 
-        {/* Button text */}
+        
         <span
           className="relative z-10 block text-3xl tracking-normal font-bold"
           style={{
@@ -73,7 +73,7 @@ const LeatherButtonFinal = () => {
           Leather Button
         </span>
 
-        {/* Inner glow */}
+        
         {/* <div
           className="absolute inset-0 rounded-full pointer-events-none"
           style={{

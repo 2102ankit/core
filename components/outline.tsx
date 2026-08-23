@@ -8,57 +8,74 @@ import {
   useRef,
   useState,
 } from "react";
+import { setOutlineHeadings, type OutlineHeading } from "@/lib/outline-store";
 
-interface Heading {
-  id: string;
-  text: string;
-  level: number;
-}
-
-interface OutlineProps {
-  headings: Heading[];
-}
+type Heading = OutlineHeading;
 
 // How far from the top of the viewport a heading must be before it's "active".
 // Should roughly match the page's sticky-header height.
 const SCROLL_THRESHOLD = 200;
 
-export function Outline({ headings }: OutlineProps) {
+function scrollToHeading(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  window.scrollTo({
+    top: el.getBoundingClientRect().top + window.scrollY - 80,
+    behavior: "smooth",
+  });
+}
+
+/**
+ * Scroll-synced active-heading tracking, shared by every outline variant.
+ * Also registers the headings so other UI (e.g. the mobile menu) can
+ * present them.
+ */
+function useActiveHeading(headings: Heading[]) {
   const [activeId, setActiveId] = useState(() => headings[0]?.id ?? "");
-
-  const [initialHash] = useState(() =>
-    typeof window !== "undefined" ? window.location.hash : "",
-  );
-
-  const hashSyncMountedRef = useRef(false);
-
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLUListElement>(null);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
-
-  const [pipPos, setPipPos] = useState({ top: 0, left: 0, visible: false });
 
   const suppressScrollRef = useRef(false);
   const suppressTimerRef = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined,
   );
 
-  const updatePip = useCallback((id: string) => {
-    const btn = buttonRefs.current.get(id);
-    const wrapper = wrapperRef.current;
-    if (!btn || !wrapper) return;
-
-    const top = btn.offsetTop + btn.offsetHeight / 2 - 7;
-    const paddingLeft = parseFloat(window.getComputedStyle(btn).paddingLeft);
-    const left = Math.max(0, paddingLeft - 8);
-
-    setPipPos({ top, left, visible: true });
+  // Briefly ignore scroll events after programmatic scrolls so the active
+  // state doesn't flicker through intermediate sections.
+  const suppress = useCallback((duration: number) => {
+    suppressScrollRef.current = true;
+    clearTimeout(suppressTimerRef.current);
+    suppressTimerRef.current = setTimeout(() => {
+      suppressScrollRef.current = false;
+    }, duration);
   }, []);
 
-  useLayoutEffect(() => {
-    updatePip(activeId);
-  }, [activeId, updatePip]);
+  // Register for consumers like the mobile navigation drawer
+  useEffect(() => {
+    setOutlineHeadings(headings.length ? headings : null);
+    // Don't clear on unmount — the page-level RegisterOutlineHeadings
+    // owns the store lifecycle; clearing here would wipe headings when
+    // the mobile outline unmounts (e.g. after navigating via menu).
+  }, [headings]);
+
+  // Any direct user input cancels an in-flight suppression
+  useEffect(() => {
+    const clearSuppress = () => {
+      if (!suppressScrollRef.current) return;
+      clearTimeout(suppressTimerRef.current);
+      suppressScrollRef.current = false;
+    };
+
+    window.addEventListener("keydown", clearSuppress);
+    window.addEventListener("wheel", clearSuppress, { passive: true });
+    window.addEventListener("touchstart", clearSuppress, { passive: true });
+    window.addEventListener("pointerdown", clearSuppress, { passive: true });
+
+    return () => {
+      window.removeEventListener("keydown", clearSuppress);
+      window.removeEventListener("wheel", clearSuppress);
+      window.removeEventListener("touchstart", clearSuppress);
+      window.removeEventListener("pointerdown", clearSuppress);
+    };
+  }, []);
 
   useEffect(() => {
     if (!headings.length) return;
@@ -100,26 +117,71 @@ export function Outline({ headings }: OutlineProps) {
     };
   }, [headings]);
 
+  const scrollTo = useCallback(
+    (id: string) => {
+      setActiveId(id);
+      suppress(1000);
+
+      const el = document.getElementById(id);
+      if (!el) return;
+      window.scrollTo({
+        top: el.getBoundingClientRect().top + window.scrollY - 80,
+        behavior: "smooth",
+      });
+    },
+    [suppress],
+  );
+
+  return { activeId, setActiveId, scrollTo, suppress };
+}
+
+/**
+ * Headless registration for pages that want the mobile-menu outline
+ * without rendering any visible outline UI (e.g. blog posts).
+ */
+export function RegisterOutlineHeadings({ headings }: { headings: Heading[] }) {
   useEffect(() => {
-    const clearSuppress = () => {
-      if (!suppressScrollRef.current) return;
-      clearTimeout(suppressTimerRef.current);
-      suppressScrollRef.current = false;
-    };
+    setOutlineHeadings(headings.length ? headings : null);
+    return () => setOutlineHeadings(null);
+  }, [headings]);
+  return null;
+}
 
-    window.addEventListener("keydown", clearSuppress);
-    window.addEventListener("wheel", clearSuppress, { passive: true });
-    window.addEventListener("touchstart", clearSuppress, { passive: true });
-    window.addEventListener("pointerdown", clearSuppress, { passive: true });
+/* ── Floating rail (lg+) ─────────────────────────────────────────────── */
 
-    return () => {
-      window.removeEventListener("keydown", clearSuppress);
-      window.removeEventListener("wheel", clearSuppress);
-      window.removeEventListener("touchstart", clearSuppress);
-      window.removeEventListener("pointerdown", clearSuppress);
-    };
+export function Outline({ headings }: { headings: Heading[] }) {
+  const { activeId, setActiveId, scrollTo, suppress } =
+    useActiveHeading(headings);
+
+  const [initialHash] = useState(() =>
+    typeof window !== "undefined" ? window.location.hash : "",
+  );
+
+  const hashSyncMountedRef = useRef(false);
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const buttonRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+
+  const [pipPos, setPipPos] = useState({ top: 0, left: 0, visible: false });
+
+  const updatePip = useCallback((id: string) => {
+    const btn = buttonRefs.current.get(id);
+    const wrapper = wrapperRef.current;
+    if (!btn || !wrapper) return;
+
+    const top = btn.offsetTop + btn.offsetHeight / 2 - 7;
+    const paddingLeft = parseFloat(window.getComputedStyle(btn).paddingLeft);
+    const left = Math.max(0, paddingLeft - 8);
+
+    setPipPos({ top, left, visible: true });
   }, []);
 
+  useLayoutEffect(() => {
+    updatePip(activeId);
+  }, [activeId, updatePip]);
+
+  // Keep the URL hash in sync with the reading position
   useEffect(() => {
     if (!hashSyncMountedRef.current) {
       hashSyncMountedRef.current = true;
@@ -132,59 +194,30 @@ export function Outline({ headings }: OutlineProps) {
     }
   }, [activeId]);
 
+  // Deep-link support: land on #section and settle there
   useEffect(() => {
     if (!initialHash) return;
     const id = initialHash.startsWith("#") ? initialHash.slice(1) : initialHash;
     if (!headings.find((h) => h.id === id)) return;
 
     setActiveId(id);
-    suppressScrollRef.current = true;
+    suppress(1200);
     const t = setTimeout(() => {
-      const el = document.getElementById(id);
-      if (el) {
-        window.scrollTo({
-          top: el.getBoundingClientRect().top + window.scrollY - 80,
-          behavior: "smooth",
-        });
-      }
-      suppressTimerRef.current = setTimeout(() => {
-        suppressScrollRef.current = false;
-      }, 900);
+      scrollToHeading(id);
     }, 120);
     return () => clearTimeout(t);
-  }, [headings, initialHash]);
+  }, [headings, initialHash, setActiveId, suppress]);
 
   useEffect(() => {
     const btn = buttonRefs.current.get(activeId);
     btn?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, [activeId]);
 
-  const handleClick = useCallback((id: string) => {
-    setActiveId(id);
-
-    suppressScrollRef.current = true;
-    clearTimeout(suppressTimerRef.current);
-
-    suppressTimerRef.current = setTimeout(() => {
-      suppressScrollRef.current = false;
-    }, 1000);
-
-    const el = document.getElementById(id);
-    if (!el) return;
-    window.scrollTo({
-      top: el.getBoundingClientRect().top + window.scrollY - 80,
-      behavior: "smooth",
-    });
-  }, []);
-
   if (!headings.length) return null;
 
   return (
-    <motion.aside
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
-      className="hidden lg:block fixed right-8 top-24 w-52"
+    <div
+      className="hidden lg:block fixed right-8 top-24 w-56 xl:right-12 xl:w-64 2xl:w-72"
       style={{ height: "calc(100vh - 8rem)" }}
     >
       <div className="bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-lg p-3 backdrop-blur-sm h-full flex flex-col">
@@ -194,7 +227,7 @@ export function Outline({ headings }: OutlineProps) {
 
         <div
           ref={scrollContainerRef}
-          className="flex-1 min-h-0 overflow-y-auto pb-8"
+          className="flex-1 min-h-0 overflow-y-auto pb-8 scrollbar-slim"
         >
           <div ref={wrapperRef} className="relative">
             <motion.div
@@ -217,7 +250,7 @@ export function Outline({ headings }: OutlineProps) {
               }}
             />
 
-            <ul className="space-y-0.5" ref={listRef}>
+            <ul className="space-y-0.5">
               {headings.map((heading, index) => {
                 const isActive = activeId === heading.id;
                 return (
@@ -238,7 +271,8 @@ export function Outline({ headings }: OutlineProps) {
                         else buttonRefs.current.delete(heading.id);
                       }}
                       data-id={heading.id}
-                      onClick={() => handleClick(heading.id)}
+                      title={heading.text}
+                      onClick={() => scrollTo(heading.id)}
                       className={[
                         "block w-full text-left py-1 pr-2 text-sm",
                         "transition-colors duration-150 truncate cursor-pointer",
@@ -257,6 +291,68 @@ export function Outline({ headings }: OutlineProps) {
           </div>
         </div>
       </div>
-    </motion.aside>
+    </div>
+  );
+}
+
+/* ── Inline list (mobile / embedded) ─────────────────────────────────── */
+
+export function OutlineInline({
+  headings,
+  className = "",
+  onClose,
+}: {
+  headings: Heading[];
+  className?: string;
+  onClose?: () => void;
+}) {
+  const { activeId, scrollTo } = useActiveHeading(headings);
+
+  if (!headings.length) return null;
+
+  return (
+    <nav aria-label="On this page" className={className}>
+      <div className="text-caption font-medium uppercase tracking-widest text-muted-foreground mb-2">
+        On this page
+      </div>
+      <ul className="relative space-y-0.5 border-l border-border pr-1">
+        {headings.map((heading) => {
+          const isActive = activeId === heading.id;
+          return (
+            <li key={heading.id}>
+              <button
+                onClick={() => {
+                  scrollTo(heading.id);
+                  onClose?.();
+                }}
+                title={heading.text}
+                className={[
+                  "relative block w-full text-left py-1 pr-2 text-sm",
+                  "transition-colors duration-150 truncate cursor-pointer",
+                  heading.level === 2 ? "pl-3" : "pl-7",
+                  isActive
+                    ? "text-foreground font-medium"
+                    : "text-muted-foreground hover:text-foreground",
+                ].join(" ")}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="outline-inline-pip"
+                    aria-hidden="true"
+                    className="absolute -left-px top-1/2 -translate-y-1/2 h-4 w-0.5 rounded-full bg-foreground"
+                    transition={{
+                      type: "spring",
+                      stiffness: 420,
+                      damping: 34,
+                    }}
+                  />
+                )}
+                {heading.text}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
   );
 }

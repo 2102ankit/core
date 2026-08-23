@@ -1,7 +1,14 @@
 "use client";
 
+import Clock24 from "@/components/Clock24";
 import { Container } from "@/components/container";
+import {
+  HighlightedInput,
+  type HighlightRule,
+} from "@/components/demos/highlighted-input";
 import ProjectThumbnail from "@/components/project-thumbnail";
+import SegmentedControl from "@/components/segment-control";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -25,15 +32,53 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
+// Quiet defaults for the home-page highlighted-input teaser — the full
+// editor lives on the component's own page.
+const HIGHLIGHT_TEASER_CONFIG: HighlightRule[] = [
+  { key: "SELECT", case_sensitive: true, color: "#3182ce", bold: true },
+  { key: "FROM", case_sensitive: false, color: "#38a169", bold: false },
+  { key: "WHERE", case_sensitive: false, color: "#e53e3e", bold: true },
+  { key: "NOT", case_sensitive: false, color: "#d69e2e", italics: true },
+];
+
+function TeaserMeta({ title, blurb }: { title: string; blurb: string }) {
+  return (
+    <div className="p-4 flex-1">
+      <div className="flex items-center justify-between gap-2 mb-1">
+        <h3 className="text-callout font-semibold text-foreground">{title}</h3>
+        <HugeiconsIcon
+          icon={ArrowUpRight01Icon}
+          size={14}
+          className="text-muted-foreground transition-fast group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+        />
+      </div>
+      <p className="text-caption text-muted-foreground">{blurb}</p>
+    </div>
+  );
+}
+
 function SectionDivider({ label }: { label: string }) {
   return (
-    <div className="mb-4">
-      <div className="flex items-center gap-2">
-        <div className="h-0.5 flex-1 bg-linear-to-l from-border/60 to-transparent" />
-        <div className="inline-flex items-center rounded-2xl bg-foreground px-5 py-2 text-sm font-semibold text-background shadow-sm">
+    <div className="mb-4" role="separator" aria-label={label}>
+      <div className="flex items-center gap-3.5">
+        {/* solid anchor diamond */}
+        <span
+          aria-hidden="true"
+          className="size-2 rotate-45 bg-foreground/80 shrink-0"
+        />
+        <span className="text-caption font-semibold uppercase tracking-[0.18em] text-muted-foreground whitespace-nowrap">
           {label}
-        </div>
-        <div className="h-0.5 flex-1 bg-linear-to-r from-border/60 to-transparent" />
+        </span>
+        {/* tick marks melting into a hairline */}
+        <span
+          aria-hidden="true"
+          className="h-px flex-1 [background-image:repeating-linear-gradient(to_right,var(--border)_0,var(--border)_5px,transparent_5px,transparent_10px)] [mask-image:linear-gradient(to_right,black_0%,black_35%,transparent_100%)] opacity-90"
+        />
+        {/* hollow terminal diamond */}
+        <span
+          aria-hidden="true"
+          className="size-1.5 rotate-45 border border-border shrink-0"
+        />
       </div>
     </div>
   );
@@ -348,7 +393,7 @@ export default function Home() {
               window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
             }
           >
-            <span className="text-xs uppercase tracking-widest">Scroll</span>
+            
             <HugeiconsIcon icon={ChevronDownIcon} size={20} />
           </motion.div>
         </motion.div>
@@ -486,13 +531,102 @@ export default function Home() {
           transition={{ duration: 0.6 }}
           className="mb-10"
         >
+          <SectionDivider label="Components" />
+          <p className="text-muted-foreground text-center">
+            Live pieces from my component lab — poke them, then take them home
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 auto-rows-fr">
+          
+          <Card className="h-full transition-fast hover:shadow-elevation-2 hover:border-foreground/20 pt-0 overflow-hidden gap-0 p-0">
+            <div className="flex items-center justify-center min-h-32 border-b border-border bg-muted/20 pointer-events-none select-none px-4 py-6 overflow-hidden">
+              <div className="scale-[1.45]">
+                <Clock24 />
+              </div>
+            </div>
+            <Link href="/components/24h-clock" className="group block h-full">
+              <TeaserMeta
+                title="24h Clock"
+                blurb="Flip-digit time, three display styles"
+              />
+            </Link>
+          </Card>
+          
+          <Card className="h-full transition-fast hover:shadow-elevation-2 hover:border-foreground/20 pt-0 overflow-hidden gap-0 p-0">
+            <div className="min-h-32 border-b border-border bg-muted/20 pointer-events-none select-none flex items-center px-4 py-6">
+              <HighlightedInput config={HIGHLIGHT_TEASER_CONFIG} />
+            </div>
+            <Link
+              href="/components/highlighted-input"
+              className="group block h-full"
+            >
+              <TeaserMeta
+                title="Highlighted Input"
+                blurb="Keyword-aware text field with live rules"
+              />
+            </Link>
+          </Card>
+          
+          <Card className="h-full transition-fast hover:shadow-elevation-2 hover:border-foreground/20 pt-0 overflow-hidden gap-0 p-0">
+            <div className="flex items-center justify-center gap-4 min-h-32 border-b border-border bg-muted/20 px-4 py-6">
+              <span
+                className="relative z-20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ThemeToggle size="md" enableHotkey={false} />
+              </span>
+              <span
+                className="relative z-20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ThemeToggle size="sm" enableHotkey={false} />
+              </span>
+            </div>
+            <Link
+              href="/components/theme-toggle"
+              className="group block h-full"
+            >
+              <TeaserMeta
+                title="Gooey Theme Toggle"
+                blurb="Sun and moon melting between themes — try one"
+              />
+            </Link>
+          </Card>
+          <SegCard/>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="text-center mt-8"
+        >
+          <Button asChild variant="outline" size="lg" className="gap-2">
+            <Link href="/components">
+              Browse Components{" "}
+              <HugeiconsIcon icon={ArrowRight01Icon} size={18} />
+            </Link>
+          </Button>
+        </motion.div>
+      </section>
+
+      <section className="py-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-10"
+        >
           <SectionDivider label="Skills" />
           <p className="text-muted-foreground text-center">
             Tools and technologies I reach for daily
           </p>
         </motion.div>
 
-        {/* Featured skills — two rows drifting in opposite directions */}
+        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -584,3 +718,36 @@ export default function Home() {
     </Container>
   );
 }
+
+type Segvariant = "one" | "two" | "three";
+
+function SegCard() {
+  const [variant, setVariant] = useState<Segvariant>("one");
+
+  return (
+    <Card className="h-full transition-fast hover:shadow-elevation-2 hover:border-foreground/20 pt-0 overflow-hidden gap-0 p-0 ">
+      <div className="flex items-center justify-center gap-4 min-h-32 border-b border-border bg-muted/20 px-4 py-6">
+        <span className="relative z-20" onClick={(e) => e.stopPropagation()}>
+          <SegmentedControl
+            ariaLabel="Clock style"
+            options={[
+              { id: "one", label: "One" },
+              { id: "two", label: "Two" },
+              { id: "three", label: "Three" },
+            ]}
+            value={variant}
+            onChange={setVariant}
+          />
+        </span>
+      </div>
+      <Link href="/components/clock" className="group block h-full">
+        <TeaserMeta
+          title="Section Selector"
+          blurb="Mulitple Options, one animated selector"
+        />
+      </Link>
+    </Card>
+  );
+}
+
+// TODO: Add 404 page, also add component for section selector. fix outline appearing on top of blogs, and stub not appearing in mobile view

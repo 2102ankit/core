@@ -1,4 +1,5 @@
 import { Footer } from "@/components/footer";
+import { GridBackdrop } from "@/components/grid-backdrop";
 import { Navigation } from "@/components/navigation";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
@@ -74,9 +75,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <GridBackdrop />
           <Navigation />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
+          <main className="min-h-screen relative z-10">{children}</main>
+          <div className="relative z-10">
+            <Footer />
+          </div>
           <Toaster />
         </ThemeProvider>
       </body>

@@ -230,35 +230,43 @@ export default function BubbleSortVisualizer() {
   };
 
   return (
-    <Card className="w-full max-w-5xl mx-auto p-4 sm:p-6 space-y-6 bg-background text-foreground">
+    <div className="w-full max-w-5xl mx-auto p-3.5 sm:p-6 space-y-5 sm:space-y-6 bg-background text-foreground">
       <div className="space-y-2">
         <Label htmlFor="input">Enter numbers (comma separated)</Label>
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
           <Input
             id="input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="e.g. 50, -20, 80"
-            className="flex-1"
+            inputMode="numeric"
+            autoCapitalize="off"
+            autoCorrect="off"
+            spellCheck={false}
+            className="flex-1 min-w-0"
           />
-          <div className="flex gap-3">
+          <div className="flex gap-2.5 sm:gap-3">
             <Button onClick={handleSort} className="flex-1 sm:flex-initial">
               Sort Array
             </Button>
-            <Button onClick={generateRandomArray} variant="outline">
+            <Button
+              onClick={generateRandomArray}
+              variant="outline"
+              className="flex-1 sm:flex-initial"
+            >
               <HugeiconsIcon icon={DiceFaces06Icon} className="h-5 w-5 sm:mr-2" />
-              <span className="hidden sm:inline">Random</span>
+              <span>Random</span>
             </Button>
           </div>
         </div>
       </div>
 
-      <div className="space-y-6">
-        <div className="w-full rounded-xl bg-muted/40 p-6 sm:p-8 py-2! border relative overflow-hidden">
+      <div className="space-y-5 sm:space-y-6">
+        <div className="relative w-full">
           <span
-            className="absolute left-2 sm:left-4 text-xs text-muted-foreground bg-muted/40 px-2 rounded z-20"
+            className="absolute left-1.5 sm:left-4 text-xs text-muted-foreground px-2 rounded z-20 tabular-nums"
             style={{
-              top: `${positiveRatio * 200 + 32}px`,
+              top: `${positiveRatio * 200 + 14}px`,
               transform: "translateY(-50%)",
             }}
           >
@@ -266,30 +274,27 @@ export default function BubbleSortVisualizer() {
           </span>
 
           {hasPositive && (
-            <span className="absolute left-2 sm:left-4 top-4 text-xs text-muted-foreground">
+            <span className="absolute left-1.5 sm:left-4 top-3 text-xs text-muted-foreground tabular-nums">
               +{maxPositive}
             </span>
           )}
           {hasNegative && (
-            <span className="absolute left-2 sm:left-4 bottom-4 text-xs text-muted-foreground">
+            <span className="absolute left-1.5 sm:left-4 bottom-3 text-xs text-muted-foreground tabular-nums">
               -{maxNegative}
             </span>
           )}
 
           <div
             ref={scrollContainerRef}
-            className={`relative h-64 w-full flex items-center pl-12 pr-8 ${
+            className={`relative h-64 w-full flex items-center pl-11 pr-3 sm:pl-12 sm:pr-8 ${
               currentArray.length <= MAX_LEN
                 ? "justify-center"
                 : "justify-start"
-            } gap-2 ${
+            } gap-1.5 sm:gap-2 ${
               currentArray.length > MAX_LEN
                 ? "overflow-x-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-muted-foreground/30 px-2 sm:px-4"
                 : ""
-            } py-2
-             snap-x snap-mandatory 
-            -webkit-overflow-scrolling: touch;
-              `}
+            } py-2`}
             style={{
               scrollBehavior: "auto", // ← crucial! disable smooth scroll of container
             }}
@@ -324,9 +329,7 @@ export default function BubbleSortVisualizer() {
                     <div
                       className={`absolute w-full ${getBarColor(
                         index
-                      )} rounded-md transition-colors duration-300 
-                      ${isNegative && `bg-[repeating-linear-gradient(-45deg,#e5e7eb_0,#e5e7eb_2px,transparent_1px,transparent_32px)]`}
-                      `}
+                      )} rounded-md transition-colors duration-300`}
                       style={{
                         height: `${Math.abs(heightPct)}px`,
                         left: 0,
@@ -335,10 +338,22 @@ export default function BubbleSortVisualizer() {
                           ? { top: `${positiveRatio * 200}px` }
                           : { bottom: `${negativeRatio * 200}px` }),
                       }}
-                    />
+                    >
+                      
+                      {isNegative && (
+                        <span
+                          aria-hidden="true"
+                          className="absolute inset-0 rounded-md"
+                          style={{
+                            backgroundImage:
+                              "repeating-linear-gradient(-45deg, transparent 0 3px, rgb(255 255 255 / 0.45) 3px 4.5px)",
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
 
-                  <span className="mt-2 text-sm font-semibold whitespace-nowrap">
+                  <span className="mt-2 text-xs sm:text-sm font-semibold whitespace-nowrap tabular-nums">
                     {element.value}
                   </span>
                 </motion.div>
@@ -348,26 +363,26 @@ export default function BubbleSortVisualizer() {
         </div>
 
         {steps.length > 0 && (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <span className="text-sm font-medium">
+          <div className="space-y-4 sm:space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4">
+              <span className="text-sm font-medium text-center sm:text-left">
                 Step {currentStep + 1} of {steps.length}
               </span>
-              <div className="flex flex-wrap gap-4 text-sm justify-center sm:justify-end">
-                <span className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded bg-blue-600 dark:bg-blue-400" />
+              <div className="flex flex-wrap gap-x-2 sm:gap-x-4 gap-y-2 text-caption sm:text-sm justify-center sm:justify-end">
+                <span className="flex items-center gap-1.5">
+                  <div className="size-2.5 sm:size-3.5 rounded-lg bg-blue-600 dark:bg-blue-400" />
                   Unsorted
                 </span>
-                <span className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded bg-yellow-500" />
+                <span className="flex items-center gap-1.5">
+                  <div className="size-2.5 sm:size-3.5 rounded-lg bg-yellow-500" />
                   Comparing
                 </span>
-                <span className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded bg-red-500" />
+                <span className="flex items-center gap-1.5">
+                  <div className="size-2.5 sm:size-3.5 rounded-lg bg-red-500" />
                   Swapping
                 </span>
-                <span className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded bg-green-500" />
+                <span className="flex items-center gap-1.5">
+                  <div className="size-2.5 sm:size-3.5 rounded-lg bg-green-500" />
                   Sorted
                 </span>
               </div>
@@ -384,18 +399,23 @@ export default function BubbleSortVisualizer() {
               className="w-full"
             />
 
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-6 py-4!">
-              <div className="flex items-center justify-center gap-4 sm:gap-8 order-2 sm:order-1">
+            <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-6 pt-1">
+              <div className="flex items-center justify-center gap-3 sm:gap-8 order-2 sm:order-1">
                 <Button
-                  size="icon"
+                  size="icon-lg"
                   variant="outline"
                   onClick={goPrevious}
                   disabled={currentStep === 0}
+                  aria-label="Previous step"
                 >
                   <HugeiconsIcon icon={PreviousIcon} className="h-5 w-5" />
                 </Button>
 
-                <Button size="lg" onClick={togglePlay} className="w-36">
+                <Button
+                  size="lg"
+                  onClick={togglePlay}
+                  className="flex-1 sm:flex-none sm:w-36"
+                >
                   {isPlaying ? (
                     <>
                       <HugeiconsIcon icon={PauseIcon} className="h-5 w-5 mr-2" />
@@ -410,10 +430,11 @@ export default function BubbleSortVisualizer() {
                 </Button>
 
                 <Button
-                  size="icon"
+                  size="icon-lg"
                   variant="outline"
                   onClick={goNext}
                   disabled={currentStep >= steps.length - 1}
+                  aria-label="Next step"
                 >
                   <HugeiconsIcon icon={NextIcon} className="h-5 w-5" />
                 </Button>
@@ -421,10 +442,11 @@ export default function BubbleSortVisualizer() {
 
               <Button
                 size="lg"
+                variant="secondary"
                 onClick={() => {
                   setSpeed((prev) => (prev === 4 ? 1 : prev + 1));
                 }}
-                className="order-1 sm:order-2"
+                className="order-1 sm:order-2 w-full sm:w-auto"
               >
                 {speed}x Speed
               </Button>
@@ -432,6 +454,6 @@ export default function BubbleSortVisualizer() {
           </div>
         )}
       </div>
-    </Card>
+    </div>
   );
 }

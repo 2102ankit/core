@@ -59,7 +59,7 @@ const links = [
   { href: "/work", label: "Work" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
-  { href: "/labs", label: "Labs" },
+  { href: "/components", label: "Components" },
   { href: "/reading", label: "Reading" },
 ];
 

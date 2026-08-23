@@ -20,7 +20,7 @@ interface BookshelfProps {
 
 export function Bookshelf({ books }: BookshelfProps) {
   const [expanded, setExpanded] = useState(false);
-  const booksPerRow = 3;
+  const booksPerRow = 4;
 
   const handleToggle = () => {
     setExpanded(!expanded);
@@ -67,7 +67,7 @@ export function Bookshelf({ books }: BookshelfProps) {
       <h2 className="text-2xl font-bold mb-6 text-zinc-950 dark:text-zinc-50">
         Bookshelf {books.length > 0 && `(${books.length})`}
       </h2>
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
         {books.map((book, index) => (
           <a
             key={book.id}

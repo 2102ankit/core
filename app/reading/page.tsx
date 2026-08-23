@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import { Bookshelf } from "@/components/bookshelf";
 import { Container } from "@/components/container";
+import { ReadingBrowser, type ReadingItem } from "@/components/reading-browser";
 
 interface Book {
   id: string;
@@ -25,9 +26,9 @@ async function loadBooks(): Promise<Book[]> {
   }
 }
 
-function parseMarkdownLinks(content: string) {
+function parseMarkdownLinks(content: string): ReadingItem[] {
   const lines = content.split("\n");
-  const links: Array<{ title: string; url: string }> = [];
+  const links: ReadingItem[] = [];
 
   for (const line of lines) {
     const match = line.match(/\[([^\]]+)\]\(([^)]+)\)/);
@@ -57,79 +58,28 @@ export default async function ReadingPage() {
   const blogs = parseMarkdownLinks(blogsRaw);
 
   return (
-    <Container size="narrow" className="py-16 md:py-20 page-transition">
-        <div className="mb-12 opacity-0 animate-fade-in-up">
-          <h1 className="text-display text-foreground mb-4">Reading</h1>
-          <p className="text-body text-muted-foreground">
-            Books, whitepapers and blogs that shape my thinking
-          </p>
-        </div>
+    <Container size="wide" className="py-16 md:py-20 page-transition">
+      
 
+      <div className="opacity-0 animate-fade-in-up delay-100">
+        <ReadingBrowser whitepapers={whitepapers} blogs={blogs} />
+      </div>
+
+      
+      <div className="mt-14 opacity-0 animate-fade-in-up delay-200">
         <Bookshelf books={books} />
+      </div>
 
-        <section id="whitepapers" className="mb-12 scroll-mt-28">
-          <h2 className="text-title-2 text-foreground mb-4">
-            White Papers I have read
-            {whitepapers.length > 0 && <>{` (${whitepapers.length})`}</>}
-          </h2>
-          <ul className="list-disc list-inside space-y-2 pl-2 text-foreground">
-            {whitepapers.map((paper, index) => (
-              <li
-                key={paper.url}
-                id={`whitepaper-${index}`}
-                className="opacity-0 animate-fade-in-up"
-                style={{ animationDelay: `${200 + index * 50}ms` }}
-              >
-                <a
-                  href={paper.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-foreground hover:underline"
-                >
-                  {paper.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section id="blogs-i-follow" className="mb-12 scroll-mt-28">
-          <h2 className="text-title-2 text-foreground mb-4">
-            Blogs I Follow
-            {blogs.length > 0 && <>{` (${blogs.length})`}</>}
-          </h2>
-          <ul className="list-disc list-inside space-y-2 pl-2 text-foreground">
-            {blogs.map((blog, index) => (
-              <li
-                key={blog.url}
-                id={`reading-blog-${index}`}
-                className="opacity-0 animate-fade-in-up"
-                style={{ animationDelay: `${400 + index * 50}ms` }}
-              >
-                <a
-                  href={blog.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-foreground hover:underline"
-                >
-                  {blog.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <div
-          className="mb-12 text-center opacity-0 animate-fade-in-up"
-          style={{ animationDelay: "600ms" }}
-        >
-          <p className="text-caption text-muted-foreground">
-            I believe continuous learning is essential for growth. These
-            resources have shaped my thinking and approach to software
-            development. Looking for recommendations? I&apos;d love to hear what
-            you&apos;re reading!
-          </p>
-        </div>
+      <div
+        className="mt-12 mb-4 text-center opacity-0 animate-fade-in-up"
+        style={{ animationDelay: "300ms" }}
+      >
+        <p className="text-caption text-muted-foreground max-w-xl mx-auto">
+          Continuous learning is essential for growth. These resources have
+          shaped how I approach software. Looking for recommendations? I&apos;d
+          love to hear what you&apos;re reading!
+        </p>
+      </div>
     </Container>
   );
 }

@@ -225,8 +225,8 @@ export default function WorkPage() {
           </p>
           <div className="flex gap-4 justify-center">
             <Button asChild variant="outline" className="gap-2">
-              <Link href="/labs">
-                Labs <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} />
+              <Link href="/components">
+                Components <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} />
               </Link>
             </Button>
             <Button asChild variant="outline" className="gap-2">

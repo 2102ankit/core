@@ -3,7 +3,7 @@
 import { Container } from "@/components/container";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { labDemos } from "@/lib/labs-data";
+import { componentDemos } from "@/lib/components-data";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowUpRight01Icon,
@@ -12,7 +12,7 @@ import {
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-export default function LabsPage() {
+export default function ComponentsPage() {
   return (
     <Container size="default" className="py-12 md:py-16">
       <motion.div
@@ -21,9 +21,9 @@ export default function LabsPage() {
         transition={{ duration: 0.4 }}
         className="text-center mb-12 md:mb-16"
       >
-        <h1 className="text-display text-foreground mb-4">Labs</h1>
+        <h1 className="text-display text-foreground mb-4">Components</h1>
         <p className="text-body text-muted-foreground max-w-2xl mx-auto">
-          Experimental projects, UI components, and technical explorations
+          Interactive UI components and technical explorations
         </p>
       </motion.div>
 
@@ -32,7 +32,7 @@ export default function LabsPage() {
           Interactive Experiments
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr">
-          {labDemos.map((demo, index) => (
+          {componentDemos.map((demo, index) => (
             <motion.div
               key={demo.id}
               initial={{ opacity: 0, y: 12 }}
@@ -45,12 +45,12 @@ export default function LabsPage() {
                   <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-10">
                     <Badge variant="secondary">Coming Soon</Badge>
                   </div>
-                  <LabCardContent demo={demo} />
+                  <DemoCardContent demo={demo} />
                 </Card>
               ) : (
-                <Link href={`/labs/${demo.id}`} className="block h-full group">
+                <Link href={`/components/${demo.id}`} className="block h-full group">
                   <Card className="h-full p-6 transition-fast hover:shadow-elevation-2">
-                    <LabCardContent demo={demo} showArrow />
+                    <DemoCardContent demo={demo} showArrow />
                   </Card>
                 </Link>
               )}
@@ -67,17 +67,19 @@ export default function LabsPage() {
   );
 }
 
-function LabCardContent({
+function DemoCardContent({
   demo,
   showArrow = false,
 }: {
-  demo: (typeof labDemos)[number];
+  demo: (typeof componentDemos)[number];
   showArrow?: boolean;
 }) {
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-start justify-between gap-2 mb-2">
-        <h3 className="text-title-3 text-foreground">{demo.title}</h3>
+        <h3 className="text-body sm:text-title-3 lg:text-headline text-foreground font-semibold tracking-tight">
+          {demo.title}
+        </h3>
         {showArrow && (
           <HugeiconsIcon
             icon={ArrowUpRight01Icon}
@@ -86,12 +88,16 @@ function LabCardContent({
           />
         )}
       </div>
-      <p className="text-callout text-muted-foreground mb-4 flex-1">
+      <p className="text-callout lg:text-caption text-muted-foreground mb-4 flex-1">
         {demo.description}
       </p>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-1.5 lg:gap-2">
         {demo.tech.map((tech) => (
-          <Badge key={tech} variant="secondary" className="text-caption">
+          <Badge
+            key={tech}
+            variant="secondary"
+            className="text-caption lg:text-footnote"
+          >
             {tech}
           </Badge>
         ))}

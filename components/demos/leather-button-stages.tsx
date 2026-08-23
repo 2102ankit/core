@@ -60,7 +60,7 @@ const LeatherButtonStage = ({ stage = 6 }) => {
       whileTap={whileTap}
       transition={{ duration: 0.15, ease: "easeOut" }}
     >
-      {/* Noise Texture */}
+      
       {stage >= 4 && (
         <>
           <div
@@ -71,7 +71,7 @@ const LeatherButtonStage = ({ stage = 6 }) => {
             }}
           />
 
-          {/* Sheen */}
+          
           <div
             className="absolute inset-0 opacity-20 pointer-events-none rounded-full"
             style={{
@@ -81,7 +81,7 @@ const LeatherButtonStage = ({ stage = 6 }) => {
           />
         </>
       )}
-      {/* Stitching */}
+      
       {stage >= 6 && (
         <div
           className="absolute rounded-full pointer-events-none"
@@ -95,7 +95,7 @@ const LeatherButtonStage = ({ stage = 6 }) => {
           }}
         />
       )}
-      {/* Text */}
+      
       <span className={textClass} style={textStyle}>
         Leather Button
       </span>

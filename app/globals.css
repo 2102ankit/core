@@ -239,6 +239,29 @@
     border-radius: var(--radius-squircle);
   }
 
+  /* Restore a slim scrollbar for containers where overflow matters
+     (the global base style hides every scrollbar). */
+  .scrollbar-slim {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar {
+    display: block;
+    width: 4px;
+    height: 4px;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-thumb {
+    background: var(--muted-foreground);
+    opacity: 0.5;
+    border-radius: 999px;
+  }
+
   .transition-default {
     transition-duration: var(--duration-normal);
     transition-timing-function: var(--ease-default);
@@ -346,6 +369,45 @@
   }
 }
 
+
+/* ── Geometric grid backdrop ─────────────────────────────────────────── */
+
+/* keep the size overrides you already added */
+.grid-hairline {
+  inset: -50% !important;
+  width: 200% !important;
+  height: 200% !important;
+
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--border) 20%, transparent) 0.5px, transparent 0.5px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--border) 20%, transparent) 0.5px, transparent 0.5px);
+  background-size: 56px 56px;
+  transform: rotate(45deg);
+  transform-origin: center center;
+}
+
+.grid-hairline-reactive {
+  /* same size overrides */
+  inset: -50% !important;
+  width: 200% !important;
+  height: 200% !important;
+
+  background-image:
+    linear-gradient(to right,
+      color-mix(in oklab, var(--foreground) 7%, transparent) 1px,
+      transparent 1px),
+    linear-gradient(to bottom,
+      color-mix(in oklab, var(--foreground) 7%, transparent) 1px,
+      transparent 1px);
+  -webkit-mask-image: radial-gradient(190px circle at var(--gx, -999px) var(--gy, -999px),
+      black 0%,
+      transparent 100%);
+  mask-image: radial-gradient(190px circle at var(--gx, -999px) var(--gy, -999px),
+      black 0%,
+      transparent 100%);
+  transform: rotate(45deg);
+  transform-origin: center center;
+}
 
 /* ── Hero dot-grid texture ─────────────────────────────────────────── */
 .bg-dot-grid {
