@@ -1,8 +1,7 @@
+import { localIcon } from "@/components/svg-icon";
 import {
-  Anthropic,
   Bash,
   C,
-  Canva,
   ClaudeAI,
   CPlusPlus,
   CursorDark,
@@ -10,10 +9,6 @@ import {
   Docker,
   ExpressJsDark,
   ExpressJsLight,
-  FastAPI,
-  Figma,
-  FramerDark,
-  FramerLight,
   Git,
   GitHubDark,
   GitHubLight,
@@ -21,16 +16,10 @@ import {
   Go,
   Java,
   JavaScript,
-  JSON,
-  Markdown,
   MicrosoftSQLServer2,
   MongoDB,
-  MySQL,
-  NextJs,
   NodeJs,
   NumPy,
-  Photoshop,
-  PostgreSQL,
   Postman,
   Python,
   React,
@@ -44,11 +33,17 @@ import {
   TailwindCSS,
   TanStack,
   TypeScript,
-  VisualStudioCode
+  VisualStudioCode,
 } from "developer-icons";
-import type { ComponentType, SVGProps } from "react";
+import type { ComponentType, ReactNode, SVGProps } from "react";
 
-type IconComponent = ComponentType<SVGProps<SVGSVGElement> & { size?: number }>;
+// Define your component type first
+type SVGIconComponent = ComponentType<
+  SVGProps<SVGSVGElement> & { size?: number }
+>;
+
+// Combine them so it can be the component OR a rendered node
+type IconComponent = SVGIconComponent | ReactNode;
 
 type Skill = {
   name: string;
@@ -97,23 +92,39 @@ export const skillCategories: SkillCategory[] = [
     label: "Frontend",
     skills: [
       s("React", React, React, { featured: true }),
-      s("Next.js", NextJs, NextJs, {
-        lf: "brightness(1.2)",
-        featured: true,
-        scale: 1.2,
-      }),
+      s(
+        "Next.js",
+        localIcon("/svgs/nextdotjs-wordmark-dark.svg"),
+        localIcon("/svgs/nextdotjs-wordmark-light.svg"),
+        {
+          // lf: "brightness(1.2)",
+          featured: true,
+          scale: 2.8,
+        },
+      ),
       s("Tailwind CSS", TailwindCSS, TailwindCSS, {
         featured: true,
         scale: 1.2,
       }),
       s("shadcn/ui", ShadcnUI, ShadcnUI, {
-        lf: "brightness(1.4) contrast(1.05)",
+        // df: "invert(1)",
+        df: "bg-white rounded-full p-1 -m-1",
         scale: 1.2,
       }),
-      s("Framer Motion", FramerLight, FramerDark),
+      s(
+        "Motion",
+        localIcon("/svgs/motion-dark.svg"),
+        localIcon("/svgs/motion-light.svg"),
+        {
+          scale: 1.5,
+        },
+      ),
       s("Redux", Redux, Redux),
       s("React Query", ReactQuery, ReactQuery),
-      s("React Router", ReactRouter, ReactRouter, { scale: 1.2 }),
+      s("React Router", ReactRouter, ReactRouter, {
+        scale: 1.2,
+        df: "bg-white rounded-full p-1 -m-1",
+      }),
       s("Semantic UI", SemanticUI, SemanticUI),
       s("TanStack", TanStack, TanStack),
     ],
@@ -122,10 +133,20 @@ export const skillCategories: SkillCategory[] = [
     label: "Backend",
     skills: [
       s("Node.js", NodeJs, NodeJs, { featured: true }),
-      s("Express", ExpressJsLight, ExpressJsDark, { featured: true }),
-      s("FastAPI", FastAPI, FastAPI, { featured: true }),
+      s("Express", ExpressJsLight, ExpressJsDark, {
+        featured: true,
+        scale: 1.2,
+      }),
+      // s("FastAPI", FastAPI, FastAPI, { featured: true }),
       s("Spring Boot", Spring, Spring, { featured: true }),
-      s("Socket.io", undefined, undefined),
+      // s(
+      //   "Socket.io",
+      //   localIcon("/svgs/socketdotio.svg"),
+      //   localIcon("/svgs/socket-io."),
+      //   {
+      //     scale: 1.2,
+      //   },
+      // ),
     ],
   },
   {
@@ -136,8 +157,17 @@ export const skillCategories: SkillCategory[] = [
       }),
       s("Redis", Redis, Redis, { featured: true }),
       s("MongoDB", MongoDB, MongoDB, { scale: 1.2, featured: true }),
-      s("PostgreSQL", PostgreSQL, PostgreSQL),
-      s("MySQL", MySQL, MySQL, { scale: 1.2 }),
+      s(
+        "SQLite",
+        localIcon("/svgs/sqlite.svg"),
+        localIcon("/svgs/sqlite.svg"),
+        {
+          df: "bg-white rounded-sm p-1 -m-1",
+          scale: 2.5,
+        },
+      ),
+      // s("PostgreSQL", PostgreSQL, PostgreSQL),
+      // s("MySQL", MySQL, MySQL, { scale: 1.2 }),
     ],
   },
   {
@@ -145,8 +175,17 @@ export const skillCategories: SkillCategory[] = [
     skills: [
       s("Docker", Docker, Docker, { featured: true }),
       s("Bash", Bash, Bash, { featured: true }),
-      s("Nginx", undefined, undefined),
-      s("Podman", undefined, undefined),
+      // s("Nginx", undefined, undefined),
+      s(
+        "Podman",
+        localIcon("/svgs/podman.svg"),
+        localIcon("/svgs/podman.svg"),
+        {
+          df: "bg-white rounded-full p-1 -m-1",
+
+          scale: 1.2,
+        },
+      ),
     ],
   },
   {
@@ -157,21 +196,56 @@ export const skillCategories: SkillCategory[] = [
       s("GitLab", GitLab, GitLab),
       s("Postman", Postman, Postman, { featured: true }),
       s("VS Code", VisualStudioCode, VisualStudioCode),
+      s(
+        "IntelliJ Idea",
+        localIcon("/svgs/intellij-idea.svg"),
+        localIcon("/svgs/intellij-idea.svg"),
+        {
+          scale: 1.2,
+        },
+      ),
+      s(
+        "PyCharm",
+        localIcon("/svgs/pycharm.svg"),
+        localIcon("/svgs/pycharm.svg"),
+        {
+          scale: 1.3,
+        },
+      ),
       s("Cursor", CursorLight, CursorDark, { featured: true }),
-      s("Claude", Anthropic, ClaudeAI, { featured: true }),
+      s("Claude", ClaudeAI, ClaudeAI, { featured: true }),
+      s(
+        "MCP",
+        localIcon("/svgs/model-context-protocol.svg"),
+        localIcon("/svgs/model-context-protocol.svg"),
+        {
+          lf: "bg-black rounded-full p-1 -m-1",
+        },
+      ),
     ],
   },
   {
     label: "Others",
     skills: [
       s("NumPy", NumPy, NumPy),
-      s("Markdown", Markdown, Markdown, { scale: 1.6 }),
-      s("JSON", JSON, JSON),
-      s("XML", undefined, undefined),
-      s("Figma", Figma, Figma),
-      s("Photoshop", Photoshop, Photoshop),
-      s("Tableau", undefined, undefined),
-      s("Canva", Canva, Canva),
+      s("D3", localIcon("/svgs/d3.svg"), localIcon("/svgs/d3.svg")),
+      s("JWT", localIcon("/svgs/jwt.svg"), localIcon("/svgs/jwt.svg"), {
+        lf: "bg-black rounded-full p-1 -m-1",
+      }),
+      // s("Markdown", Markdown, Markdown, { scale: 1.6 }),
+      // s("JSON", JSON, JSON),
+      // s("XML", undefined, undefined),
+      // s("Figma", Figma, Figma),
+      // s("Photoshop", Photoshop, Photoshop),
+      // s("Canva", undefined, undefined),
+      s(
+        "Tableau",
+        localIcon("/svgs/tableau.svg"),
+        localIcon("/svgs/tableau.svg"),
+        {
+          df: "bg-white rounded-full p-1 -m-1",
+        },
+      ),
     ],
   },
 ];

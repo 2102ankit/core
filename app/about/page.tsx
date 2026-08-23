@@ -628,69 +628,39 @@ function SkillCategoryRow({
                     currentTheme === "dark" ? (
                       skill.darkIcon ? (
                         <span
-                          className="flex-none"
-                          style={
-                            skill.darkFilter
-                              ? { filter: skill.darkFilter }
-                              : undefined
-                          }
+                          className={`flex-none ${skill.darkFilter ? skill.darkFilter : ""}`}
                         >
                           <skill.darkIcon size={18 * (skill.scale || 1)} />
                         </span>
                       ) : skill.lightIcon ? (
                         <span
-                          className="flex-none"
-                          style={
-                            skill.lightFilter
-                              ? { filter: skill.lightFilter }
-                              : undefined
-                          }
+                          className={`flex-none ${skill.lightFilter ? skill.lightFilter : ""}`}
                         >
                           <skill.lightIcon size={18 * (skill.scale || 1)} />
                         </span>
                       ) : null
                     ) : skill.lightIcon ? (
                       <span
-                        className="flex-none"
-                        style={
-                          skill.lightFilter
-                            ? { filter: skill.lightFilter }
-                            : undefined
-                        }
+                        className={`flex-none ${skill.lightFilter ? skill.lightFilter : ""}`}
                       >
                         <skill.lightIcon size={18 * (skill.scale || 1)} />
                       </span>
                     ) : skill.darkIcon ? (
                       <span
-                        className="flex-none"
-                        style={
-                          skill.darkFilter
-                            ? { filter: skill.darkFilter }
-                            : undefined
-                        }
+                        className={`flex-none ${skill.darkFilter ? skill.darkFilter : ""}`}
                       >
                         <skill.darkIcon size={18 * (skill.scale || 1)} />
                       </span>
                     ) : null
                   ) : skill.lightIcon ? (
                     <span
-                      className="flex-none"
-                      style={
-                        skill.lightFilter
-                          ? { filter: skill.lightFilter }
-                          : undefined
-                      }
+                      className={`flex-none ${skill.lightFilter ? skill.lightFilter : ""}`}
                     >
                       <skill.lightIcon size={18 * (skill.scale || 1)} />
                     </span>
                   ) : skill.darkIcon ? (
                     <span
-                      className="flex-none"
-                      style={
-                        skill.darkFilter
-                          ? { filter: skill.darkFilter }
-                          : undefined
-                      }
+                      className={`flex-none ${skill.darkFilter ? skill.darkFilter : ""}`}
                     >
                       <skill.darkIcon size={18 * (skill.scale || 1)} />
                     </span>
@@ -750,69 +720,39 @@ function SkillCategoryRow({
                     currentTheme === "dark" ? (
                       skill.darkIcon ? (
                         <span
-                          className="flex-none"
-                          style={
-                            skill.darkFilter
-                              ? { filter: skill.darkFilter }
-                              : undefined
-                          }
+                          className={`flex-none ${skill.darkFilter ? skill.darkFilter : ""}`}
                         >
                           <skill.darkIcon size={18 * (skill.scale || 1)} />
                         </span>
                       ) : skill.lightIcon ? (
                         <span
-                          className="flex-none"
-                          style={
-                            skill.lightFilter
-                              ? { filter: skill.lightFilter }
-                              : undefined
-                          }
+                          className={`flex-none ${skill.lightFilter ? skill.lightFilter : ""}`}
                         >
                           <skill.lightIcon size={18 * (skill.scale || 1)} />
                         </span>
                       ) : null
                     ) : skill.lightIcon ? (
                       <span
-                        className="flex-none"
-                        style={
-                          skill.lightFilter
-                            ? { filter: skill.lightFilter }
-                            : undefined
-                        }
+                        className={`flex-none ${skill.lightFilter ? skill.lightFilter : ""}`}
                       >
                         <skill.lightIcon size={18 * (skill.scale || 1)} />
                       </span>
                     ) : skill.darkIcon ? (
                       <span
-                        className="flex-none"
-                        style={
-                          skill.darkFilter
-                            ? { filter: skill.darkFilter }
-                            : undefined
-                        }
+                        className={`flex-none ${skill.darkFilter ? skill.darkFilter : ""}`}
                       >
                         <skill.darkIcon size={18 * (skill.scale || 1)} />
                       </span>
                     ) : null
                   ) : skill.lightIcon ? (
                     <span
-                      className="flex-none"
-                      style={
-                        skill.lightFilter
-                          ? { filter: skill.lightFilter }
-                          : undefined
-                      }
+                      className={`flex-none ${skill.lightFilter ? skill.lightFilter : ""}`}
                     >
                       <skill.lightIcon size={18 * (skill.scale || 1)} />
                     </span>
                   ) : skill.darkIcon ? (
                     <span
-                      className="flex-none"
-                      style={
-                        skill.darkFilter
-                          ? { filter: skill.darkFilter }
-                          : undefined
-                      }
+                      className={`flex-none ${skill.darkFilter ? skill.darkFilter : ""}`}
                     >
                       <skill.darkIcon size={18 * (skill.scale || 1)} />
                     </span>
@@ -866,7 +806,7 @@ function SkillCategoryRow({
                 currentTheme === "dark" ? (
                   skill.darkIcon ? (
                     <span
-                      className="flex-none"
+                      className={`flex-none ${skill.darkFilter ? skill.darkFilter : ""}`}
                       style={
                         skill.darkFilter
                           ? { filter: skill.darkFilter }
@@ -877,7 +817,7 @@ function SkillCategoryRow({
                     </span>
                   ) : skill.lightIcon ? (
                     <span
-                      className="flex-none"
+                      className={`flex-none ${skill.lightFilter ? skill.lightFilter : ""}`}
                       style={
                         skill.lightFilter
                           ? { filter: skill.lightFilter }
@@ -889,7 +829,7 @@ function SkillCategoryRow({
                   ) : null
                 ) : skill.lightIcon ? (
                   <span
-                    className="flex-none"
+                    className={`flex-none ${skill.lightFilter ? skill.lightFilter : ""}`}
                     style={
                       skill.lightFilter
                         ? { filter: skill.lightFilter }
@@ -900,7 +840,7 @@ function SkillCategoryRow({
                   </span>
                 ) : skill.darkIcon ? (
                   <span
-                    className="flex-none"
+                    className={`flex-none ${skill.darkFilter ? skill.darkFilter : ""}`}
                     style={
                       skill.darkFilter
                         ? { filter: skill.darkFilter }
@@ -912,7 +852,7 @@ function SkillCategoryRow({
                 ) : null
               ) : skill.lightIcon ? (
                 <span
-                  className="flex-none"
+                  className={`flex-none ${skill.lightFilter ? skill.lightFilter : ""}`}
                   style={
                     skill.lightFilter
                       ? { filter: skill.lightFilter }
@@ -923,10 +863,7 @@ function SkillCategoryRow({
                 </span>
               ) : skill.darkIcon ? (
                 <span
-                  className="flex-none"
-                  style={
-                    skill.darkFilter ? { filter: skill.darkFilter } : undefined
-                  }
+                  className={`flex-none ${skill.darkFilter ? skill.darkFilter : ""}`}
                 >
                   <skill.darkIcon size={18 * (skill.scale || 1)} />
                 </span>
