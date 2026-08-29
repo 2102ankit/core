@@ -265,7 +265,7 @@ export default function Home() {
             </span>
           </motion.div>
 
-          <blockquote className="relative pl-6 border-l-2 border-foreground/20 bg-muted/50 rounded-r-lg py-3 pr-6 text-callout text-muted-foreground">
+          <blockquote className="relative pl-6 border-l-2 border-yellow-500 bg-muted/50 rounded-r-lg py-3 pr-6 text-callout text-muted-foreground">
             <p>
               {"Currently building "}
               <Link
@@ -282,6 +282,24 @@ export default function Home() {
                 />
               </Link>
               {" in React, Motion & Tanstack Table"}
+            </p>
+          </blockquote>
+          <blockquote className="relative mt-4 pl-6 border-l-2 border-green-500 bg-muted/50 rounded-r-lg py-3 pr-6 text-callout text-muted-foreground">
+            <p>
+              {"Also checkout "}
+              <Link
+                href="/quote"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-0.5 font-medium text-foreground underline underline-offset-4 decoration-border hover:decoration-foreground transition-fast group"
+              >
+                Quote Maker
+                <HugeiconsIcon
+                  icon={ArrowUpRight01Icon}
+                  size={16}
+                  className="opacity-70 group-hover:opacity-100 transition-fast"
+                />
+              </Link>
+              {" to export Quotes as Images"}
             </p>
           </blockquote>
 

@@ -21,6 +21,7 @@
     "developer-icons": "^7.1.0",
     "framer-motion": "^12.23.24",
     "gray-matter": "^4.0.3",
+    "html2canvas": "^1.4.1",
     "motion": "^12.23.26",
     "next": "^16.3.1",
     "next-mdx-remote": "^6.0.0",
