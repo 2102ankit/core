@@ -1,6 +1,7 @@
 "use client";
 
 import Clock24 from "@/components/Clock24";
+import ColorPicker from "@/components/color-picker";
 import { Container } from "@/components/container";
 import {
   HighlightedInput,
@@ -593,7 +594,23 @@ export default function Home() {
               />
             </Link>
           </Card>
-          <SegCard/>
+          <SegCard />
+          <Card className="h-full transition-fast hover:shadow-elevation-2 hover:border-foreground/20 pt-0 overflow-visible gap-0 p-0 relative z-10">
+            <div className="flex items-center justify-center min-h-32 border-b border-border bg-muted/20 px-4 py-6 overflow-visible">
+              <span
+                className="relative z-20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ColorPicker defaultHex="#007AFF" />
+              </span>
+            </div>
+            <Link href="/components/color-picker" className="group block h-full">
+              <TeaserMeta
+                title="Color Picker"
+                blurb="Petal ring that blooms from a swatch — tap it"
+              />
+            </Link>
+          </Card>
         </div>
 
         <motion.div

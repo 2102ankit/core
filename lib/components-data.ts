@@ -331,6 +331,45 @@ export const componentDemos: ComponentDemo[] = [
     },
   },
   {
+    id: "color-picker",
+    title: "Color Picker",
+    description:
+      "Petal-ring colour picker that blooms from a swatch, with lightness, opacity, and hex copy.",
+    tech: ["React", "TypeScript"],
+    github: null,
+    span: "col-span-1",
+    source: "components/color-picker.tsx",
+    docs: {
+      intro:
+        "A compact swatch that expands into two packed hue rings. Selecting a petal sets hue, saturation and a starting lightness; the ruler sliders then mix lightness and opacity. The live mix sits in the centre cell.",
+      props: [
+        {
+          name: "defaultHex",
+          type: "string",
+          default: '"#007AFF"',
+          description: "Initial colour as a 6-digit hex string.",
+        },
+        {
+          name: "onChange",
+          type: "(color: ColorValue) => void",
+          description:
+            "Fires whenever hex, HSL channels or alpha change. ColorValue is { hex, rgba, hue, saturation, lightness, alpha }.",
+        },
+        {
+          name: "className",
+          type: "string",
+          default: '""',
+          description: "Extra classes on the root wrapper.",
+        },
+      ],
+      notes: [
+        "Escape and outside pointer-down close the panel.",
+        "Ruler ticks stretch toward the thumb while dragging or focusing the slider.",
+        "prefers-reduced-motion zeros the bloom spring; haptic ticks use the Vibration API where available.",
+      ],
+    },
+  },
+  {
     id: "3d-transform",
     title: "3D Transform Demo",
     description: "CSS 3D transforms and perspective",

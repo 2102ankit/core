@@ -8,6 +8,7 @@ import {
   LeatherButtonFinal,
   OutlineDemo,
   SegmentedControlDemo,
+  ColorPickerDemo,
 } from "@/components/demos/demo-exports";
 import { ComponentShell } from "@/components/component-shell";
 import { Container } from "@/components/container";
@@ -39,6 +40,7 @@ const demoComponents: Record<string, () => ReactNode> = {
   "24h-clock": () => <Clock24Demo />,
   "theme-toggle": () => <GooeyThemeToggleDemo />,
   "segmented-control": () => <SegmentedControlDemo />,
+  "color-picker": () => <ColorPickerDemo />,
 };
 
 type ComponentDemoPageProps = {

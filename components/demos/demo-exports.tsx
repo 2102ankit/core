@@ -10,6 +10,7 @@ import { OutlineDemo } from "./outline-demo";
 import { Clock24Demo } from "./clock24-demo";
 import { GooeyThemeToggleDemo } from "./theme-toggle-demo";
 import { SegmentedControlDemo } from "./segmented-control-demo";
+import { ColorPickerDemo } from "./color-picker-demo";
 
 export {
   LeatherButtonFinal,
@@ -22,4 +23,5 @@ export {
   Clock24Demo,
   GooeyThemeToggleDemo,
   SegmentedControlDemo,
+  ColorPickerDemo,
 };
