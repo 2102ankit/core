@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CheckIcon, Copy01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { CSSProperties, KeyboardEvent, PointerEvent } from "react";
@@ -35,12 +35,12 @@ export type ColorPickerProps = {
 type PetalCell = HslColor & { angle: number };
 type PetalCoord = { layer: number; index: number };
 
-function hexToHsl(hex: string): HslColor {
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
+function rgbToHsl(r: number, g: number, b: number): HslColor {
+  const rn = r / 255;
+  const gn = g / 255;
+  const bn = b / 255;
+  const max = Math.max(rn, gn, bn);
+  const min = Math.min(rn, gn, bn);
   let h = 0;
   let s = 0;
   const l = (max + min) / 2;
@@ -48,18 +48,51 @@ function hexToHsl(hex: string): HslColor {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0);
+      case rn:
+        h = (gn - bn) / d + (gn < bn ? 6 : 0);
         break;
-      case g:
-        h = (b - r) / d + 2;
+      case gn:
+        h = (bn - rn) / d + 2;
         break;
       default:
-        h = (r - g) / d + 4;
+        h = (rn - gn) / d + 4;
     }
     h *= 60;
   }
   return { h, s: s * 100, l: l * 100 };
+}
+
+function hexToHsl(hex: string): HslColor {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return rgbToHsl(r, g, b);
+}
+
+// Emulates the CSS `saturate()` filter's color matrix (per the Filter
+// Effects spec) so the boosted look people liked from `saturate-150` can be
+// baked into real, consistent color values instead of a runtime CSS filter
+// that only applied to some elements and not others.
+function applySaturateMatrix(rgb: RgbColor, amount: number): RgbColor {
+  const s = amount;
+  const m = [
+    [0.213 + 0.787 * s, 0.715 - 0.715 * s, 0.072 - 0.072 * s],
+    [0.213 - 0.213 * s, 0.715 + 0.285 * s, 0.072 - 0.072 * s],
+    [0.213 - 0.213 * s, 0.715 - 0.715 * s, 0.072 + 0.928 * s],
+  ];
+  const clamp = (n: number) => Math.max(0, Math.min(255, Math.round(n)));
+  return {
+    r: clamp(m[0][0] * rgb.r + m[0][1] * rgb.g + m[0][2] * rgb.b),
+    g: clamp(m[1][0] * rgb.r + m[1][1] * rgb.g + m[1][2] * rgb.b),
+    b: clamp(m[2][0] * rgb.r + m[2][1] * rgb.g + m[2][2] * rgb.b),
+  };
+}
+
+const SATURATE_BOOST = 1.4;
+
+function boostHsl(h: number, s: number, l: number): HslColor {
+  const boosted = applySaturateMatrix(hslToRgb(h, s, l), SATURATE_BOOST);
+  return rgbToHsl(boosted.r, boosted.g, boosted.b);
 }
 
 function hslToRgb(h: number, s: number, l: number): RgbColor {
@@ -80,6 +113,21 @@ function rgbToHex(r: number, g: number, b: number): string {
   const h = (n: number) => n.toString(16).padStart(2, "0");
   return `#${h(r)}${h(g)}${h(b)}`.toUpperCase();
 }
+
+// Encodes the 0-100 alpha value as a two-digit hex suffix (00-FF) so opacity
+// survives round-tripping through the copied hex string, e.g. #007AFF80.
+function alphaToHex(alpha: number): string {
+  const clamped = Math.max(0, Math.min(100, alpha));
+  return Math.round((clamped / 100) * 255)
+    .toString(16)
+    .padStart(2, "0")
+    .toUpperCase();
+}
+
+const CHECKER_STYLE: CSSProperties = {
+  backgroundImage: "repeating-conic-gradient(#e5e5ea 0% 25%, #ffffff 0% 50%)",
+  backgroundSize: "8px 8px",
+};
 
 const CORE_SIZE = 68;
 const PETAL_SIZES = [38, 34] as const;
@@ -102,11 +150,16 @@ function buildLayers() {
 
   const layers: PetalCell[][] = counts.map((count, i) => {
     const rotation = rotations[i];
-    const sat = i === 0 ? 62 : 88;
-    const light = i === 0 ? 82 : 52;
+    // Base tones before boosting — kept moderate so the boosted result
+    // lands in a vivid-but-legible range rather than clipping to pure
+    // primaries at every hue.
+    const sat = i === 0 ? 55 : 72;
+    const light = i === 0 ? 68 : 46;
     return Array.from({ length: count }, (_, idx) => {
       const angle = (idx / count) * 360 + rotation;
-      return { h: ((angle % 360) + 360) % 360, s: sat, l: light, angle };
+      const baseHue = ((angle % 360) + 360) % 360;
+      const boosted = boostHsl(baseHue, sat, light);
+      return { h: boosted.h, s: boosted.s, l: boosted.l, angle };
     });
   });
 
@@ -283,17 +336,13 @@ function Slider({
                 position: "absolute",
                 bottom: 0,
                 left: `${t}%`,
-                width: isMajor ? 1.6 : 1,
+                width: isMajor ? 1 : 0.5,
                 height: h,
-                marginLeft: isMajor ? -0.8 : -0.5,
                 borderRadius: 1,
-                background:
-                  boost > 0.6
-                    ? thumbColor
-                    : isMajor
-                      ? "color-mix(in oklab, var(--foreground) 32%, transparent)"
-                      : "color-mix(in oklab, var(--foreground) 16%, transparent)",
-                transition: `height 170ms ${EASE}, background 170ms ${EASE}`,
+                background: isMajor
+                  ? "color-mix(in oklab, var(--foreground) 30%, transparent)"
+                  : "color-mix(in oklab, var(--foreground) 16%, transparent)",
+                transition: dragging.current ? "none" : `height 170ms ${EASE}`,
               }}
             />
           );
@@ -304,20 +353,9 @@ function Slider({
         ref={trackRef}
         onPointerDown={onPointerDown}
         className="relative h-2 rounded-[5px] cursor-pointer touch-none"
-        style={
-          checker
-            ? {
-                backgroundImage:
-                  "repeating-conic-gradient(#e5e5ea 0% 25%, #ffffff 0% 50%)",
-                backgroundSize: "8px 8px",
-              }
-            : undefined
-        }
+        style={checker ? CHECKER_STYLE : undefined}
       >
-        <div
-          className="absolute inset-0 rounded-[5px]"
-          style={trackStyle}
-        />
+        <div className="absolute inset-0 rounded-[5px]" style={trackStyle} />
         <div
           role="slider"
           tabIndex={0}
@@ -339,8 +377,8 @@ function Slider({
             borderRadius: "50%",
             background: thumbColor,
             border: "2.5px solid var(--background)",
-            boxShadow:
-              "0 1px 4px color-mix(in oklab, var(--foreground) 35%, transparent), 0 0 0 0.5px color-mix(in oklab, var(--foreground) 8%, transparent)",
+            outline:
+              "0.5px solid color-mix(in oklab, var(--foreground) 22%, transparent)",
             transition: dragging.current ? "none" : `left 120ms ${EASE}`,
           }}
         />
@@ -388,19 +426,25 @@ export function ColorPicker({
 
   const rgb = useMemo(() => hslToRgb(hue, sat, light), [hue, sat, light]);
   const hex = useMemo(() => rgbToHex(rgb.r, rgb.g, rgb.b), [rgb]);
+  // Only append the alpha suffix when the color isn't fully opaque, so a
+  // plain 100%-opacity color still copies as a normal 6-digit hex.
+  const hexWithAlpha = useMemo(
+    () => (alpha < 100 ? `${hex}${alphaToHex(alpha)}` : hex),
+    [hex, alpha],
+  );
   const rgbaString = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${(alpha / 100).toFixed(2)})`;
   const solidHsl = `hsl(${hue}, ${sat}%, ${light}%)`;
 
   useEffect(() => {
     onChange?.({
-      hex,
+      hex: hexWithAlpha,
       rgba: rgbaString,
       hue,
       saturation: sat,
       lightness: light,
       alpha,
     });
-  }, [hex, rgbaString, hue, sat, light, alpha, onChange]);
+  }, [hexWithAlpha, rgbaString, hue, sat, light, alpha, onChange]);
 
   const selectCell = (layerIdx: number, idx: number, cell: PetalCell) => {
     setSelected({ layer: layerIdx, index: idx });
@@ -412,7 +456,7 @@ export function ColorPicker({
 
   const copyHex = async () => {
     try {
-      await navigator.clipboard.writeText(hex);
+      await navigator.clipboard.writeText(hexWithAlpha);
       setCopied(true);
       setTimeout(() => setCopied(false), 1200);
     } catch {
@@ -421,25 +465,28 @@ export function ColorPicker({
   };
 
   return (
-    <div
-      ref={rootRef}
-      className={`relative inline-block ${className}`}
-    >
+    <div ref={rootRef} className={`relative inline-block ${className}`}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close color picker" : "Open color picker"}
         aria-expanded={open}
-        className="relative size-[52px] rounded-full border-0 p-0 cursor-pointer"
+        className="relative size-[52px] rounded-full p-0 cursor-pointer overflow-hidden"
         style={{
-          background: solidHsl,
-          boxShadow: open
-            ? "0 0 0 2px color-mix(in oklab, var(--foreground) 6%, transparent)"
-            : "0 2px 8px color-mix(in oklab, var(--foreground) 18%, transparent), inset 0 0 0 1px rgba(255,255,255,0.35)",
           opacity: open ? 0 : 1,
-          transition: `opacity 160ms ${EASE}, box-shadow 200ms ${EASE}`,
+          transition: `opacity 160ms ${EASE}, border 200ms ${EASE}`,
         }}
-      />
+      >
+        <div className="absolute inset-0" style={CHECKER_STYLE} />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: solidHsl,
+            opacity: alpha / 100,
+            transition: `background 120ms ${EASE}, opacity 120ms ${EASE}`,
+          }}
+        />
+      </button>
 
       {mounted ? (
       <div
@@ -457,8 +504,10 @@ export function ColorPicker({
         }}
       >
         <div
-          className="rounded-[26px] bg-card/90 backdrop-blur-xl saturate-150 shadow-elevation-2"
+          className="rounded-md bg-card/90 backdrop-blur-xl shadow-elevation-2"
           style={{
+            border:
+              "1px solid color-mix(in oklab, var(--foreground) 10%, transparent)",
             boxShadow:
               "0 1px 1px color-mix(in oklab, var(--foreground) 4%, transparent), 0 24px 48px color-mix(in oklab, var(--foreground) 18%, transparent), 0 0 0 1px color-mix(in oklab, var(--foreground) 6%, transparent)",
             padding: `${PANEL_PAD_TOP}px ${PANEL_PAD_X}px 22px`,
@@ -525,7 +574,7 @@ export function ColorPicker({
                       opacity: open ? "1" : "0",
                       zIndex: isHovered ? 999 : baseZ + idx,
                       boxShadow: isSelected
-                        ? "0 0 0 2.5px var(--background), 0 4px 10px color-mix(in oklab, var(--foreground) 22%, transparent)"
+                        ? "0 0 0 0.5px var(--background)"
                         : isHovered
                           ? "0 4px 12px color-mix(in oklab, var(--foreground) 20%, transparent)"
                           : "0 1px 3px color-mix(in oklab, var(--foreground) 14%, transparent)",
@@ -559,13 +608,22 @@ export function ColorPicker({
                 width: CORE_SIZE,
                 height: CORE_SIZE,
                 borderRadius: "50%",
-                background: solidHsl,
+                overflow: "hidden",
                 zIndex: 1000,
-                boxShadow:
-                  "0 0 0 1px color-mix(in oklab, var(--foreground) 6%, transparent), 0 2px 6px color-mix(in oklab, var(--foreground) 12%, transparent), inset 0 0 0 1px rgba(255,255,255,0.4)",
-                transition: `background 120ms ${EASE}`,
+                border:
+                  "1px solid color-mix(in oklab, var(--foreground) 10%, transparent)",
               }}
-            />
+            >
+              <div className="absolute inset-0" style={CHECKER_STYLE} />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: solidHsl,
+                  opacity: alpha / 100,
+                  transition: `background 120ms ${EASE}, opacity 120ms ${EASE}`,
+                }}
+              />
+            </div>
           </div>
 
           <div className="mt-4 flex flex-col gap-3.5">
@@ -594,10 +652,9 @@ export function ColorPicker({
             <div
               className="relative size-[30px] rounded-[9px] shrink-0 overflow-hidden"
               style={{
-                backgroundImage:
-                  "repeating-conic-gradient(#e5e5ea 0% 25%, #ffffff 0% 50%)",
-                backgroundSize: "8px 8px",
-                boxShadow: "inset 0 0 0 1px color-mix(in oklab, var(--foreground) 8%, transparent)",
+                ...CHECKER_STYLE,
+                border:
+                  "1px solid color-mix(in oklab, var(--foreground) 8%, transparent)",
               }}
             >
               <div
@@ -607,7 +664,7 @@ export function ColorPicker({
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-[13px] font-semibold text-foreground tabular-nums font-mono">
-                {hex}
+                {hexWithAlpha}
               </div>
               <div className="text-[11px] text-muted-foreground font-mono">
                 {alpha}% opacity
