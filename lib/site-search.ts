@@ -1,5 +1,5 @@
-import allBooks from "@/data/all_books.json";
-import allProjects from "@/data/all_projects.json";
+import allBooks from "@/data/content/reading/all_books.json";
+import allProjects from "@/data/db/all_projects.json";
 import fs from "fs";
 import matter from "gray-matter";
 import path from "path";
@@ -12,13 +12,7 @@ export type SiteSearchEntry = {
   keywords?: string[];
   href: string;
   external?: boolean;
-  kind:
-    | "page"
-    | "blog"
-    | "project"
-    | "reading"
-    | "about"
-    | "link";
+  kind: "page" | "blog" | "project" | "reading" | "about" | "link";
 };
 
 type SiteSearchConfig = {
@@ -82,16 +76,14 @@ export const commandBarConfig = {
   },
 } as const;
 
-const BLOG_ROOT = path.join(process.cwd(), "content/blog");
-const READING_ROOT = path.join(process.cwd(), "content/reading");
+const BLOG_ROOT = path.join(process.cwd(), "data/content/blog");
+const READING_ROOT = path.join(process.cwd(), "data/content/reading");
 
 function parseMarkdownLinks(content: string) {
-  return content
-    .split("\n")
-    .flatMap((line) => {
-      const match = line.match(/\[([^\]]+)\]\(([^)]+)\)/);
-      return match ? [{ title: match[1], url: match[2] }] : [];
-    });
+  return content.split("\n").flatMap((line) => {
+    const match = line.match(/\[([^\]]+)\]\(([^)]+)\)/);
+    return match ? [{ title: match[1], url: match[2] }] : [];
+  });
 }
 
 function getBlogEntries(): SiteSearchEntry[] {
@@ -132,14 +124,16 @@ function getBlogEntries(): SiteSearchEntry[] {
 }
 
 function getProjectEntries(): SiteSearchEntry[] {
-  return (allProjects as Array<{
-    id: string;
-    title: string;
-    description: string;
-    tags?: string[];
-    filter_tags?: string[];
-    show?: boolean;
-  }>)
+  return (
+    allProjects as Array<{
+      id: string;
+      title: string;
+      description: string;
+      tags?: string[];
+      filter_tags?: string[];
+      show?: boolean;
+    }>
+  )
     .filter((project) => project.show)
     .map((project) => ({
       id: `project-${project.id}`,
@@ -160,11 +154,13 @@ function getReadingEntries(): SiteSearchEntry[] {
     fs.readFileSync(path.join(READING_ROOT, "blogs.md"), "utf8"),
   );
 
-  const bookEntries = (allBooks as Array<{
-    id: string;
-    title: string;
-    author: string;
-  }>)
+  const bookEntries = (
+    allBooks as Array<{
+      id: string;
+      title: string;
+      author: string;
+    }>
+  )
     .map((book) => ({
       id: `book-${book.id}`,
       title: book.title,

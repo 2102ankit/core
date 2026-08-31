@@ -1,14 +1,11 @@
 "use client";
 
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { componentDemos } from "@/lib/components-data";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  ArrowUpRight01Icon,
-  GithubIcon,
-} from "@hugeicons/core-free-icons";
+import { ArrowUpRight01Icon, GithubIcon } from "@hugeicons/core-free-icons";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
@@ -48,7 +45,10 @@ export default function ComponentsPage() {
                   <DemoCardContent demo={demo} />
                 </Card>
               ) : (
-                <Link href={`/components/${demo.id}`} className="block h-full group">
+                <Link
+                  href={`/components/${demo.id}`}
+                  className="block h-full group"
+                >
                   <Card className="h-full p-6 transition-fast hover:shadow-elevation-2">
                     <DemoCardContent demo={demo} showArrow />
                   </Card>

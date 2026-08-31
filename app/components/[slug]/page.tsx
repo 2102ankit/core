@@ -9,9 +9,9 @@ import {
   OutlineDemo,
   SegmentedControlDemo,
   ColorPickerDemo,
-} from "@/components/demos/demo-exports";
+} from "@/components/features/demos/demo-exports";
 import { ComponentShell } from "@/components/component-shell";
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -73,10 +73,7 @@ export default async function ComponentDemoPage({
   let source = "";
   if (demo.source) {
     try {
-      source = await fs.readFile(
-        path.join(process.cwd(), demo.source),
-        "utf8",
-      );
+      source = await fs.readFile(path.join(process.cwd(), demo.source), "utf8");
     } catch {
       source = `// Source file not found: ${demo.source}`;
     }

@@ -1,20 +1,24 @@
-import allProjects from "@/data/all_projects.json";
+import allProjects from "@/data/db/all_projects.json";
+import { z } from "zod";
 
-export type Project = {
-  id: string;
-  title: string;
-  description: string;
-  long_description?: string;
-  thumbnail: string;
-  tags: string[];
-  filter_tags?: string[];
-  github_url?: string;
-  demo_url?: string | null;
-  featured: boolean;
-  order_index: number;
-  created_at: string;
-  updated_at: string;
-};
+const ProjectSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  long_description: z.string().optional(),
+  thumbnail: z.string(),
+  tags: z.array(z.string()),
+  filter_tags: z.array(z.string()).optional(),
+  github_url: z.string().optional(),
+  demo_url: z.string().nullable().optional(),
+  featured: z.boolean(),
+  show: z.boolean().default(true),
+  order_index: z.number(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export type Project = z.infer<typeof ProjectSchema>;
 
 export type BlogPost = {
   id: string;
@@ -45,13 +49,13 @@ export type ContactSubmission = {
 // Get all projects
 export async function getProjects() {
   try {
-    // Ensure the JSON data matches the Project type
-    const projects = allProjects || ([] as Project[]);
+    const projects = z.array(ProjectSchema).parse(allProjects);
     // Sort by order_index (ascending)
     return projects
       .filter((project) => project.show)
       .sort((a, b) => a.order_index - b.order_index);
   } catch (error) {
+    console.error("Project validation error:", error);
     throw new Error("Failed to load projects from JSON");
   }
 }
@@ -59,12 +63,13 @@ export async function getProjects() {
 // Get featured projects
 export async function getFeaturedProjects() {
   try {
-    const projects = allProjects || ([] as Project[]);
+    const projects = z.array(ProjectSchema).parse(allProjects);
     // Filter featured projects and sort by order_index
     return projects
       .filter((project) => project.featured)
       .sort((a, b) => a.order_index - b.order_index);
   } catch (error) {
+    console.error("Project validation error:", error);
     throw new Error("Failed to load featured projects from JSON");
   }
 }

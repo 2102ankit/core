@@ -1,9 +1,11 @@
-import { Footer } from "@/components/footer";
+import { Footer } from "@/components/layout/footer";
 import { GridBackdrop } from "@/components/grid-backdrop";
-import { Navigation } from "@/components/navigation";
+import { Navigation } from "@/components/layout/navigation";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
+
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -82,6 +84,7 @@ export default function RootLayout({
             <Footer />
           </div>
           <Toaster />
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>

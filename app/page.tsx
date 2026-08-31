@@ -2,18 +2,18 @@
 
 import Clock24 from "@/components/Clock24";
 import ColorPicker from "@/components/color-picker";
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import {
   HighlightedInput,
   type HighlightRule,
-} from "@/components/demos/highlighted-input";
-import ProjectThumbnail from "@/components/project-thumbnail";
+} from "@/components/features/demos/highlighted-input";
+import ProjectThumbnail from "@/components/features/projects/project-thumbnail";
 import SegmentedControl from "@/components/segment-control";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { skillCategories } from "@/data/skills";
+import { skillCategories } from "@/data/db/skills";
 import { getFeaturedProjects, type Project } from "@/lib/data";
 import {
   ArrowRight01Icon,
@@ -113,7 +113,7 @@ function SkillIcon({
     : skill.lightFilter;
 
   return (
-    <span className="flex-none" style={filter ? { filter } : undefined}>
+    <span className={`flex-none ${filter}`}>
       <Icon size={size * (skill.scale || 1)} />
     </span>
   );
@@ -412,7 +412,6 @@ export default function Home() {
               window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
             }
           >
-            
             <HugeiconsIcon icon={ChevronDownIcon} size={20} />
           </motion.div>
         </motion.div>
@@ -557,7 +556,6 @@ export default function Home() {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 auto-rows-fr">
-          
           <Card className="h-full transition-fast hover:shadow-elevation-2 hover:border-foreground/20 pt-0 overflow-hidden gap-0 p-0">
             <div className="flex items-center justify-center min-h-32 border-b border-border bg-muted/20 pointer-events-none select-none px-4 py-6 overflow-hidden">
               <div className="scale-[1.45]">
@@ -571,7 +569,7 @@ export default function Home() {
               />
             </Link>
           </Card>
-          
+
           <Card className="h-full transition-fast hover:shadow-elevation-2 hover:border-foreground/20 pt-0 overflow-hidden gap-0 p-0">
             <div className="min-h-32 border-b border-border bg-muted/20 pointer-events-none select-none flex items-center px-4 py-6">
               <HighlightedInput config={HIGHLIGHT_TEASER_CONFIG} />
@@ -586,7 +584,7 @@ export default function Home() {
               />
             </Link>
           </Card>
-          
+
           <Card className="h-full transition-fast hover:shadow-elevation-2 hover:border-foreground/20 pt-0 overflow-hidden gap-0 p-0">
             <div className="flex items-center justify-center gap-4 min-h-32 border-b border-border bg-muted/20 px-4 py-6">
               <span
@@ -622,7 +620,10 @@ export default function Home() {
                 <ColorPicker defaultHex="#007AFF" />
               </span>
             </div>
-            <Link href="/components/color-picker" className="group block h-full">
+            <Link
+              href="/components/color-picker"
+              className="group block h-full"
+            >
               <TeaserMeta
                 title="Color Picker"
                 blurb="Petal ring that blooms from a swatch — tap it"
@@ -661,7 +662,6 @@ export default function Home() {
           </p>
         </motion.div>
 
-        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

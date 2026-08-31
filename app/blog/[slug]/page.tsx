@@ -1,5 +1,5 @@
 import { Outline, RegisterOutlineHeadings } from "@/components/outline";
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { getPostBySlug } from "@/lib/markdown";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -13,7 +13,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import path from "path";
 
-const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
+const CONTENT_ROOT = path.join(process.cwd(), "data/content/blog");
 
 export default async function BlogPostPage({
   params,
@@ -83,7 +83,6 @@ export default async function BlogPostPage({
             </p>
           )}
 
-          
           {frontmatter.image && (
             <div className="mt-8 rounded-xl overflow-hidden">
               <Image

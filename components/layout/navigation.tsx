@@ -1,7 +1,7 @@
 "use client";
 
 import CommandBar from "@/components/command-bar";
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Cancel01Icon,
@@ -12,14 +12,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ThemeToggle } from "./theme-toggle";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { motion, AnimatePresence } from "framer-motion";
 import Clock24 from "@/components/Clock24";
 import {
   subscribeOutlineHeadings,
   type OutlineHeading,
 } from "@/lib/outline-store";
-import { Outline, OutlineInline } from "./outline";
+import { Outline, OutlineInline } from "@/components/outline";
 
 export function Navigation() {
   const pathname = usePathname();
@@ -176,7 +176,6 @@ export function Navigation() {
           />
         </div>
 
-        
         <Container size="wide" className="relative py-3">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-5 md:gap-7 min-w-0">
@@ -226,7 +225,7 @@ export function Navigation() {
                   K
                 </kbd>
               </button>
-              <ThemeToggle size="sm"/>
+              <ThemeToggle size="sm" />
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="sm:hidden p-2 text-muted-foreground hover:text-foreground transition-fast"

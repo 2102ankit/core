@@ -1,6 +1,6 @@
 "use client";
 
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import {
   AlhansatSolutionsTooltipContent,
   DefaultTooltipContent,
@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tooltip } from "@/components/ui/tooltip-card";
-import { skillCategories } from "@/data/skills";
+import { skillCategories } from "@/data/db/skills";
 import { formatDateRange, formatDuration } from "@/lib/utils";
 import {
   Briefcase01Icon,

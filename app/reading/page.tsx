@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Bookshelf } from "@/components/bookshelf";
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { ReadingBrowser, type ReadingItem } from "@/components/reading-browser";
 
 interface Book {
@@ -16,7 +16,7 @@ interface Book {
 
 async function loadBooks(): Promise<Book[]> {
   try {
-    const filePath = path.join(process.cwd(), "data/all_books.json");
+    const filePath = path.join(process.cwd(), "data/content/reading/all_books.json");
     const raw = fs.readFileSync(filePath, "utf8");
     const books = JSON.parse(raw) as Book[];
     return books.sort((a, b) => a.order_index - b.order_index);
@@ -45,12 +45,15 @@ export default async function ReadingPage() {
     loadBooks(),
     fs.promises
       .readFile(
-        path.join(process.cwd(), "content/reading/whitepapers.md"),
+        path.join(process.cwd(), "data/content/reading/whitepapers.md"),
         "utf8",
       )
       .catch(() => ""),
     fs.promises
-      .readFile(path.join(process.cwd(), "content/reading/blogs.md"), "utf8")
+      .readFile(
+        path.join(process.cwd(), "data/content/reading/blogs.md"),
+        "utf8",
+      )
       .catch(() => ""),
   ]);
 
@@ -59,13 +62,10 @@ export default async function ReadingPage() {
 
   return (
     <Container size="wide" className="py-16 md:py-20 page-transition">
-      
-
       <div className="opacity-0 animate-fade-in-up delay-100">
         <ReadingBrowser whitepapers={whitepapers} blogs={blogs} />
       </div>
 
-      
       <div className="mt-14 opacity-0 animate-fade-in-up delay-200">
         <Bookshelf books={books} />
       </div>

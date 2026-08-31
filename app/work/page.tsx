@@ -1,15 +1,12 @@
 "use client";
 
-import ProjectThumbnail from "@/components/project-thumbnail";
-import { Container } from "@/components/container";
+import ProjectThumbnail from "@/components/features/projects/project-thumbnail";
+import { Container } from "@/components/layout/container";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  ArrowUpRight01Icon,
-  GithubIcon,
-} from "@hugeicons/core-free-icons";
+import { ArrowUpRight01Icon, GithubIcon } from "@hugeicons/core-free-icons";
 import { getProjects, type Project } from "@/lib/data";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -191,7 +188,11 @@ export default function WorkPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            Demo <HugeiconsIcon icon={ArrowUpRight01Icon} size={16} />
+                            Demo{" "}
+                            <HugeiconsIcon
+                              icon={ArrowUpRight01Icon}
+                              size={16}
+                            />
                           </a>
                         </Button>
                       )}

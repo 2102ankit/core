@@ -1,6 +1,6 @@
 "use client";
 
-import { Container } from "@/components/container";
+import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import {
