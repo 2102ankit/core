@@ -18,66 +18,115 @@ const RATIOS = [
 ];
 
 const BG_COLORS = [
-  "#ffffff",
-  "#f8f9fa",
-  "#fff5f5",
-  "#fff9db",
-  "#ebfbee",
-  "#e7f5ff",
-  "#f3f0ff",
-  "#212529",
-  "#495057",
-  "#1a1a2e",
-  "#2d2d2d",
-  "#0b3d0b",
+  "#ffffff", "#f8f9fa", "#fff5f5", "#fffae0", "#ebfbee", "#e7f5ff",
+  "#f3f0ff", "#212529", "#495057", "#1a1a2e", "#2d2d2d", "#0b3d0b",
 ];
 
 const BORDER_COLORS = [
-  "#111111",
-  "#343a40",
-  "#495057",
-  "#868e96",
-  "#c92a2a",
-  "#e8590c",
-  "#2b8a3e",
-  "#1864ab",
-  "#5f3dc4",
-  "#a61e4d",
-  "#ffffff",
-  "#d0bfff",
+  "#111111", "#343a40", "#495057", "#868e96", "#c92a2a", "#e8590c",
+  "#2b8a3e", "#1864ab", "#5f3dc4", "#a61e4d", "#ffffff", "#d0bfff",
 ];
 
 const TEXT_COLORS = [
-  "#111111",
-  "#495057",
-  "#868e96",
-  "#c92a2a",
-  "#e8590c",
-  "#2b8a3e",
-  "#1864ab",
-  "#5f3dc4",
-  "#a61e4d",
-  "#ffffff",
-  "#d0bfff",
-  "#ffd43b",
+  "#111111", "#495057", "#868e96", "#c92a2a", "#e8590c", "#2b8a3e",
+  "#1864ab", "#5f3dc4", "#a61e4d", "#ffffff", "#d0bfff", "#ffd43b",
 ];
 
-const FONT_OPTIONS = [
-  { label: "EB Garamond", value: "'EB Garamond', serif" },
-  { label: "Libre Baskerville", value: "'Libre Baskerville', serif" },
-  { label: "Cormorant Garamond", value: "'Cormorant Garamond', serif" },
-  { label: "Playfair Display", value: "'Playfair Display', serif" },
-  { label: "Lora", value: "'Lora', serif" },
-  { label: "Merriweather", value: "'Merriweather', serif" },
-  { label: "Crimson Text", value: "'Crimson Text', serif" },
-  { label: "Spectral", value: "'Spectral', serif" },
-  { label: "Georgia", value: "Georgia, serif" },
+const FONT_GROUPS: { group: string; options: { label: string; value: string }[] }[] = [
+  {
+    group: "Serif",
+    options: [
+      { label: "EB Garamond", value: "'EB Garamond', serif" },
+      { label: "Libre Baskerville", value: "'Libre Baskerville', serif" },
+      { label: "Playfair Display", value: "'Playfair Display', serif" },
+      { label: "Lora", value: "'Lora', serif" },
+      { label: "Merriweather", value: "'Merriweather', serif" },
+      { label: "Cormorant Garamond", value: "'Cormorant Garamond', serif" },
+      { label: "Georgia", value: "Georgia, serif" },
+    ],
+  },
+  {
+    group: "Handwriting & Script",
+    options: [
+      { label: "Caveat", value: "'Caveat', cursive" },
+      { label: "Dancing Script", value: "'Dancing Script', cursive" },
+      { label: "Sacramento", value: "'Sacramento', cursive" },
+      { label: "Kalam", value: "'Kalam', cursive" },
+      { label: "Indie Flower", value: "'Indie Flower', cursive" },
+      { label: "Shadows Into Light", value: "'Shadows Into Light', cursive" },
+      { label: "Pacifico", value: "'Pacifico', cursive" },
+    ],
+  },
+  {
+    group: "Sans-Serif",
+    options: [
+      { label: "Inter", value: "'Inter', sans-serif" },
+      { label: "Poppins", value: "'Poppins', sans-serif" },
+      { label: "Montserrat", value: "'Montserrat', sans-serif" },
+      { label: "Raleway", value: "'Raleway', sans-serif" },
+    ],
+  },
+  {
+    group: "Bold & Display",
+    options: [
+      { label: "Bebas Neue", value: "'Bebas Neue', sans-serif" },
+      { label: "Anton", value: "'Anton', sans-serif" },
+      { label: "Oswald", value: "'Oswald', sans-serif" },
+      { label: "Archivo Black", value: "'Archivo Black', sans-serif" },
+      { label: "Abril Fatface", value: "'Abril Fatface', serif" },
+    ],
+  },
+  {
+    group: "Typewriter & Mono",
+    options: [
+      { label: "Space Mono", value: "'Space Mono', monospace" },
+      { label: "Courier Prime", value: "'Courier Prime', monospace" },
+    ],
+  },
+  {
+    group: "Fun & Decorative",
+    options: [
+      { label: "Permanent Marker", value: "'Permanent Marker', cursive" },
+      { label: "Amatic SC", value: "'Amatic SC', sans-serif" },
+    ],
+  },
 ];
 
-const TEXTURES: {
-  key: "none" | "paper" | "grid" | "dots" | "lines";
-  label: string;
-}[] = [
+// One combined stylesheet request for every font used above (regular + bold weights).
+const GOOGLE_FONT_FAMILIES = [
+  "EB+Garamond:wght@400;700",
+  "Libre+Baskerville:wght@400;700",
+  "Playfair+Display:wght@400;700",
+  "Lora:wght@400;700",
+  "Merriweather:wght@400;700",
+  "Cormorant+Garamond:wght@400;700",
+  "Caveat:wght@400;700",
+  "Dancing+Script:wght@400;700",
+  "Sacramento",
+  "Kalam:wght@400;700",
+  "Indie+Flower",
+  "Shadows+Into+Light",
+  "Pacifico",
+  "Inter:wght@400;700",
+  "Poppins:wght@400;700",
+  "Montserrat:wght@400;700",
+  "Raleway:wght@400;700",
+  "Bebas+Neue",
+  "Anton",
+  "Oswald:wght@400;700",
+  "Archivo+Black",
+  "Abril+Fatface",
+  "Space+Mono:wght@400;700",
+  "Courier+Prime:wght@400;700",
+  "Permanent+Marker",
+  "Amatic+SC:wght@400;700",
+];
+const GOOGLE_FONTS_URL =
+  "https://fonts.googleapis.com/css2?" +
+  GOOGLE_FONT_FAMILIES.map((f) => `family=${f}`).join("&") +
+  "&display=swap";
+
+const TEXTURES: { key: "none" | "paper" | "grid" | "dots" | "lines"; label: string }[] = [
   { key: "none", label: "Plain" },
   { key: "paper", label: "Paper" },
   { key: "grid", label: "Grid" },
@@ -99,20 +148,10 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Group({
-  label,
-  children,
-}: {
-  label?: string;
-  children: React.ReactNode;
-}) {
+function Group({ label, children }: { label?: string; children: React.ReactNode }) {
   return (
     <div className="mb-4">
-      {label && (
-        <label className="mb-2 block text-xs font-semibold text-muted-foreground">
-          {label}
-        </label>
-      )}
+      {label && <label className="mb-2 block text-xs font-semibold text-muted-foreground">{label}</label>}
       {children}
     </div>
   );
@@ -136,9 +175,7 @@ function SwatchGrid({
           aria-label={c}
           onClick={() => onSelect(c)}
           className={`aspect-square rounded-md border transition-shadow ${
-            active === c
-              ? "ring-2 ring-foreground ring-offset-1 ring-offset-background"
-              : "border-border/60"
+            active === c ? "ring-2 ring-foreground ring-offset-1 ring-offset-background" : "border-border/60"
           }`}
           style={{ backgroundColor: c }}
         />
@@ -159,41 +196,51 @@ export default function QuoteGenerator() {
   const activeEditableRef = useRef<HTMLDivElement | null>(null);
 
   // Layout
-  const [ratioIdx, setRatioIdx] = useState(2);
+  const [ratioIdx, setRatioIdx] = useState(0);
   const ratio = RATIOS[ratioIdx];
   const [outerPad, setOuterPad] = useState(40);
   const [innerPad, setInnerPad] = useState(50);
   const [fitScale, setFitScale] = useState(1);
 
   // Background
+  const [bgType, setBgType] = useState<"color" | "image">("color");
   const [bgColor, setBgColor] = useState("#ffffff");
-  const [texture, setTexture] =
-    useState<(typeof TEXTURES)[number]["key"]>("none");
+  const [texture, setTexture] = useState<(typeof TEXTURES)[number]["key"]>("none");
   const [noiseUrl, setNoiseUrl] = useState("");
+
+  // Background image
+  const [bgImageSrc, setBgImageSrc] = useState<string | null>(null);
+  const [imgNatural, setImgNatural] = useState({ w: 0, h: 0 });
+  const [bgImageFit, setBgImageFit] = useState<"cover" | "contain" | "fill" | "none">("cover");
+  const [bgImageScale, setBgImageScale] = useState(1);
+  const [bgImageRotation, setBgImageRotation] = useState(0);
+  const [bgImageOpacity, setBgImageOpacity] = useState(1);
+  const [bgImagePosX, setBgImagePosX] = useState(50);
+  const [bgImagePosY, setBgImagePosY] = useState(50);
+  const [bgImageBlur, setBgImageBlur] = useState(0);
+  const [overlayEnabled, setOverlayEnabled] = useState(false);
+  const [overlayColor, setOverlayColor] = useState("#000000");
+  const [overlayOpacity, setOverlayOpacity] = useState(0.35);
 
   // Border
   const [borderEnabled, setBorderEnabled] = useState(false);
   const [borderWidth, setBorderWidth] = useState(2);
-  const [borderStyleVal, setBorderStyleVal] = useState<
-    "solid" | "dashed" | "dotted" | "double"
-  >("solid");
+  const [borderStyleVal, setBorderStyleVal] = useState<"solid" | "dashed" | "dotted" | "double">("solid");
   const [borderColor, setBorderColor] = useState("#222222");
 
   // Quote text
-  const [quoteFont, setQuoteFont] = useState(FONT_OPTIONS[0].value);
+  const [quoteFont, setQuoteFont] = useState(FONT_GROUPS[0].options[0].value);
   const [textColor, setTextColor] = useState("#111111");
   const [quoteAlign, setQuoteAlign] = useState<Align>("center");
   const [fontSize, setFontSize] = useState(32);
   const [lineHeight, setLineHeight] = useState(1.5);
   const [letterSpacing, setLetterSpacing] = useState(0);
-  const [fmt, setFmt] = useState({
-    bold: false,
-    italic: false,
-    underline: false,
-  });
+  const [fmt, setFmt] = useState({ bold: false, italic: false, underline: false });
+  const [textShadow, setTextShadow] = useState(false);
+  const [textShadowStrength, setTextShadowStrength] = useState(4);
 
   // Author text
-  const [authorFont, setAuthorFont] = useState(FONT_OPTIONS[0].value);
+  const [authorFont, setAuthorFont] = useState(FONT_GROUPS[0].options[0].value);
   const [showDash, setShowDash] = useState(true);
   const [authorAlign, setAuthorAlign] = useState<Align>("center");
   const [authorFontSize, setAuthorFontSize] = useState(20);
@@ -206,7 +253,7 @@ export default function QuoteGenerator() {
 
   const cardLogicalWidth = useMemo(() => {
     const r = ratio.w / ratio.h;
-    return r >= 1 ? BASE * Math.min(r, 1.6) : BASE * Math.min(1 / r, 1.6) * r;
+    return r >= 1 ? BASE * Math.min(r, 1.6) : (BASE * Math.min(1 / r, 1.6)) * r;
   }, [ratio]);
 
   const cardLogicalHeight = useMemo(() => {
@@ -214,21 +261,119 @@ export default function QuoteGenerator() {
     return r >= 1 ? cardLogicalWidth / r : BASE * Math.min(1 / r, 1.6);
   }, [ratio, cardLogicalWidth]);
 
+  /* ---- load the font family stylesheet once ---- */
+  useEffect(() => {
+    const id = "quote-generator-fonts";
+    if (document.getElementById(id)) return;
+    const link = document.createElement("link");
+    link.id = id;
+    link.rel = "stylesheet";
+    link.href = GOOGLE_FONTS_URL;
+    document.head.appendChild(link);
+  }, []);
+
+  /* ---- background image upload ---- */
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = typeof reader.result === "string" ? reader.result : null;
+      if (!dataUrl) return;
+      const probe = new Image();
+      probe.onload = () => {
+        setImgNatural({ w: probe.naturalWidth, h: probe.naturalHeight });
+        setBgImageSrc(dataUrl);
+        setBgType("image");
+      };
+      probe.src = dataUrl;
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  };
+
+  const handleRemoveImage = () => {
+    setBgImageSrc(null);
+    setImgNatural({ w: 0, h: 0 });
+    setBgType("color");
+    setBgImageScale(1);
+    setBgImageRotation(0);
+    setBgImageOpacity(1);
+    setBgImagePosX(50);
+    setBgImagePosY(50);
+    setBgImageBlur(0);
+  };
+
+  const handleResetAll = () => {
+    setRatioIdx(2);
+    setOuterPad(40);
+    setInnerPad(50);
+    setBgType("color");
+    setBgColor("#ffffff");
+    setTexture("none");
+    handleRemoveImage();
+    setOverlayEnabled(false);
+    setOverlayColor("#000000");
+    setOverlayOpacity(0.35);
+    setBorderEnabled(false);
+    setBorderWidth(2);
+    setBorderStyleVal("solid");
+    setBorderColor("#222222");
+    setQuoteFont(FONT_GROUPS[0].options[0].value);
+    setTextColor("#111111");
+    setQuoteAlign("center");
+    setFontSize(32);
+    setLineHeight(1.5);
+    setLetterSpacing(0);
+    setTextShadow(false);
+    setTextShadowStrength(4);
+    setAuthorFont(FONT_GROUPS[0].options[0].value);
+    setShowDash(true);
+    setAuthorAlign("center");
+    setAuthorFontSize(20);
+  };
+
+  const textShadowValue = textShadow ? `0 ${textShadowStrength / 4}px ${textShadowStrength}px rgba(0,0,0,0.55)` : "none";
+
+  // Real pixel size to render the background image at, so that
+  // background-position (native 0-100% pan/align math) works correctly
+  // whether the image overflows the frame (cover) or leaves empty space
+  // around it (contain) — both are just "slack" from the browser's point
+  // of view once the size is expressed in actual pixels.
+  const bgRenderSize = useMemo(() => {
+    const iw = imgNatural.w || cardLogicalWidth;
+    const ih = imgNatural.h || cardLogicalHeight;
+    const cw = cardLogicalWidth;
+    const ch = cardLogicalHeight;
+    if (bgImageFit === "fill") return { w: cw * bgImageScale, h: ch * bgImageScale };
+    if (bgImageFit === "none") return { w: iw * bgImageScale, h: ih * bgImageScale };
+    const baseScale = bgImageFit === "contain" ? Math.min(cw / iw, ch / ih) : Math.max(cw / iw, ch / ih);
+    const scale = baseScale * bgImageScale;
+    return { w: iw * scale, h: ih * scale };
+  }, [imgNatural, cardLogicalWidth, cardLogicalHeight, bgImageFit, bgImageScale]);
+
   /* ---- fit the card to the stage on resize ---- */
   useEffect(() => {
     const el = stageWrapperRef.current;
     if (!el) return;
+    let rafId = 0;
     const recompute = () => {
       const availW = Math.max(1, el.clientWidth - 48);
       const availH = Math.max(1, el.clientHeight - 48);
-      setFitScale(
-        Math.min(1, availW / cardLogicalWidth, availH / cardLogicalHeight),
-      );
+      const next = Math.min(1, availW / cardLogicalWidth, availH / cardLogicalHeight);
+      setFitScale((prev) => (Math.abs(prev - next) < 0.002 ? prev : next));
+    };
+    const onResize = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(recompute);
     };
     recompute();
-    const ro = new ResizeObserver(recompute);
+    const ro = new ResizeObserver(onResize);
     ro.observe(el);
-    return () => ro.disconnect();
+    return () => {
+      cancelAnimationFrame(rafId);
+      ro.disconnect();
+    };
   }, [cardLogicalWidth, cardLogicalHeight]);
 
   /* ---- generate a subtle paper-grain texture once on mount ---- */
@@ -254,12 +399,7 @@ export default function QuoteGenerator() {
   const textureStyle = useMemo((): React.CSSProperties => {
     switch (texture) {
       case "paper":
-        return noiseUrl
-          ? {
-              backgroundImage: `url("${noiseUrl}")`,
-              backgroundSize: "140px 140px",
-            }
-          : {};
+        return noiseUrl ? { backgroundImage: `url("${noiseUrl}")`, backgroundSize: "140px 140px" } : {};
       case "grid":
         return {
           backgroundImage:
@@ -267,11 +407,7 @@ export default function QuoteGenerator() {
           backgroundSize: "30px 30px",
         };
       case "dots":
-        return {
-          backgroundImage:
-            "radial-gradient(rgba(0,0,0,0.10) 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
-        };
+        return { backgroundImage: "radial-gradient(rgba(0,0,0,0.10) 1px, transparent 1px)", backgroundSize: "20px 20px" };
       case "lines":
         return {
           backgroundImage:
@@ -287,13 +423,7 @@ export default function QuoteGenerator() {
     const update = () => {
       const active = activeEditableRef.current;
       const sel = window.getSelection();
-      if (
-        !active ||
-        !sel ||
-        !sel.rangeCount ||
-        !active.contains(sel.anchorNode)
-      )
-        return;
+      if (!active || !sel || !sel.rangeCount || !active.contains(sel.anchorNode)) return;
       setFmt({
         bold: document.queryCommandState("bold"),
         italic: document.queryCommandState("italic"),
@@ -339,9 +469,7 @@ export default function QuoteGenerator() {
         windowWidth: cardLogicalWidth,
         windowHeight: cardLogicalHeight,
         onclone: (doc: Document) => {
-          const cloned = doc.querySelector<HTMLElement>(
-            '[data-quote-card="true"]',
-          );
+          const cloned = doc.querySelector<HTMLElement>('[data-quote-card="true"]');
           if (cloned) cloned.style.transform = "none";
           // Neutralize ancestor CSS-variable colors (oklch/lab from Tailwind v4)
           // that html2canvas's legacy color parser can't read.
@@ -354,10 +482,7 @@ export default function QuoteGenerator() {
         },
       });
       const extension = format === "jpeg" ? "jpg" : "png";
-      const safeName = (fileName.trim() || "quote").replace(
-        /[<>:"/\\|?*]/g,
-        "_",
-      );
+      const safeName = (fileName.trim() || "quote").replace(/[<>:"/\\|?*]/g, "_");
       const link = document.createElement("a");
       link.download = `${safeName}.${extension}`;
       link.href = canvas.toDataURL(`image/${format}`, 0.95);
@@ -371,9 +496,7 @@ export default function QuoteGenerator() {
 
   const alignBtnClass = (active: boolean) =>
     `flex-1 rounded-md border px-2 py-1.5 text-xs transition-colors ${
-      active
-        ? "border-foreground bg-foreground text-background"
-        : "border-border bg-muted/50 text-foreground hover:bg-accent"
+      active ? "border-foreground bg-foreground text-background" : "border-border bg-muted/50 text-foreground hover:bg-accent"
     }`;
 
   return (
@@ -381,28 +504,44 @@ export default function QuoteGenerator() {
       {/* CANVAS — fixed top half on mobile, right stage on desktop */}
       <div
         ref={stageWrapperRef}
-        className="flex h-[50vh] shrink-0 items-center justify-center overflow-hidden bg-muted/40 p-4 md:order-2 md:h-full md:flex-1 md:p-10"
+        className="flex h-[50svh] shrink-0 items-center justify-center overflow-hidden bg-muted/40 p-4 md:order-2 md:h-full md:flex-1 md:p-10"
       >
         <div
           ref={cardRef}
           data-quote-card="true"
-          className="relative box-border flex shrink-0 origin-center flex-col items-center justify-center overflow-hidden shadow-2xl"
+          className="relative box-border flex shrink-0 origin-center flex-col items-center justify-center overflow-hidden shadow-2xl transition-transform duration-150 ease-out"
           style={{
             width: cardLogicalWidth,
             height: cardLogicalHeight,
             padding: outerPad,
             backgroundColor: bgColor,
             transform: `scale(${fitScale})`,
-            ...textureStyle,
+            ...(bgType === "color" ? textureStyle : {}),
           }}
         >
+          {bgType === "image" && bgImageSrc && (
+            <div
+              className="absolute inset-0 z-0 overflow-hidden"
+              style={{
+                opacity: bgImageOpacity,
+                backgroundImage: `url(${bgImageSrc})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: `${bgRenderSize.w}px ${bgRenderSize.h}px`,
+                backgroundPosition: `${bgImagePosX}% ${bgImagePosY}%`,
+                transform: `rotate(${bgImageRotation}deg)`,
+                transformOrigin: "center",
+                filter: bgImageBlur > 0 ? `blur(${bgImageBlur}px)` : "none",
+              }}
+            />
+          )}
+          {bgType === "image" && bgImageSrc && overlayEnabled && (
+            <div className="absolute inset-0 z-[1]" style={{ backgroundColor: overlayColor, opacity: overlayOpacity }} />
+          )}
           <div
-            className="relative flex h-full w-full flex-col items-center justify-center"
+            className="relative z-10 flex h-full w-full flex-col items-center justify-center"
             style={{
               padding: innerPad,
-              border: borderEnabled
-                ? `${borderWidth}px ${borderStyleVal} ${borderColor}`
-                : "none",
+              border: borderEnabled ? `${borderWidth}px ${borderStyleVal} ${borderColor}` : "none",
             }}
           >
             <div className="flex w-full flex-col">
@@ -421,10 +560,10 @@ export default function QuoteGenerator() {
                   letterSpacing,
                   color: textColor,
                   textAlign: quoteAlign,
+                  textShadow: textShadowValue,
                 }}
                 dangerouslySetInnerHTML={{
-                  __html:
-                    "I am victim of my own conscience constantly feeling guilty for things I have not done.",
+                  __html: "I am victim of my own conscience constantly feeling guilty for things I have not done.",
                 }}
               />
               <div
@@ -440,6 +579,7 @@ export default function QuoteGenerator() {
                   fontSize: authorFontSize,
                   color: textColor,
                   textAlign: authorAlign,
+                  textShadow: textShadowValue,
                 }}
                 dangerouslySetInnerHTML={{ __html: "<i>Franz Kafka</i>" }}
               />
@@ -450,9 +590,12 @@ export default function QuoteGenerator() {
 
       {/* MENU — scrollable bottom half on mobile, left sidebar on desktop */}
       <div className="min-h-0 flex-1 overflow-y-auto border-t border-border bg-background p-4 md:order-1 md:h-full md:w-[320px] md:flex-none md:border-r md:border-t-0 md:p-5">
-        <h2 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Quote Generator
-        </h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Quote Generator</h2>
+          <button type="button" onClick={handleResetAll} className="text-[11px] font-medium text-muted-foreground underline-offset-2 hover:text-foreground hover:underline">
+            Reset
+          </button>
+        </div>
 
         <SectionTitle>Layout</SectionTitle>
         <Group label="Aspect Ratio">
@@ -463,9 +606,7 @@ export default function QuoteGenerator() {
                 type="button"
                 onClick={() => setRatioIdx(i)}
                 className={`rounded-md border px-2 py-2 text-xs transition-colors ${
-                  ratioIdx === i
-                    ? "border-foreground bg-foreground text-background"
-                    : "border-border bg-muted/50 text-foreground hover:bg-accent"
+                  ratioIdx === i ? "border-foreground bg-foreground text-background" : "border-border bg-muted/50 text-foreground hover:bg-accent"
                 }`}
               >
                 {r.label}
@@ -474,91 +615,139 @@ export default function QuoteGenerator() {
           </div>
         </Group>
         <Group label={`Padding outside border (${outerPad}px)`}>
-          <input
-            type="range"
-            min={0}
-            max={140}
-            value={outerPad}
-            onChange={(e) => setOuterPad(Number(e.target.value))}
-            className="w-full accent-foreground"
-          />
+          <input type="range" min={0} max={140} value={outerPad} onChange={(e) => setOuterPad(Number(e.target.value))} className="w-full accent-foreground" />
         </Group>
         <Group label={`Padding inside border (${innerPad}px)`}>
-          <input
-            type="range"
-            min={0}
-            max={140}
-            value={innerPad}
-            onChange={(e) => setInnerPad(Number(e.target.value))}
-            className="w-full accent-foreground"
-          />
+          <input type="range" min={0} max={140} value={innerPad} onChange={(e) => setInnerPad(Number(e.target.value))} className="w-full accent-foreground" />
         </Group>
 
         <SectionTitle>Background</SectionTitle>
-        <Group label="Color">
-          <SwatchGrid
-            colors={BG_COLORS}
-            active={bgColor}
-            onSelect={setBgColor}
-          />
-          <input
-            type="color"
-            value={bgColor}
-            onChange={(e) => setBgColor(e.target.value)}
-            className="mt-2 h-9 w-full cursor-pointer rounded-md border border-border bg-transparent p-0.5"
-          />
-        </Group>
-        <Group label="Texture">
-          <div className="grid grid-cols-3 gap-1.5">
-            {TEXTURES.map((t) => (
-              <button
-                key={t.key}
-                type="button"
-                onClick={() => setTexture(t.key)}
-                className={`rounded-md border px-2 py-2 text-[11px] transition-colors ${
-                  texture === t.key
-                    ? "border-foreground bg-foreground text-background"
-                    : "border-border bg-muted/50 text-foreground hover:bg-accent"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
+        <Group label="Type">
+          <div className="flex gap-1.5">
+            <button type="button" onClick={() => setBgType("color")} className={alignBtnClass(bgType === "color")}>Color</button>
+            <button type="button" onClick={() => setBgType("image")} className={alignBtnClass(bgType === "image")}>Image</button>
           </div>
         </Group>
 
+        {bgType === "color" && (
+          <>
+            <Group label="Color">
+              <SwatchGrid colors={BG_COLORS} active={bgColor} onSelect={setBgColor} />
+              <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className="mt-2 h-9 w-full cursor-pointer rounded-md border border-border bg-transparent p-0.5" />
+            </Group>
+            <Group label="Texture">
+              <div className="grid grid-cols-3 gap-1.5">
+                {TEXTURES.map((t) => (
+                  <button
+                    key={t.key}
+                    type="button"
+                    onClick={() => setTexture(t.key)}
+                    className={`rounded-md border px-2 py-2 text-[11px] transition-colors ${
+                      texture === t.key ? "border-foreground bg-foreground text-background" : "border-border bg-muted/50 text-foreground hover:bg-accent"
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            </Group>
+          </>
+        )}
+
+        {bgType === "image" && (
+          <>
+            <Group label="Image">
+              {!bgImageSrc ? (
+                <label className="flex w-full cursor-pointer items-center justify-center rounded-md border border-dashed border-border bg-muted/50 px-3 py-4 text-xs text-muted-foreground hover:bg-accent">
+                  Upload an image
+                  <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+                </label>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <img src={bgImageSrc} alt="" className="h-12 w-12 rounded-md border border-border object-cover" />
+                  <label className="flex-1 cursor-pointer rounded-md border border-border bg-muted/50 px-2 py-2 text-center text-xs hover:bg-accent">
+                    Replace
+                    <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+                  </label>
+                  <button type="button" onClick={handleRemoveImage} className="rounded-md border border-border bg-muted/50 px-2 py-2 text-xs hover:bg-accent">
+                    Remove
+                  </button>
+                </div>
+              )}
+            </Group>
+
+            {bgImageSrc && (
+              <>
+                <Group label="Fit">
+                  <div className="grid grid-cols-4 gap-1.5">
+                    {(["cover", "contain", "fill", "none"] as const).map((f) => (
+                      <button
+                        key={f}
+                        type="button"
+                        onClick={() => setBgImageFit(f)}
+                        className={`rounded-md border px-1 py-2 text-[11px] capitalize transition-colors ${
+                          bgImageFit === f ? "border-foreground bg-foreground text-background" : "border-border bg-muted/50 text-foreground hover:bg-accent"
+                        }`}
+                      >
+                        {f === "fill" ? "Stretch" : f === "none" ? "Actual" : f}
+                      </button>
+                    ))}
+                  </div>
+                </Group>
+                <Group label={`Zoom (${bgImageScale.toFixed(1)}x)`}>
+                  <input type="range" min={0.5} max={3} step={0.1} value={bgImageScale} onChange={(e) => setBgImageScale(Number(e.target.value))} className="w-full accent-foreground" />
+                </Group>
+                <Group label={`Rotation (${bgImageRotation}°)`}>
+                  <input type="range" min={-180} max={180} value={bgImageRotation} onChange={(e) => setBgImageRotation(Number(e.target.value))} className="w-full accent-foreground" />
+                </Group>
+                <Group label="Position">
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <span className="mb-1 block text-[10px] text-muted-foreground">Horizontal</span>
+                      <input type="range" min={0} max={100} value={bgImagePosX} onChange={(e) => setBgImagePosX(Number(e.target.value))} className="w-full accent-foreground" />
+                    </div>
+                    <div>
+                      <span className="mb-1 block text-[10px] text-muted-foreground">Vertical</span>
+                      <input type="range" min={0} max={100} value={bgImagePosY} onChange={(e) => setBgImagePosY(Number(e.target.value))} className="w-full accent-foreground" />
+                    </div>
+                  </div>
+                </Group>
+                <Group label={`Opacity (${Math.round(bgImageOpacity * 100)}%)`}>
+                  <input type="range" min={0.1} max={1} step={0.05} value={bgImageOpacity} onChange={(e) => setBgImageOpacity(Number(e.target.value))} className="w-full accent-foreground" />
+                </Group>
+                <Group label={`Blur (${bgImageBlur}px)`}>
+                  <input type="range" min={0} max={20} value={bgImageBlur} onChange={(e) => setBgImageBlur(Number(e.target.value))} className="w-full accent-foreground" />
+                </Group>
+
+                <div className="mb-3 flex items-center gap-2">
+                  <input id="overlayToggle" type="checkbox" checked={overlayEnabled} onChange={(e) => setOverlayEnabled(e.target.checked)} className="h-4 w-4 accent-foreground" />
+                  <label htmlFor="overlayToggle" className="text-xs font-medium text-foreground">Color overlay (for text legibility)</label>
+                </div>
+                {overlayEnabled && (
+                  <>
+                    <Group label="Overlay Color">
+                      <input type="color" value={overlayColor} onChange={(e) => setOverlayColor(e.target.value)} className="h-9 w-full cursor-pointer rounded-md border border-border bg-transparent p-0.5" />
+                    </Group>
+                    <Group label={`Overlay Strength (${Math.round(overlayOpacity * 100)}%)`}>
+                      <input type="range" min={0} max={0.9} step={0.05} value={overlayOpacity} onChange={(e) => setOverlayOpacity(Number(e.target.value))} className="w-full accent-foreground" />
+                    </Group>
+                  </>
+                )}
+              </>
+            )}
+          </>
+        )}
+
         <SectionTitle>Border</SectionTitle>
         <div className="mb-3 flex items-center gap-2">
-          <input
-            id="borderToggle"
-            type="checkbox"
-            checked={borderEnabled}
-            onChange={(e) => setBorderEnabled(e.target.checked)}
-            className="h-4 w-4 accent-foreground"
-          />
-          <label
-            htmlFor="borderToggle"
-            className="text-xs font-medium text-foreground"
-          >
-            Enable border
-          </label>
+          <input id="borderToggle" type="checkbox" checked={borderEnabled} onChange={(e) => setBorderEnabled(e.target.checked)} className="h-4 w-4 accent-foreground" />
+          <label htmlFor="borderToggle" className="text-xs font-medium text-foreground">Enable border</label>
         </div>
         <Group label={`Width (${borderWidth}px)`}>
-          <input
-            type="range"
-            min={1}
-            max={20}
-            value={borderWidth}
-            onChange={(e) => setBorderWidth(Number(e.target.value))}
-            className="w-full accent-foreground"
-          />
+          <input type="range" min={1} max={20} value={borderWidth} onChange={(e) => setBorderWidth(Number(e.target.value))} className="w-full accent-foreground" />
         </Group>
         <Group label="Style">
-          <select
-            value={borderStyleVal}
-            onChange={(e) => setBorderStyleVal(e.target.value as any)}
-            className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground"
-          >
+          <select value={borderStyleVal} onChange={(e) => setBorderStyleVal(e.target.value as any)} className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground">
             <option value="solid">Solid</option>
             <option value="dashed">Dashed</option>
             <option value="dotted">Dotted</option>
@@ -566,191 +755,95 @@ export default function QuoteGenerator() {
           </select>
         </Group>
         <Group label="Color">
-          <SwatchGrid
-            colors={BORDER_COLORS}
-            active={borderColor}
-            onSelect={setBorderColor}
-          />
-          <input
-            type="color"
-            value={borderColor}
-            onChange={(e) => setBorderColor(e.target.value)}
-            className="mt-2 h-9 w-full cursor-pointer rounded-md border border-border bg-transparent p-0.5"
-          />
+          <SwatchGrid colors={BORDER_COLORS} active={borderColor} onSelect={setBorderColor} />
+          <input type="color" value={borderColor} onChange={(e) => setBorderColor(e.target.value)} className="mt-2 h-9 w-full cursor-pointer rounded-md border border-border bg-transparent p-0.5" />
         </Group>
 
         <SectionTitle>Quote Text</SectionTitle>
         <Group label="Font">
-          <select
-            value={quoteFont}
-            onChange={(e) => setQuoteFont(e.target.value)}
-            className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground"
-          >
-            {FONT_OPTIONS.map((f) => (
-              <option key={f.label} value={f.value}>
-                {f.label}
-              </option>
+          <select value={quoteFont} onChange={(e) => setQuoteFont(e.target.value)} className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground">
+            {FONT_GROUPS.map((g) => (
+              <optgroup key={g.group} label={g.group}>
+                {g.options.map((f) => (
+                  <option key={f.label} value={f.value}>{f.label}</option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </Group>
         <Group label="Text Color">
-          <SwatchGrid
-            colors={TEXT_COLORS}
-            active={textColor}
-            onSelect={setTextColor}
-          />
+          <SwatchGrid colors={TEXT_COLORS} active={textColor} onSelect={setTextColor} />
         </Group>
         <Group label="Formatting">
           <div className="flex gap-1.5">
-            <button
-              type="button"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                toggleFormat("bold");
-              }}
-              className={`flex-1 rounded-md border py-1.5 text-sm font-bold transition-colors ${fmt.bold ? "border-foreground bg-foreground text-background" : "border-border bg-muted/50 hover:bg-accent"}`}
-            >
-              B
-            </button>
-            <button
-              type="button"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                toggleFormat("italic");
-              }}
-              className={`flex-1 rounded-md border py-1.5 text-sm italic transition-colors ${fmt.italic ? "border-foreground bg-foreground text-background" : "border-border bg-muted/50 hover:bg-accent"}`}
-            >
-              I
-            </button>
-            <button
-              type="button"
-              onMouseDown={(e) => {
-                e.preventDefault();
-                toggleFormat("underline");
-              }}
-              className={`flex-1 rounded-md border py-1.5 text-sm underline transition-colors ${fmt.underline ? "border-foreground bg-foreground text-background" : "border-border bg-muted/50 hover:bg-accent"}`}
-            >
-              U
-            </button>
+            <button type="button" onMouseDown={(e) => { e.preventDefault(); toggleFormat("bold"); }} className={`flex-1 rounded-md border py-1.5 text-sm font-bold transition-colors ${fmt.bold ? "border-foreground bg-foreground text-background" : "border-border bg-muted/50 hover:bg-accent"}`}>B</button>
+            <button type="button" onMouseDown={(e) => { e.preventDefault(); toggleFormat("italic"); }} className={`flex-1 rounded-md border py-1.5 text-sm italic transition-colors ${fmt.italic ? "border-foreground bg-foreground text-background" : "border-border bg-muted/50 hover:bg-accent"}`}>I</button>
+            <button type="button" onMouseDown={(e) => { e.preventDefault(); toggleFormat("underline"); }} className={`flex-1 rounded-md border py-1.5 text-sm underline transition-colors ${fmt.underline ? "border-foreground bg-foreground text-background" : "border-border bg-muted/50 hover:bg-accent"}`}>U</button>
           </div>
         </Group>
         <Group label="Alignment (Quote)">
           <div className="flex gap-1.5">
             {(["left", "center", "right"] as Align[]).map((a) => (
-              <button
-                key={a}
-                type="button"
-                onClick={() => setQuoteAlign(a)}
-                className={alignBtnClass(quoteAlign === a)}
-              >
+              <button key={a} type="button" onClick={() => setQuoteAlign(a)} className={alignBtnClass(quoteAlign === a)}>
                 {a[0].toUpperCase() + a.slice(1)}
               </button>
             ))}
           </div>
         </Group>
         <Group label={`Font Size (${fontSize}px)`}>
-          <input
-            type="range"
-            min={14}
-            max={72}
-            value={fontSize}
-            onChange={(e) => setFontSize(Number(e.target.value))}
-            className="w-full accent-foreground"
-          />
+          <input type="range" min={14} max={72} value={fontSize} onChange={(e) => setFontSize(Number(e.target.value))} className="w-full accent-foreground" />
         </Group>
         <Group label={`Line Height (${lineHeight.toFixed(1)})`}>
-          <input
-            type="range"
-            min={1}
-            max={2.5}
-            step={0.1}
-            value={lineHeight}
-            onChange={(e) => setLineHeight(Number(e.target.value))}
-            className="w-full accent-foreground"
-          />
+          <input type="range" min={1} max={2.5} step={0.1} value={lineHeight} onChange={(e) => setLineHeight(Number(e.target.value))} className="w-full accent-foreground" />
         </Group>
         <Group label={`Letter Spacing (${letterSpacing}px)`}>
-          <input
-            type="range"
-            min={-2}
-            max={10}
-            step={0.5}
-            value={letterSpacing}
-            onChange={(e) => setLetterSpacing(Number(e.target.value))}
-            className="w-full accent-foreground"
-          />
+          <input type="range" min={-2} max={10} step={0.5} value={letterSpacing} onChange={(e) => setLetterSpacing(Number(e.target.value))} className="w-full accent-foreground" />
         </Group>
+        <div className="mb-3 flex items-center gap-2">
+          <input id="shadowToggle" type="checkbox" checked={textShadow} onChange={(e) => setTextShadow(e.target.checked)} className="h-4 w-4 accent-foreground" />
+          <label htmlFor="shadowToggle" className="text-xs font-medium text-foreground">Text shadow (helps over images)</label>
+        </div>
+        {textShadow && (
+          <Group label={`Shadow Strength (${textShadowStrength}px)`}>
+            <input type="range" min={1} max={16} value={textShadowStrength} onChange={(e) => setTextShadowStrength(Number(e.target.value))} className="w-full accent-foreground" />
+          </Group>
+        )}
 
         <SectionTitle>Author Text</SectionTitle>
         <Group label="Font">
-          <select
-            value={authorFont}
-            onChange={(e) => setAuthorFont(e.target.value)}
-            className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground"
-          >
-            {FONT_OPTIONS.map((f) => (
-              <option key={f.label} value={f.value}>
-                {f.label}
-              </option>
+          <select value={authorFont} onChange={(e) => setAuthorFont(e.target.value)} className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground">
+            {FONT_GROUPS.map((g) => (
+              <optgroup key={g.group} label={g.group}>
+                {g.options.map((f) => (
+                  <option key={f.label} value={f.value}>{f.label}</option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </Group>
         <div className="mb-3 flex items-center gap-2">
-          <input
-            id="dashToggle"
-            type="checkbox"
-            checked={showDash}
-            onChange={(e) => setShowDash(e.target.checked)}
-            className="h-4 w-4 accent-foreground"
-          />
-          <label
-            htmlFor="dashToggle"
-            className="text-xs font-medium text-foreground"
-          >
-            Show em dash prefix
-          </label>
+          <input id="dashToggle" type="checkbox" checked={showDash} onChange={(e) => setShowDash(e.target.checked)} className="h-4 w-4 accent-foreground" />
+          <label htmlFor="dashToggle" className="text-xs font-medium text-foreground">Show em dash prefix</label>
         </div>
         <Group label="Alignment (Author)">
           <div className="flex gap-1.5">
             {(["left", "center", "right"] as Align[]).map((a) => (
-              <button
-                key={a}
-                type="button"
-                onClick={() => setAuthorAlign(a)}
-                className={alignBtnClass(authorAlign === a)}
-              >
+              <button key={a} type="button" onClick={() => setAuthorAlign(a)} className={alignBtnClass(authorAlign === a)}>
                 {a[0].toUpperCase() + a.slice(1)}
               </button>
             ))}
           </div>
         </Group>
         <Group label={`Font Size (${authorFontSize}px)`}>
-          <input
-            type="range"
-            min={10}
-            max={40}
-            value={authorFontSize}
-            onChange={(e) => setAuthorFontSize(Number(e.target.value))}
-            className="w-full accent-foreground"
-          />
+          <input type="range" min={10} max={40} value={authorFontSize} onChange={(e) => setAuthorFontSize(Number(e.target.value))} className="w-full accent-foreground" />
         </Group>
 
         <SectionTitle>Export</SectionTitle>
         <Group label="File Name">
-          <input
-            type="text"
-            value={fileName}
-            onChange={(e) => setFileName(e.target.value)}
-            placeholder="Enter file name"
-            className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground"
-          />
+          <input type="text" value={fileName} onChange={(e) => setFileName(e.target.value)} placeholder="Enter file name" className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground" />
         </Group>
         <Group label="Scale">
-          <select
-            value={scale}
-            onChange={(e) => setScale(Number(e.target.value))}
-            className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground"
-          >
+          <select value={scale} onChange={(e) => setScale(Number(e.target.value))} className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground">
             <option value={1}>1x (Standard)</option>
             <option value={2}>2x (High Quality)</option>
             <option value={3}>3x (Ultra HD)</option>
@@ -758,21 +851,12 @@ export default function QuoteGenerator() {
           </select>
         </Group>
         <Group label="Format">
-          <select
-            value={format}
-            onChange={(e) => setFormat(e.target.value as any)}
-            className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground"
-          >
+          <select value={format} onChange={(e) => setFormat(e.target.value as any)} className="w-full rounded-md border border-border bg-background px-2 py-2 text-sm text-foreground">
             <option value="png">PNG</option>
             <option value="jpeg">JPG</option>
           </select>
         </Group>
-        <button
-          type="button"
-          onClick={handleExport}
-          disabled={exporting}
-          className="mt-2 w-full rounded-lg bg-foreground px-4 py-3 text-sm font-semibold text-background transition-opacity hover:opacity-90 disabled:opacity-50"
-        >
+        <button type="button" onClick={handleExport} disabled={exporting} className="mt-2 w-full rounded-lg bg-foreground px-4 py-3 text-sm font-semibold text-background transition-opacity hover:opacity-90 disabled:opacity-50">
           {exporting ? "Exporting..." : "Export Image"}
         </button>
       </div>
